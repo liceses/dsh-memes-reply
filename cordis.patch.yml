@@ -1,0 +1,11 @@
+# dsh-memes-reply bundle patch: inserts this plugin's row into the web profile
+# roster. Applied as a profile bundle layer (the `dsh.bundle.patch` manifest
+# field) over dsh-base; activate with
+# `dsh plugin --profile web add link:<path-to-this-package>`.
+#
+# One bare plugin row by package name: the node half (exports ".") runs in the
+# host process and owns everything M1 needs — the sticker HTTP route, the
+# `use_sticker` model tool, the `/fish` command, and the settings namespace.
+- insert:
+    - id: memes-reply
+      name: 'dsh-memes-reply'

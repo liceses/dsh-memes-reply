@@ -1,0 +1,7 @@
+node_modules/
+lib/
+*.tgz
+.DS_Store
+
+# DSH 会话产物（showme 报告、临时素材），不入库
+.dsh/

@@ -1,0 +1,5204 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-15T10:18:16.721Z",
+  "generator": "scripts/import-assets.mjs",
+  "source": "D:\\Pictures\\image_ACG\\蓝色大肥鱼表情包",
+  "format": "webp",
+  "maxBytes": 716800,
+  "ladder": [
+    {
+      "size": 320,
+      "quality": 60
+    },
+    {
+      "size": 320,
+      "quality": 50
+    },
+    {
+      "size": 320,
+      "quality": 40
+    },
+    {
+      "size": 280,
+      "quality": 40
+    },
+    {
+      "size": 240,
+      "quality": 35
+    },
+    {
+      "size": 200,
+      "quality": 30
+    }
+  ],
+  "sticker": [
+    {
+      "id": "bug",
+      "name": "Bug",
+      "file": "bug.webp",
+      "source": "蓝色大肥鱼_Bug_2026-08-18-14-03-46.gif",
+      "seq": null,
+      "tags": [
+        "Bug",
+        "虫子",
+        "报错",
+        "修bug",
+        "修好",
+        "修复",
+        "踩坑",
+        "调通"
+      ],
+      "aliases": [
+        "bug",
+        "error",
+        "debug",
+        "issue",
+        "fix"
+      ],
+      "bytes": 693120,
+      "sha256": "f0bac7ce0f7bb645e061b0e844cda2e30b9c654f936e2a329cbde26b68b16453",
+      "w": 240,
+      "h": 240,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 693120,
+        "step": 5
+      },
+      "thumb": "bug.webp"
+    },
+    {
+      "id": "popcat-frame",
+      "name": "Popcat 帧",
+      "file": "popcat-frame.webp",
+      "source": "蓝色大肥鱼_Popcat 帧_2026-08-18-14-24-51.gif",
+      "seq": null,
+      "tags": [
+        "Popcat 帧",
+        "popcat",
+        "逐帧"
+      ],
+      "aliases": [
+        "popcat",
+        "frame",
+        "popcat-frame"
+      ],
+      "bytes": 27756,
+      "sha256": "7d1051f50cb040fba59ffc7c7753ccd3a2315351e5933b13ec414a9b9fd9e864",
+      "w": 320,
+      "h": 320,
+      "frames": 2,
+      "fps": 0,
+      "durationMs": 0,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 27756,
+        "step": 1
+      },
+      "thumb": "popcat-frame.webp"
+    },
+    {
+      "id": "popcat-smooth",
+      "name": "Popcat 平滑",
+      "file": "popcat-smooth.webp",
+      "source": "蓝色大肥鱼_Popcat 平滑_2026-08-18-14-24-53.gif",
+      "seq": null,
+      "tags": [
+        "Popcat 平滑",
+        "popcat",
+        "张嘴"
+      ],
+      "aliases": [
+        "popcat",
+        "smooth",
+        "popcat-smooth"
+      ],
+      "bytes": 264726,
+      "sha256": "454b5627b19cdf292776a0bf5bb14e6ffa403edb044cbc2d37aab7af553a02af",
+      "w": 320,
+      "h": 320,
+      "frames": 19,
+      "fps": 50,
+      "durationMs": 380,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 264726,
+        "step": 1
+      },
+      "thumb": "popcat-smooth.webp"
+    },
+    {
+      "id": "raid-1",
+      "name": "Raid",
+      "file": "raid-1.webp",
+      "source": "蓝色大肥鱼_Raid 1_2026-08-18-14-25-14.gif",
+      "seq": 1,
+      "tags": [
+        "Raid",
+        "突袭",
+        "冲击"
+      ],
+      "aliases": [
+        "raid",
+        "rush",
+        "attack",
+        "raid-1"
+      ],
+      "bytes": 683586,
+      "sha256": "61f56155f53d37c0f4f4243d66f359a5fa7958dc59d1c06823670c5c136d08a1",
+      "w": 280,
+      "h": 280,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 683586,
+        "step": 4
+      },
+      "thumb": "raid-1.webp"
+    },
+    {
+      "id": "raid-2",
+      "name": "Raid",
+      "file": "raid-2.webp",
+      "source": "蓝色大肥鱼_Raid 2_2026-08-18-14-25-25.gif",
+      "seq": 2,
+      "tags": [
+        "Raid",
+        "突袭",
+        "冲击"
+      ],
+      "aliases": [
+        "raid",
+        "rush",
+        "attack",
+        "raid-2"
+      ],
+      "bytes": 705544,
+      "sha256": "f758ab245e1fe1e46feb769cb2ed2e1c494ba9bbe5118a6a4f318110e6dc6876",
+      "w": 280,
+      "h": 280,
+      "frames": 78,
+      "fps": 50,
+      "durationMs": 1560,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 705544,
+        "step": 4
+      },
+      "thumb": "raid-2.webp"
+    },
+    {
+      "id": "all-good-1",
+      "name": "一切都好",
+      "file": "all-good-1.webp",
+      "source": "蓝色大肥鱼_一切都好 1_2026-08-18-14-37-38.gif",
+      "seq": 1,
+      "tags": [
+        "一切都好",
+        "没问题",
+        "放心",
+        "稳了",
+        "跑通",
+        "通过"
+      ],
+      "aliases": [
+        "allgood",
+        "fine",
+        "ok",
+        "noproblem",
+        "works",
+        "all-good",
+        "all-good-1"
+      ],
+      "bytes": 651278,
+      "sha256": "01583a8ad2b0764cccbbffee76b2782320acf83830365c900ee3f465c82cc934",
+      "w": 240,
+      "h": 240,
+      "frames": 79,
+      "fps": 50,
+      "durationMs": 1580,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 651278,
+        "step": 5
+      },
+      "thumb": "all-good-1.webp"
+    },
+    {
+      "id": "all-good-2",
+      "name": "一切都好",
+      "file": "all-good-2.webp",
+      "source": "蓝色大肥鱼_一切都好 2_2026-08-18-14-37-44.gif",
+      "seq": 2,
+      "tags": [
+        "一切都好",
+        "没问题",
+        "放心",
+        "稳了",
+        "跑通",
+        "通过"
+      ],
+      "aliases": [
+        "allgood",
+        "fine",
+        "ok",
+        "noproblem",
+        "works",
+        "all-good",
+        "all-good-2"
+      ],
+      "bytes": 650154,
+      "sha256": "1c0c61948aab54a98dfe5ee88da097dfd1935e0aa54bdaaaf6566036a0c6766d",
+      "w": 240,
+      "h": 240,
+      "frames": 79,
+      "fps": 50,
+      "durationMs": 1580,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 650154,
+        "step": 5
+      },
+      "thumb": "all-good-2.webp"
+    },
+    {
+      "id": "all-good-3",
+      "name": "一切都好",
+      "file": "all-good-3.webp",
+      "source": "蓝色大肥鱼_一切都好 3_2026-08-18-14-37-50.gif",
+      "seq": 3,
+      "tags": [
+        "一切都好",
+        "没问题",
+        "放心",
+        "稳了",
+        "跑通",
+        "通过"
+      ],
+      "aliases": [
+        "allgood",
+        "fine",
+        "ok",
+        "noproblem",
+        "works",
+        "all-good",
+        "all-good-3"
+      ],
+      "bytes": 658336,
+      "sha256": "8db3849eedcc71660f0aa53d8a35956098f711d73a1eb200c8486fa50eaa523c",
+      "w": 240,
+      "h": 240,
+      "frames": 79,
+      "fps": 50,
+      "durationMs": 1580,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 658336,
+        "step": 5
+      },
+      "thumb": "all-good-3.webp"
+    },
+    {
+      "id": "zhuyi",
+      "name": "主意",
+      "file": "zhuyi.webp",
+      "source": "蓝色大肥鱼_主意_2026-08-18-14-15-51.gif",
+      "seq": null,
+      "tags": [
+        "主意",
+        "灵光一闪",
+        "有办法了"
+      ],
+      "aliases": [
+        "idea",
+        "eureka",
+        "brainwave",
+        "zhuyi"
+      ],
+      "bytes": 708940,
+      "sha256": "f81448333dae82b7388ccdce5086be4b0d916091ce1cb8945ad5bfe3faa8c2ef",
+      "w": 280,
+      "h": 280,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 708940,
+        "step": 4
+      },
+      "thumb": "zhuyi.webp"
+    },
+    {
+      "id": "tingzhi-gongzuo",
+      "name": "停止工作",
+      "file": "tingzhi-gongzuo.webp",
+      "source": "蓝色大肥鱼_停止工作_2026-08-18-14-34-45.gif",
+      "seq": null,
+      "tags": [
+        "停止工作",
+        "下班",
+        "不干了",
+        "摆烂",
+        "收工",
+        "完工",
+        "下班了"
+      ],
+      "aliases": [
+        "stop",
+        "offwork",
+        "quit",
+        "done",
+        "tingzhi-gongzuo"
+      ],
+      "bytes": 700682,
+      "sha256": "b7b70bd07dfe8d9f168a7b10fa9a8b52cc6259e77edc78494d8382131e66c9d9",
+      "w": 280,
+      "h": 280,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 700682,
+        "step": 4
+      },
+      "thumb": "tingzhi-gongzuo.webp"
+    },
+    {
+      "id": "cuimian",
+      "name": "催眠",
+      "file": "cuimian.webp",
+      "source": "蓝色大肥鱼_催眠_2026-08-18-14-15-43.gif",
+      "seq": null,
+      "tags": [
+        "催眠",
+        "催眠",
+        "睡觉"
+      ],
+      "aliases": [
+        "hypnosis",
+        "sleep",
+        "focus",
+        "cuimian"
+      ],
+      "bytes": 677858,
+      "sha256": "96f19915aaa96f9ab62fc220de3cf5dc078e60b3d328e786a9e0af98b06452d1",
+      "w": 200,
+      "h": 200,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 677858,
+        "step": 6
+      },
+      "thumb": "cuimian.webp"
+    },
+    {
+      "id": "mojing-fanguang-pixel",
+      "name": "像素墨镜反光",
+      "file": "mojing-fanguang-pixel.webp",
+      "source": "蓝色大肥鱼_像素墨镜反光_2026-08-18-14-35-59.gif",
+      "seq": null,
+      "tags": [
+        "像素墨镜反光",
+        "像素墨镜",
+        "酷"
+      ],
+      "aliases": [
+        "sunglasses",
+        "pixel",
+        "cool",
+        "mojing-fanguang-pixel"
+      ],
+      "bytes": 701106,
+      "sha256": "148c23cb3ab30631826a16097521f64d2701ae8736b1a4bb723f21a4148f6f02",
+      "w": 280,
+      "h": 280,
+      "frames": 69,
+      "fps": 50,
+      "durationMs": 1380,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 701106,
+        "step": 4
+      },
+      "thumb": "mojing-fanguang-pixel.webp"
+    },
+    {
+      "id": "liuqi-dai",
+      "name": "六七(呆)",
+      "file": "liuqi-dai.webp",
+      "source": "蓝色大肥鱼_六七(呆)_2026-08-18-14-28-28.gif",
+      "seq": null,
+      "tags": [
+        "六七(呆)",
+        "67",
+        "发呆"
+      ],
+      "aliases": [
+        "67",
+        "blank",
+        "liuqi-dai"
+      ],
+      "bytes": 456008,
+      "sha256": "c5b83b31179cbe74c27eff47aaca84bbcef526be50357d5bc9855ef5f0ba7b7c",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 456008,
+        "step": 1
+      },
+      "thumb": "liuqi-dai.webp"
+    },
+    {
+      "id": "liuqi",
+      "name": "六七",
+      "file": "liuqi.webp",
+      "source": "蓝色大肥鱼_六七_2026-08-18-14-28-24.gif",
+      "seq": null,
+      "tags": [
+        "六七",
+        "67",
+        "六七"
+      ],
+      "aliases": [
+        "67",
+        "liuqi"
+      ],
+      "bytes": 454048,
+      "sha256": "0fb304c1be42976d54f16b2ea5a94beb083ac6ffe9a8e7a94580df50bb5b5791",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 454048,
+        "step": 1
+      },
+      "thumb": "liuqi.webp"
+    },
+    {
+      "id": "maopao-1",
+      "name": "冒泡",
+      "file": "maopao-1.webp",
+      "source": "蓝色大肥鱼_冒泡 1_2026-08-18-14-19-35.gif",
+      "seq": 1,
+      "tags": [
+        "冒泡",
+        "冒泡",
+        "出现",
+        "潜水"
+      ],
+      "aliases": [
+        "bubble",
+        "appear",
+        "lurk",
+        "maopao",
+        "maopao-1"
+      ],
+      "bytes": 441816,
+      "sha256": "c3aa04a2661c63fc43b3c822b7f0c866e835e28192cdfe56e45406e91bc45725",
+      "w": 320,
+      "h": 320,
+      "frames": 58,
+      "fps": 50,
+      "durationMs": 1160,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 441816,
+        "step": 1
+      },
+      "thumb": "maopao-1.webp"
+    },
+    {
+      "id": "maopao-2",
+      "name": "冒泡",
+      "file": "maopao-2.webp",
+      "source": "蓝色大肥鱼_冒泡 2_2026-08-18-14-19-43.gif",
+      "seq": 2,
+      "tags": [
+        "冒泡",
+        "冒泡",
+        "出现",
+        "潜水"
+      ],
+      "aliases": [
+        "bubble",
+        "appear",
+        "lurk",
+        "maopao",
+        "maopao-2"
+      ],
+      "bytes": 696066,
+      "sha256": "e098678c2b4312a9e43ee265bd1c4f1c304af1bbcc6725e3c5dc115ee7baf2dc",
+      "w": 280,
+      "h": 280,
+      "frames": 116,
+      "fps": 50,
+      "durationMs": 2320,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 696066,
+        "step": 4
+      },
+      "thumb": "maopao-2.webp"
+    },
+    {
+      "id": "dao-1",
+      "name": "刀",
+      "file": "dao-1.webp",
+      "source": "蓝色大肥鱼_刀 1_2026-08-18-14-16-13.gif",
+      "seq": 1,
+      "tags": [
+        "刀",
+        "菜刀",
+        "威胁"
+      ],
+      "aliases": [
+        "knife",
+        "threat",
+        "dao",
+        "dao-1"
+      ],
+      "bytes": 609420,
+      "sha256": "59358a2982d5755191a982b4dcaa844a74acd6c61c7f8d0af2785550e6c76510",
+      "w": 320,
+      "h": 320,
+      "frames": 57,
+      "fps": 50,
+      "durationMs": 1140,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 609420,
+        "step": 3
+      },
+      "thumb": "dao-1.webp"
+    },
+    {
+      "id": "dao-2",
+      "name": "刀",
+      "file": "dao-2.webp",
+      "source": "蓝色大肥鱼_刀 2_2026-08-18-14-16-18.gif",
+      "seq": 2,
+      "tags": [
+        "刀",
+        "菜刀",
+        "威胁"
+      ],
+      "aliases": [
+        "knife",
+        "threat",
+        "dao",
+        "dao-2"
+      ],
+      "bytes": 606938,
+      "sha256": "84e8225cdb7409ed47efa6da436de143707b4e6c66d2549cd06a8638709c5dcf",
+      "w": 320,
+      "h": 320,
+      "frames": 57,
+      "fps": 50,
+      "durationMs": 1140,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 606938,
+        "step": 3
+      },
+      "thumb": "dao-2.webp"
+    },
+    {
+      "id": "daoda-shaozi",
+      "name": "到达(拿勺子)",
+      "file": "daoda-shaozi.webp",
+      "source": "蓝色大肥鱼_到达(拿勺子)_2026-08-18-14-03-03.gif",
+      "seq": null,
+      "tags": [
+        "到达(拿勺子)",
+        "来吃饭",
+        "到了"
+      ],
+      "aliases": [
+        "arrive",
+        "spoon",
+        "eat",
+        "daoda-shaozi"
+      ],
+      "bytes": 643372,
+      "sha256": "79579bc92a4a8588f2e263df355455bfadcbc5643dfb447653e8f807c776f02d",
+      "w": 200,
+      "h": 200,
+      "frames": 109,
+      "fps": 50,
+      "durationMs": 2180,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 643372,
+        "step": 6
+      },
+      "thumb": "daoda-shaozi.webp"
+    },
+    {
+      "id": "daoda-kuaizi",
+      "name": "到达(拿筷子)",
+      "file": "daoda-kuaizi.webp",
+      "source": "蓝色大肥鱼_到达(拿筷子)_2026-08-18-14-02-54.gif",
+      "seq": null,
+      "tags": [
+        "到达(拿筷子)",
+        "来吃饭",
+        "到了"
+      ],
+      "aliases": [
+        "arrive",
+        "chopsticks",
+        "eat",
+        "daoda-kuaizi"
+      ],
+      "bytes": 644164,
+      "sha256": "6ee32437a6baaeee15dd6a61f6c6b19cbdd93740f9517b0e3b64434adb68061b",
+      "w": 200,
+      "h": 200,
+      "frames": 109,
+      "fps": 50,
+      "durationMs": 2180,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 644164,
+        "step": 6
+      },
+      "thumb": "daoda-kuaizi.webp"
+    },
+    {
+      "id": "daoda",
+      "name": "到达",
+      "file": "daoda.webp",
+      "source": "蓝色大肥鱼_到达_2026-08-18-14-02-26.gif",
+      "seq": null,
+      "tags": [
+        "到达",
+        "来了",
+        "到了"
+      ],
+      "aliases": [
+        "arrive",
+        "here",
+        "coming",
+        "daoda"
+      ],
+      "bytes": 577358,
+      "sha256": "dbe90fad52dc8a4bd5f3bce61c9154dfc9bef42650aa197b927336db3c70685f",
+      "w": 240,
+      "h": 240,
+      "frames": 80,
+      "fps": 50,
+      "durationMs": 1600,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 577358,
+        "step": 5
+      },
+      "thumb": "daoda.webp"
+    },
+    {
+      "id": "shuaka",
+      "name": "刷卡",
+      "file": "shuaka.webp",
+      "source": "蓝色大肥鱼_刷卡_2026-08-18-14-04-14.gif",
+      "seq": null,
+      "tags": [
+        "刷卡",
+        "付款",
+        "消费"
+      ],
+      "aliases": [
+        "pay",
+        "card",
+        "checkout",
+        "shuaka"
+      ],
+      "bytes": 641006,
+      "sha256": "0c611cb46d7f0326f946ccaf4b20677ec558bfb488f9032f1643d6ac9b7107fa",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 641006,
+        "step": 3
+      },
+      "thumb": "shuaka.webp"
+    },
+    {
+      "id": "jiayou",
+      "name": "加油",
+      "file": "jiayou.webp",
+      "source": "蓝色大肥鱼_加油_2026-08-18-14-05-09.gif",
+      "seq": null,
+      "tags": [
+        "加油",
+        "鼓励",
+        "打气"
+      ],
+      "aliases": [
+        "cheer",
+        "gogogo",
+        "fight",
+        "jiayou"
+      ],
+      "bytes": 675510,
+      "sha256": "4e71125b3c483031f64d329aaadbdb86e35f214fdb130f4c27cea9635f6c85b6",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 675510,
+        "step": 3
+      },
+      "thumb": "jiayou.webp"
+    },
+    {
+      "id": "dianzan-fan",
+      "name": "反向点赞",
+      "file": "dianzan-fan.webp",
+      "source": "蓝色大肥鱼_反向点赞_2026-08-18-14-38-00.gif",
+      "seq": null,
+      "tags": [
+        "反向点赞",
+        "差评",
+        "不赞",
+        "反对"
+      ],
+      "aliases": [
+        "dislike",
+        "thumbsdown",
+        "boo",
+        "nope",
+        "dianzan-fan"
+      ],
+      "bytes": 644264,
+      "sha256": "5f96b35a11d6878bbfc071eeb1b3acfcef686f0fb5902de0862606b3a8e634a4",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 644264,
+        "step": 3
+      },
+      "thumb": "dianzan-fan.webp"
+    },
+    {
+      "id": "fanzhuan",
+      "name": "反转",
+      "file": "fanzhuan.webp",
+      "source": "蓝色大肥鱼_反转_2026-08-18-14-26-21.gif",
+      "seq": null,
+      "tags": [
+        "反转",
+        "反转",
+        "翻盘"
+      ],
+      "aliases": [
+        "reverse",
+        "flip",
+        "plot-twist",
+        "fanzhuan"
+      ],
+      "bytes": 666102,
+      "sha256": "3e59cc2e795977c659dbdac60f6693267c17fd5d8e2624cc9ba9eda6435fbde4",
+      "w": 320,
+      "h": 320,
+      "frames": 55,
+      "fps": 50,
+      "durationMs": 1100,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 666102,
+        "step": 3
+      },
+      "thumb": "fanzhuan.webp"
+    },
+    {
+      "id": "tanhao",
+      "name": "叹号",
+      "file": "tanhao.webp",
+      "source": "蓝色大肥鱼_叹号_2026-08-18-14-12-08.gif",
+      "seq": null,
+      "tags": [
+        "叹号",
+        "感叹",
+        "重要"
+      ],
+      "aliases": [
+        "exclamation",
+        "important",
+        "alert",
+        "tanhao"
+      ],
+      "bytes": 685520,
+      "sha256": "1afe59b2314d2b776e8cee97a14f9df3e3b85324f1f9a9dd403a555bed947162",
+      "w": 280,
+      "h": 280,
+      "frames": 57,
+      "fps": 50,
+      "durationMs": 1140,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 685520,
+        "step": 4
+      },
+      "thumb": "tanhao.webp"
+    },
+    {
+      "id": "chi-baomihua",
+      "name": "吃(爆米花)",
+      "file": "chi-baomihua.webp",
+      "source": "蓝色大肥鱼_吃(爆米花)_2026-08-18-14-11-25.gif",
+      "seq": null,
+      "tags": [
+        "吃(爆米花)",
+        "吃瓜",
+        "看戏"
+      ],
+      "aliases": [
+        "popcorn",
+        "watch",
+        "drama",
+        "chi-baomihua"
+      ],
+      "bytes": 661742,
+      "sha256": "39ec3512459f2f81dae2540d18e7056f2b4507b2cf9396a29f6d6acbc501db9c",
+      "w": 240,
+      "h": 240,
+      "frames": 82,
+      "fps": 50,
+      "durationMs": 1640,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 661742,
+        "step": 5
+      },
+      "thumb": "chi-baomihua.webp"
+    },
+    {
+      "id": "chi-tiantianquan",
+      "name": "吃(甜甜圈)",
+      "file": "chi-tiantianquan.webp",
+      "source": "蓝色大肥鱼_吃(甜甜圈)_2026-08-18-14-11-06.gif",
+      "seq": null,
+      "tags": [
+        "吃(甜甜圈)",
+        "吃",
+        "甜食"
+      ],
+      "aliases": [
+        "donut",
+        "eat",
+        "snack",
+        "chi-tiantianquan"
+      ],
+      "bytes": 1223770,
+      "sha256": "ea03f6e55974328b3e1bf5a0fca4d86668396aace12c75e5ce9007c7006d2b24",
+      "w": 200,
+      "h": 200,
+      "frames": 199,
+      "fps": 50,
+      "durationMs": 3980,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 1223770,
+        "step": 6
+      },
+      "thumb": "chi-tiantianquan.webp"
+    },
+    {
+      "id": "chi-xigua",
+      "name": "吃(西瓜)",
+      "file": "chi-xigua.webp",
+      "source": "蓝色大肥鱼_吃(西瓜)_2026-08-18-14-11-30.gif",
+      "seq": null,
+      "tags": [
+        "吃(西瓜)",
+        "吃瓜",
+        "围观"
+      ],
+      "aliases": [
+        "watermelon",
+        "eat",
+        "drama",
+        "chi-xigua"
+      ],
+      "bytes": 131878,
+      "sha256": "8eafdd3865c9cc3fb4c3729ca82401eb446bb2b7a81dbf7ede299a708dcd1f6f",
+      "w": 320,
+      "h": 320,
+      "frames": 19,
+      "fps": 50,
+      "durationMs": 380,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 131878,
+        "step": 1
+      },
+      "thumb": "chi-xigua.webp"
+    },
+    {
+      "id": "jita",
+      "name": "吉他",
+      "file": "jita.webp",
+      "source": "蓝色大肥鱼_吉他_2026-08-18-14-14-50.gif",
+      "seq": null,
+      "tags": [
+        "吉他",
+        "弹吉他",
+        "音乐"
+      ],
+      "aliases": [
+        "guitar",
+        "music",
+        "jita"
+      ],
+      "bytes": 616810,
+      "sha256": "57f89b9a90f7975210fdf5f17f8a3f50f1040cecdc4746e104489c60c21e3187",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 616810,
+        "step": 5
+      },
+      "thumb": "jita.webp"
+    },
+    {
+      "id": "dai-1",
+      "name": "呆",
+      "file": "dai-1.webp",
+      "source": "蓝色大肥鱼_呆 1_2026-08-18-14-10-05.gif",
+      "seq": 1,
+      "tags": [
+        "呆",
+        "发呆",
+        "懵",
+        "无聊",
+        "发愣"
+      ],
+      "aliases": [
+        "blank",
+        "stare",
+        "dumb",
+        "bored",
+        "dai",
+        "dai-1"
+      ],
+      "bytes": 569426,
+      "sha256": "cea6ea783afa8fb1376e18798069e04f1a8bb932b6e7a71c7d0ab8750eb7068a",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 569426,
+        "step": 3
+      },
+      "thumb": "dai-1.webp"
+    },
+    {
+      "id": "dai-2",
+      "name": "呆",
+      "file": "dai-2.webp",
+      "source": "蓝色大肥鱼_呆 2_2026-08-18-14-10-11.gif",
+      "seq": 2,
+      "tags": [
+        "呆",
+        "发呆",
+        "懵",
+        "无聊",
+        "发愣"
+      ],
+      "aliases": [
+        "blank",
+        "stare",
+        "dumb",
+        "bored",
+        "dai",
+        "dai-2"
+      ],
+      "bytes": 580756,
+      "sha256": "8f27f5ddd7c31e2200eae569495ce6d4026101a69329dd60152ae8f38cab01a8",
+      "w": 320,
+      "h": 320,
+      "frames": 63,
+      "fps": 50,
+      "durationMs": 1260,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 580756,
+        "step": 3
+      },
+      "thumb": "dai-2.webp"
+    },
+    {
+      "id": "dai-3",
+      "name": "呆",
+      "file": "dai-3.webp",
+      "source": "蓝色大肥鱼_呆 3_2026-08-18-14-10-18.gif",
+      "seq": 3,
+      "tags": [
+        "呆",
+        "发呆",
+        "懵",
+        "无聊",
+        "发愣"
+      ],
+      "aliases": [
+        "blank",
+        "stare",
+        "dumb",
+        "bored",
+        "dai",
+        "dai-3"
+      ],
+      "bytes": 619372,
+      "sha256": "cce1ad4c0abb740d78e2358484796bcfe32e0cef6af927cdf1f309d82a2471f0",
+      "w": 240,
+      "h": 240,
+      "frames": 85,
+      "fps": 50,
+      "durationMs": 1700,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 619372,
+        "step": 5
+      },
+      "thumb": "dai-3.webp"
+    },
+    {
+      "id": "dai-tiezhi-1",
+      "name": "呆(贴纸)",
+      "file": "dai-tiezhi-1.webp",
+      "source": "蓝色大肥鱼_呆(贴纸) 1_2026-08-18-14-10-26.gif",
+      "seq": 1,
+      "tags": [
+        "呆(贴纸)",
+        "贴纸",
+        "发呆"
+      ],
+      "aliases": [
+        "sticker",
+        "blank",
+        "dai-tiezhi",
+        "dai-tiezhi-1"
+      ],
+      "bytes": 607996,
+      "sha256": "37c7c99ab1c269423b0811563e68a5582e2a143dfdc0991184c077a7881f704c",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 607996,
+        "step": 3
+      },
+      "thumb": "dai-tiezhi-1.webp"
+    },
+    {
+      "id": "dai-tiezhi-2",
+      "name": "呆(贴纸)",
+      "file": "dai-tiezhi-2.webp",
+      "source": "蓝色大肥鱼_呆(贴纸) 2_2026-08-18-14-10-34.gif",
+      "seq": 2,
+      "tags": [
+        "呆(贴纸)",
+        "贴纸",
+        "发呆"
+      ],
+      "aliases": [
+        "sticker",
+        "blank",
+        "dai-tiezhi",
+        "dai-tiezhi-2"
+      ],
+      "bytes": 627830,
+      "sha256": "e03b4941c503796968ca1006702ae3de6a3282e968077d8cff5b2e5656b59443",
+      "w": 320,
+      "h": 320,
+      "frames": 63,
+      "fps": 50,
+      "durationMs": 1260,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 627830,
+        "step": 3
+      },
+      "thumb": "dai-tiezhi-2.webp"
+    },
+    {
+      "id": "dai-tiezhi-3",
+      "name": "呆(贴纸)",
+      "file": "dai-tiezhi-3.webp",
+      "source": "蓝色大肥鱼_呆(贴纸) 3_2026-08-18-14-10-39.gif",
+      "seq": 3,
+      "tags": [
+        "呆(贴纸)",
+        "贴纸",
+        "发呆"
+      ],
+      "aliases": [
+        "sticker",
+        "blank",
+        "dai-tiezhi",
+        "dai-tiezhi-3"
+      ],
+      "bytes": 662228,
+      "sha256": "ccd0e3171225ac5cbffe164614b3d5106e3c60e0f724dd6368508435701bd68f",
+      "w": 240,
+      "h": 240,
+      "frames": 85,
+      "fps": 50,
+      "durationMs": 1700,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 662228,
+        "step": 5
+      },
+      "thumb": "dai-tiezhi-3.webp"
+    },
+    {
+      "id": "ku-1",
+      "name": "哭",
+      "file": "ku-1.webp",
+      "source": "蓝色大肥鱼_哭 1_2026-08-18-14-07-00.gif",
+      "seq": 1,
+      "tags": [
+        "哭",
+        "难过",
+        "委屈",
+        "眼泪"
+      ],
+      "aliases": [
+        "cry",
+        "sad",
+        "tears",
+        "sob",
+        "ku",
+        "ku-1"
+      ],
+      "bytes": 771916,
+      "sha256": "6f6b4f3675a18d13673060f96240714cd40dbb4133d3d214488b6a3d1e9d811b",
+      "w": 200,
+      "h": 200,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 771916,
+        "step": 6
+      },
+      "thumb": "ku-1.webp"
+    },
+    {
+      "id": "ku-2",
+      "name": "哭",
+      "file": "ku-2.webp",
+      "source": "蓝色大肥鱼_哭 2_2026-08-18-14-07-19.gif",
+      "seq": 2,
+      "tags": [
+        "哭",
+        "难过",
+        "委屈",
+        "眼泪"
+      ],
+      "aliases": [
+        "cry",
+        "sad",
+        "tears",
+        "sob",
+        "ku",
+        "ku-2"
+      ],
+      "bytes": 702680,
+      "sha256": "7450b8dbd2120e8944a3258ac981397d2fe664ef3dd11b2df9eaa8cc9d644425",
+      "w": 240,
+      "h": 240,
+      "frames": 97,
+      "fps": 50,
+      "durationMs": 1940,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 702680,
+        "step": 5
+      },
+      "thumb": "ku-2.webp"
+    },
+    {
+      "id": "ku-3",
+      "name": "哭",
+      "file": "ku-3.webp",
+      "source": "蓝色大肥鱼_哭 3_2026-08-18-14-07-23.gif",
+      "seq": 3,
+      "tags": [
+        "哭",
+        "难过",
+        "委屈",
+        "眼泪"
+      ],
+      "aliases": [
+        "cry",
+        "sad",
+        "tears",
+        "sob",
+        "ku",
+        "ku-3"
+      ],
+      "bytes": 400426,
+      "sha256": "069fdc6c333b5e54a17379d8ce3e31226259007f53b160f00ba405d7df36d484",
+      "w": 320,
+      "h": 320,
+      "frames": 26,
+      "fps": 50,
+      "durationMs": 520,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 400426,
+        "step": 1
+      },
+      "thumb": "ku-3.webp"
+    },
+    {
+      "id": "changge",
+      "name": "唱歌",
+      "file": "changge.webp",
+      "source": "蓝色大肥鱼_唱歌_2026-08-18-14-28-11.gif",
+      "seq": null,
+      "tags": [
+        "唱歌",
+        "唱歌",
+        "K歌"
+      ],
+      "aliases": [
+        "sing",
+        "song",
+        "karaoke",
+        "changge"
+      ],
+      "bytes": 629424,
+      "sha256": "2899a825c53b9c998151c80d9c0269468097f3f94bd75645b92ff31d0beaaea0",
+      "w": 280,
+      "h": 280,
+      "frames": 59,
+      "fps": 50,
+      "durationMs": 1180,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 629424,
+        "step": 4
+      },
+      "thumb": "changge.webp"
+    },
+    {
+      "id": "he-yinliao",
+      "name": "喝(饮料杯)",
+      "file": "he-yinliao.webp",
+      "source": "蓝色大肥鱼_喝(饮料杯)_2026-08-18-14-08-52.gif",
+      "seq": null,
+      "tags": [
+        "喝(饮料杯)",
+        "喝饮料",
+        "奶茶"
+      ],
+      "aliases": [
+        "drink",
+        "juice",
+        "coffee",
+        "he-yinliao"
+      ],
+      "bytes": 511336,
+      "sha256": "c722bb646d7929dcee31a922d9cddf6508914175beecf9921a0bc66b9068347b",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 511336,
+        "step": 1
+      },
+      "thumb": "he-yinliao.webp"
+    },
+    {
+      "id": "penji",
+      "name": "喷剂",
+      "file": "penji.webp",
+      "source": "蓝色大肥鱼_喷剂_2026-08-18-14-29-52.gif",
+      "seq": null,
+      "tags": [
+        "喷剂",
+        "喷雾",
+        "驱散"
+      ],
+      "aliases": [
+        "spray",
+        "repel",
+        "penji"
+      ],
+      "bytes": 600092,
+      "sha256": "1cf82551700b3659c43c6abb8679d22e35b5355892e54df118f8efd44a2a60d8",
+      "w": 240,
+      "h": 240,
+      "frames": 69,
+      "fps": 50,
+      "durationMs": 1380,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 600092,
+        "step": 5
+      },
+      "thumb": "penji.webp"
+    },
+    {
+      "id": "zuolao-1",
+      "name": "坐牢",
+      "file": "zuolao-1.webp",
+      "source": "蓝色大肥鱼_坐牢 1_2026-08-18-14-16-02.gif",
+      "seq": 1,
+      "tags": [
+        "坐牢",
+        "难受",
+        "被困",
+        "加班"
+      ],
+      "aliases": [
+        "jail",
+        "trapped",
+        "grind",
+        "zuolao",
+        "zuolao-1"
+      ],
+      "bytes": 523260,
+      "sha256": "9911fc2989e3eab200f91961c26dfa031af710cb80cf816c189c9d2a057d5411",
+      "w": 320,
+      "h": 320,
+      "frames": 62,
+      "fps": 50,
+      "durationMs": 1240,
+      "encode": {
+        "size": 320,
+        "quality": 50,
+        "bytes": 523260,
+        "step": 2
+      },
+      "thumb": "zuolao-1.webp"
+    },
+    {
+      "id": "zuolao-2",
+      "name": "坐牢",
+      "file": "zuolao-2.webp",
+      "source": "蓝色大肥鱼_坐牢 2_2026-08-18-14-16-04.gif",
+      "seq": 2,
+      "tags": [
+        "坐牢",
+        "难受",
+        "被困",
+        "加班"
+      ],
+      "aliases": [
+        "jail",
+        "trapped",
+        "grind",
+        "zuolao",
+        "zuolao-2"
+      ],
+      "bytes": 44432,
+      "sha256": "88bfa6190167e7e3209a80d857eca6e5cfb5742013532b9b0d41df0ad1a474ee",
+      "w": 320,
+      "h": 320,
+      "frames": 9,
+      "fps": 50,
+      "durationMs": 180,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 44432,
+        "step": 1
+      },
+      "thumb": "zuolao-2.webp"
+    },
+    {
+      "id": "lajitong",
+      "name": "垃圾桶",
+      "file": "lajitong.webp",
+      "source": "蓝色大肥鱼_垃圾桶_2026-08-18-14-38-13.gif",
+      "seq": null,
+      "tags": [
+        "垃圾桶",
+        "扔掉",
+        "垃圾"
+      ],
+      "aliases": [
+        "trash",
+        "bin",
+        "delete",
+        "lajitong"
+      ],
+      "bytes": 38662,
+      "sha256": "ce899bf6117e38e744e4b46aaafe6f70d81e9cf8020b5d05b166316e4e16af20",
+      "w": 320,
+      "h": 320,
+      "frames": 9,
+      "fps": 50,
+      "durationMs": 180,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 38662,
+        "step": 1
+      },
+      "thumb": "lajitong.webp"
+    },
+    {
+      "id": "mojing-fanguang",
+      "name": "墨镜反光",
+      "file": "mojing-fanguang.webp",
+      "source": "蓝色大肥鱼_墨镜反光_2026-08-18-14-35-45.gif",
+      "seq": null,
+      "tags": [
+        "墨镜反光",
+        "墨镜",
+        "帅",
+        "酷",
+        "得意",
+        "得瑟",
+        "自信"
+      ],
+      "aliases": [
+        "sunglasses",
+        "cool",
+        "shine",
+        "smug",
+        "mojing-fanguang"
+      ],
+      "bytes": 692554,
+      "sha256": "5ad2068d055fe20730680e8ae8e7018e3c59747f7ed1f586376b12ea42ca87c3",
+      "w": 280,
+      "h": 280,
+      "frames": 69,
+      "fps": 50,
+      "durationMs": 1380,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 692554,
+        "step": 4
+      },
+      "thumb": "mojing-fanguang.webp"
+    },
+    {
+      "id": "mojing-xunhuan",
+      "name": "墨镜循环",
+      "file": "mojing-xunhuan.webp",
+      "source": "蓝色大肥鱼_墨镜循环_2026-08-18-14-35-52.gif",
+      "seq": null,
+      "tags": [
+        "墨镜循环",
+        "墨镜",
+        "循环"
+      ],
+      "aliases": [
+        "sunglasses",
+        "loop",
+        "cool",
+        "mojing-xunhuan"
+      ],
+      "bytes": 696046,
+      "sha256": "4b30d39aa7248f4be6391c58cce62b1070ed73b361335c868ac30f36c54c6087",
+      "w": 280,
+      "h": 280,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 696046,
+        "step": 4
+      },
+      "thumb": "mojing-xunhuan.webp"
+    },
+    {
+      "id": "fuhuojie",
+      "name": "复活节",
+      "file": "fuhuojie.webp",
+      "source": "蓝色大肥鱼_复活节_2026-08-18-14-10-52.gif",
+      "seq": null,
+      "tags": [
+        "复活节",
+        "彩蛋",
+        "节日"
+      ],
+      "aliases": [
+        "easter",
+        "egg",
+        "fuhuojie"
+      ],
+      "bytes": 667840,
+      "sha256": "1d541c9c675d3962c1128ae12b12ec00ac63ddd17fc61d77a32197af53f659ad",
+      "w": 280,
+      "h": 280,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 667840,
+        "step": 4
+      },
+      "thumb": "fuhuojie.webp"
+    },
+    {
+      "id": "touyun",
+      "name": "头晕",
+      "file": "touyun.webp",
+      "source": "蓝色大肥鱼_头晕_2026-08-18-14-08-36.gif",
+      "seq": null,
+      "tags": [
+        "头晕",
+        "晕",
+        "绕晕",
+        "懵"
+      ],
+      "aliases": [
+        "dizzy",
+        "confused",
+        "spinning",
+        "touyun"
+      ],
+      "bytes": 614314,
+      "sha256": "dea57f7571bd8d54194f96e8463dd7ead926ba162295cd2e4c298e36ebfe8a08",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 614314,
+        "step": 5
+      },
+      "thumb": "touyun.webp"
+    },
+    {
+      "id": "nailao-hulian",
+      "name": "奶酪糊脸",
+      "file": "nailao-hulian.webp",
+      "source": "蓝色大肥鱼_奶酪糊脸_2026-08-18-14-05-39.gif",
+      "seq": null,
+      "tags": [
+        "奶酪糊脸",
+        "翻车",
+        "糊脸"
+      ],
+      "aliases": [
+        "fail",
+        "pie",
+        "facepalm",
+        "nailao-hulian"
+      ],
+      "bytes": 529228,
+      "sha256": "4accabebf0e582e5206c3748c04ad23cd7e326f69dd31c6409f7af5f042c7d48",
+      "w": 320,
+      "h": 320,
+      "frames": 51,
+      "fps": 50,
+      "durationMs": 1020,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 529228,
+        "step": 3
+      },
+      "thumb": "nailao-hulian.webp"
+    },
+    {
+      "id": "haipa-1",
+      "name": "害怕",
+      "file": "haipa-1.webp",
+      "source": "蓝色大肥鱼_害怕 1_2026-08-18-14-26-34.gif",
+      "seq": 1,
+      "tags": [
+        "害怕",
+        "恐惧",
+        "吓到",
+        "发抖"
+      ],
+      "aliases": [
+        "fear",
+        "scared",
+        "afraid",
+        "horror",
+        "haipa",
+        "haipa-1"
+      ],
+      "bytes": 122294,
+      "sha256": "362ab906c19e64cc2d76fa827aaf6c1fc8fe4bdc515a342ac93d2072a2785e4f",
+      "w": 320,
+      "h": 320,
+      "frames": 9,
+      "fps": 50,
+      "durationMs": 180,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 122294,
+        "step": 1
+      },
+      "thumb": "haipa-1.webp"
+    },
+    {
+      "id": "haipa-2",
+      "name": "害怕",
+      "file": "haipa-2.webp",
+      "source": "蓝色大肥鱼_害怕 2_2026-08-18-14-26-44.gif",
+      "seq": 2,
+      "tags": [
+        "害怕",
+        "恐惧",
+        "吓到",
+        "发抖"
+      ],
+      "aliases": [
+        "fear",
+        "scared",
+        "afraid",
+        "horror",
+        "haipa",
+        "haipa-2"
+      ],
+      "bytes": 122718,
+      "sha256": "2a2bd88890b18bfe3a7e8a5e64e020a28fffc91e90d8e1a25ee2d6cfabb21b79",
+      "w": 320,
+      "h": 320,
+      "frames": 9,
+      "fps": 50,
+      "durationMs": 180,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 122718,
+        "step": 1
+      },
+      "thumb": "haipa-2.webp"
+    },
+    {
+      "id": "haixiu-1",
+      "name": "害羞",
+      "file": "haixiu-1.webp",
+      "source": "蓝色大肥鱼_害羞 1_2026-08-18-14-27-24.gif",
+      "seq": 1,
+      "tags": [
+        "害羞",
+        "脸红",
+        "不好意思",
+        "扭捏"
+      ],
+      "aliases": [
+        "shy",
+        "blush",
+        "embarrassed",
+        "haixiu",
+        "haixiu-1"
+      ],
+      "bytes": 587546,
+      "sha256": "596ec40d538c98d9ab0f34628dd91586f09120bf67ca1bf76b148716198829ac",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 587546,
+        "step": 3
+      },
+      "thumb": "haixiu-1.webp"
+    },
+    {
+      "id": "haixiu-2",
+      "name": "害羞",
+      "file": "haixiu-2.webp",
+      "source": "蓝色大肥鱼_害羞 2_2026-08-18-14-27-35.gif",
+      "seq": 2,
+      "tags": [
+        "害羞",
+        "脸红",
+        "不好意思",
+        "扭捏"
+      ],
+      "aliases": [
+        "shy",
+        "blush",
+        "embarrassed",
+        "haixiu",
+        "haixiu-2"
+      ],
+      "bytes": 609144,
+      "sha256": "7793da6cde85504b32be78b0bea1e066ad6beb0a6504511fff72b6657a4c943c",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 609144,
+        "step": 3
+      },
+      "thumb": "haixiu-2.webp"
+    },
+    {
+      "id": "xiaochou-1",
+      "name": "小丑",
+      "file": "xiaochou-1.webp",
+      "source": "蓝色大肥鱼_小丑 1_2026-08-18-14-05-49.gif",
+      "seq": 1,
+      "tags": [
+        "小丑",
+        "尴尬",
+        "自作自受",
+        "打脸"
+      ],
+      "aliases": [
+        "clown",
+        "joker",
+        "cringe",
+        "selfown",
+        "xiaochou",
+        "xiaochou-1"
+      ],
+      "bytes": 710832,
+      "sha256": "3c971d9a241d4060953607a28ee4c628c6e49cb53ed1ed6ed5c3a7c865fc0f3c",
+      "w": 240,
+      "h": 240,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 710832,
+        "step": 5
+      },
+      "thumb": "xiaochou-1.webp"
+    },
+    {
+      "id": "xiaochou-2",
+      "name": "小丑",
+      "file": "xiaochou-2.webp",
+      "source": "蓝色大肥鱼_小丑 2_2026-08-18-14-05-56.gif",
+      "seq": 2,
+      "tags": [
+        "小丑",
+        "尴尬",
+        "自作自受",
+        "打脸"
+      ],
+      "aliases": [
+        "clown",
+        "joker",
+        "cringe",
+        "selfown",
+        "xiaochou",
+        "xiaochou-2"
+      ],
+      "bytes": 585722,
+      "sha256": "d740952f0e5874c531bfc604001d4fa24c89d3aacfe9ec21aab2d2c1bb2d4b4f",
+      "w": 200,
+      "h": 200,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 585722,
+        "step": 6
+      },
+      "thumb": "xiaochou-2.webp"
+    },
+    {
+      "id": "gongzuo-xiaoshui",
+      "name": "工作(小睡)",
+      "file": "gongzuo-xiaoshui.webp",
+      "source": "蓝色大肥鱼_工作(小睡)_2026-08-18-14-39-08.gif",
+      "seq": null,
+      "tags": [
+        "工作(小睡)",
+        "摸鱼",
+        "打盹",
+        "划水"
+      ],
+      "aliases": [
+        "work",
+        "nap",
+        "slack",
+        "idle",
+        "gongzuo-xiaoshui"
+      ],
+      "bytes": 714854,
+      "sha256": "0b7836086d3232a0a656c391f5728d62a145e3859c5b8358adddd580a8ba11e2",
+      "w": 240,
+      "h": 240,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 714854,
+        "step": 5
+      },
+      "thumb": "gongzuo-xiaoshui.webp"
+    },
+    {
+      "id": "gongzuo",
+      "name": "工作(普通)",
+      "file": "gongzuo.webp",
+      "source": "蓝色大肥鱼_工作(普通)_2026-08-18-14-39-12.gif",
+      "seq": null,
+      "tags": [
+        "工作(普通)",
+        "上班",
+        "干活"
+      ],
+      "aliases": [
+        "work",
+        "coding",
+        "busy",
+        "gongzuo"
+      ],
+      "bytes": 394282,
+      "sha256": "0a316d8fa33704e248847fecc62da540064a2ce0e8941747dad1b58d714befe3",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 394282,
+        "step": 1
+      },
+      "thumb": "gongzuo.webp"
+    },
+    {
+      "id": "gongzuo-shengqi",
+      "name": "工作(生气)",
+      "file": "gongzuo-shengqi.webp",
+      "source": "蓝色大肥鱼_工作(生气)_2026-08-18-14-38-57.gif",
+      "seq": null,
+      "tags": [
+        "工作(生气)",
+        "上班气",
+        "暴躁"
+      ],
+      "aliases": [
+        "work",
+        "angry",
+        "gongzuo-shengqi"
+      ],
+      "bytes": 581420,
+      "sha256": "445d64257d8e7a2dfd1792f2d027016d45400daac7492fd7b053b8c9545d6cbf",
+      "w": 200,
+      "h": 200,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 581420,
+        "step": 6
+      },
+      "thumb": "gongzuo-shengqi.webp"
+    },
+    {
+      "id": "gongzuo-pijuan",
+      "name": "工作(疲倦)",
+      "file": "gongzuo-pijuan.webp",
+      "source": "蓝色大肥鱼_工作(疲倦)_2026-08-18-14-39-19.gif",
+      "seq": null,
+      "tags": [
+        "工作(疲倦)",
+        "累",
+        "疲惫",
+        "加班"
+      ],
+      "aliases": [
+        "work",
+        "tired",
+        "exhausted",
+        "gongzuo-pijuan"
+      ],
+      "bytes": 569600,
+      "sha256": "9e6321472d51a7e46edd7c28b3328cdde89aa182594a18453ee15761e7c3eabe",
+      "w": 200,
+      "h": 200,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 569600,
+        "step": 6
+      },
+      "thumb": "gongzuo-pijuan.webp"
+    },
+    {
+      "id": "daixin-lashi-hard",
+      "name": "带薪拉屎(困难模式)",
+      "file": "daixin-lashi-hard.webp",
+      "source": "蓝色大肥鱼_带薪拉屎(困难模式)_2026-08-18-14-23-38.gif",
+      "seq": null,
+      "tags": [
+        "带薪拉屎(困难模式)",
+        "摸鱼",
+        "带薪拉屎"
+      ],
+      "aliases": [
+        "slack",
+        "paidpoop",
+        "hard",
+        "daixin-lashi-hard"
+      ],
+      "bytes": 680282,
+      "sha256": "61a7faa571c2052cea2de6c8d47d0238db1f0fcbd859b81edb7bd16be3e8101a",
+      "w": 200,
+      "h": 200,
+      "frames": 107,
+      "fps": 50,
+      "durationMs": 2140,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 680282,
+        "step": 6
+      },
+      "thumb": "daixin-lashi-hard.webp"
+    },
+    {
+      "id": "daixin-lashi-easy",
+      "name": "带薪拉屎(简单模式)",
+      "file": "daixin-lashi-easy.webp",
+      "source": "蓝色大肥鱼_带薪拉屎(简单模式)_2026-08-18-14-23-31.gif",
+      "seq": null,
+      "tags": [
+        "带薪拉屎(简单模式)",
+        "摸鱼",
+        "带薪拉屎"
+      ],
+      "aliases": [
+        "slack",
+        "paidpoop",
+        "easy",
+        "daixin-lashi-easy"
+      ],
+      "bytes": 671562,
+      "sha256": "24d7aa0a187388254d5ba14a59d941b4131e738fb7be591ba52c6334ed18b619",
+      "w": 280,
+      "h": 280,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 671562,
+        "step": 4
+      },
+      "thumb": "daixin-lashi-easy.webp"
+    },
+    {
+      "id": "ganbei",
+      "name": "干杯",
+      "file": "ganbei.webp",
+      "source": "蓝色大肥鱼_干杯_2026-08-18-14-05-31.gif",
+      "seq": null,
+      "tags": [
+        "干杯",
+        "喝酒",
+        "聚会",
+        "合作"
+      ],
+      "aliases": [
+        "cheers",
+        "toast",
+        "drink",
+        "ganbei"
+      ],
+      "bytes": 702766,
+      "sha256": "0c83598ad90e35320427b8c9342f7f0308edf63c4d09947f4183c260e5df0210",
+      "w": 280,
+      "h": 280,
+      "frames": 65,
+      "fps": 50,
+      "durationMs": 1300,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 702766,
+        "step": 4
+      },
+      "thumb": "ganbei.webp"
+    },
+    {
+      "id": "qingzhu",
+      "name": "庆祝",
+      "file": "qingzhu.webp",
+      "source": "蓝色大肥鱼_庆祝_2026-08-18-14-04-58.gif",
+      "seq": null,
+      "tags": [
+        "庆祝",
+        "成功",
+        "撒花",
+        "搞定",
+        "完成",
+        "收工",
+        "完工"
+      ],
+      "aliases": [
+        "celebrate",
+        "success",
+        "done",
+        "ship",
+        "finished",
+        "qingzhu"
+      ],
+      "bytes": 643662,
+      "sha256": "4eeb391ba43e61ba4ba95ccbe58fcb5f5855faa0adfcab5e91d97773b30afb9f",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 643662,
+        "step": 5
+      },
+      "thumb": "qingzhu.webp"
+    },
+    {
+      "id": "defen-0",
+      "name": "得分(0分)",
+      "file": "defen-0.webp",
+      "source": "蓝色大肥鱼_得分(0分)_2026-08-18-14-26-51.gif",
+      "seq": null,
+      "tags": [
+        "得分(0分)",
+        "零分",
+        "失败",
+        "翻车"
+      ],
+      "aliases": [
+        "score",
+        "zero",
+        "fail",
+        "defen-0"
+      ],
+      "bytes": 680438,
+      "sha256": "60c33200edc32b1fe675e31c098927837db7a4df529c49021bf6411fc77d0151",
+      "w": 240,
+      "h": 240,
+      "frames": 97,
+      "fps": 50,
+      "durationMs": 1940,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 680438,
+        "step": 5
+      },
+      "thumb": "defen-0.webp"
+    },
+    {
+      "id": "defen-10",
+      "name": "得分(10分)",
+      "file": "defen-10.webp",
+      "source": "蓝色大肥鱼_得分(10分)_2026-08-18-14-27-16.gif",
+      "seq": null,
+      "tags": [
+        "得分(10分)",
+        "满分",
+        "成功"
+      ],
+      "aliases": [
+        "score",
+        "perfect",
+        "win",
+        "defen-10"
+      ],
+      "bytes": 681770,
+      "sha256": "b82c1402a1a7e233894b79bc3f668ea7800371ccd5b344d96d96b50a572f204e",
+      "w": 240,
+      "h": 240,
+      "frames": 97,
+      "fps": 50,
+      "durationMs": 1940,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 681770,
+        "step": 5
+      },
+      "thumb": "defen-10.webp"
+    },
+    {
+      "id": "sikao-zixin",
+      "name": "思考(自信地)",
+      "file": "sikao-zixin.webp",
+      "source": "蓝色大肥鱼_思考(自信地)_2026-08-18-14-37-20.gif",
+      "seq": null,
+      "tags": [
+        "思考(自信地)",
+        "自信",
+        "想通了"
+      ],
+      "aliases": [
+        "think",
+        "confident",
+        "sure",
+        "sikao-zixin"
+      ],
+      "bytes": 607810,
+      "sha256": "258b46f74d75de22512d917813d2ce97b762315cee688f556f8904ff0c16c3b4",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 607810,
+        "step": 3
+      },
+      "thumb": "sikao-zixin.webp"
+    },
+    {
+      "id": "sikao-renzhen",
+      "name": "思考(认真地)",
+      "file": "sikao-renzhen.webp",
+      "source": "蓝色大肥鱼_思考(认真地)_2026-08-18-14-37-25.gif",
+      "seq": null,
+      "tags": [
+        "思考(认真地)",
+        "认真思考",
+        "分析"
+      ],
+      "aliases": [
+        "think",
+        "serious",
+        "analyze",
+        "sikao-renzhen"
+      ],
+      "bytes": 637910,
+      "sha256": "c7217db67348d98d5f246cacd76eaf61b1d3661ad6d199c8e5bf8f8cc6eda384",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 637910,
+        "step": 3
+      },
+      "thumb": "sikao-renzhen.webp"
+    },
+    {
+      "id": "qingshu",
+      "name": "情书",
+      "file": "qingshu.webp",
+      "source": "蓝色大肥鱼_情书_2026-08-18-14-19-12.gif",
+      "seq": null,
+      "tags": [
+        "情书",
+        "表白",
+        "信"
+      ],
+      "aliases": [
+        "loveletter",
+        "letter",
+        "confession",
+        "qingshu"
+      ],
+      "bytes": 707418,
+      "sha256": "cb9e1b51c2bee5ed80736572dcc15d023c009d9a9741180a92da4d71f082db03",
+      "w": 320,
+      "h": 320,
+      "frames": 60,
+      "fps": 50,
+      "durationMs": 1200,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 707418,
+        "step": 3
+      },
+      "thumb": "qingshu.webp"
+    },
+    {
+      "id": "jingxia",
+      "name": "惊吓",
+      "file": "jingxia.webp",
+      "source": "蓝色大肥鱼_惊吓_2026-08-18-14-36-14.gif",
+      "seq": null,
+      "tags": [
+        "惊吓",
+        "震惊",
+        "吓一跳"
+      ],
+      "aliases": [
+        "shock",
+        "startled",
+        "surprise",
+        "jingxia"
+      ],
+      "bytes": 624220,
+      "sha256": "dad1e96da0f38f57bf94f4aa0b758068242b332b34f25e66d7c70dce6d663535",
+      "w": 280,
+      "h": 280,
+      "frames": 57,
+      "fps": 50,
+      "durationMs": 1140,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 624220,
+        "step": 4
+      },
+      "thumb": "jingxia.webp"
+    },
+    {
+      "id": "dazi-naonu",
+      "name": "打字(恼怒)",
+      "file": "dazi-naonu.webp",
+      "source": "蓝色大肥鱼_打字(恼怒)_2026-08-18-14-38-27.gif",
+      "seq": null,
+      "tags": [
+        "打字(恼怒)",
+        "恼怒打字",
+        "暴躁"
+      ],
+      "aliases": [
+        "typing",
+        "annoyed",
+        "dazi-naonu"
+      ],
+      "bytes": 199738,
+      "sha256": "241c329a9fe4a2c99db45319ffa8e871b7757e807da38c2956ca3e08e8cd0289",
+      "w": 320,
+      "h": 320,
+      "frames": 16,
+      "fps": 50,
+      "durationMs": 320,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 199738,
+        "step": 1
+      },
+      "thumb": "dazi-naonu.webp"
+    },
+    {
+      "id": "dazi",
+      "name": "打字(普通)",
+      "file": "dazi.webp",
+      "source": "蓝色大肥鱼_打字(普通)_2026-08-18-14-38-34.gif",
+      "seq": null,
+      "tags": [
+        "打字(普通)",
+        "打字中",
+        "输出中"
+      ],
+      "aliases": [
+        "typing",
+        "writing",
+        "dazi"
+      ],
+      "bytes": 532398,
+      "sha256": "48f604f5ed66e0002938de647e13898d379f4953d83a49f57429f0d56b4579f5",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 532398,
+        "step": 3
+      },
+      "thumb": "dazi.webp"
+    },
+    {
+      "id": "dazi-shengqi",
+      "name": "打字(生气)",
+      "file": "dazi-shengqi.webp",
+      "source": "蓝色大肥鱼_打字(生气)_2026-08-18-14-38-24.gif",
+      "seq": null,
+      "tags": [
+        "打字(生气)",
+        "生气打字",
+        "狂敲"
+      ],
+      "aliases": [
+        "typing",
+        "angry",
+        "rant",
+        "dazi-shengqi"
+      ],
+      "bytes": 212516,
+      "sha256": "10e855ed0c6415624e168b05f039a7cf7b0820c279876da4d05a62276978db3d",
+      "w": 320,
+      "h": 320,
+      "frames": 16,
+      "fps": 50,
+      "durationMs": 320,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 212516,
+        "step": 1
+      },
+      "thumb": "dazi-shengqi.webp"
+    },
+    {
+      "id": "dazhaohu-1",
+      "name": "打招呼",
+      "file": "dazhaohu-1.webp",
+      "source": "蓝色大肥鱼_打招呼 1_2026-08-18-14-14-29.gif",
+      "seq": 1,
+      "tags": [
+        "打招呼",
+        "你好",
+        "招手",
+        "hi"
+      ],
+      "aliases": [
+        "hello",
+        "hi",
+        "wave",
+        "greet",
+        "dazhaohu",
+        "dazhaohu-1"
+      ],
+      "bytes": 659368,
+      "sha256": "7f8fbc43f49c68ecefc1509605d85eb918f33f53a609004a8daff80847eb4ecb",
+      "w": 240,
+      "h": 240,
+      "frames": 116,
+      "fps": 50,
+      "durationMs": 2320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 659368,
+        "step": 5
+      },
+      "thumb": "dazhaohu-1.webp"
+    },
+    {
+      "id": "dazhaohu-2",
+      "name": "打招呼",
+      "file": "dazhaohu-2.webp",
+      "source": "蓝色大肥鱼_打招呼 2_2026-08-18-14-14-35.gif",
+      "seq": 2,
+      "tags": [
+        "打招呼",
+        "你好",
+        "招手",
+        "hi"
+      ],
+      "aliases": [
+        "hello",
+        "hi",
+        "wave",
+        "greet",
+        "dazhaohu",
+        "dazhaohu-2"
+      ],
+      "bytes": 525732,
+      "sha256": "6b673d4d556610855f5e35e914b328bf7072957687de75e1a4282c2b023be29c",
+      "w": 320,
+      "h": 320,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 525732,
+        "step": 1
+      },
+      "thumb": "dazhaohu-2.webp"
+    },
+    {
+      "id": "dayouxi",
+      "name": "打游戏",
+      "file": "dayouxi.webp",
+      "source": "蓝色大肥鱼_打游戏_2026-08-18-14-13-01.gif",
+      "seq": null,
+      "tags": [
+        "打游戏",
+        "游戏",
+        "打电动"
+      ],
+      "aliases": [
+        "game",
+        "gaming",
+        "play",
+        "dayouxi"
+      ],
+      "bytes": 529454,
+      "sha256": "23a10818b7295971b46ecff060b627f0d64817f408495dee149f862193656ad9",
+      "w": 320,
+      "h": 320,
+      "frames": 39,
+      "fps": 50,
+      "durationMs": 780,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 529454,
+        "step": 1
+      },
+      "thumb": "dayouxi.webp"
+    },
+    {
+      "id": "kuoyinqi",
+      "name": "扩音器",
+      "file": "kuoyinqi.webp",
+      "source": "蓝色大肥鱼_扩音器_2026-08-18-14-21-17.gif",
+      "seq": null,
+      "tags": [
+        "扩音器",
+        "喊话",
+        "喇叭",
+        "广播"
+      ],
+      "aliases": [
+        "megaphone",
+        "announce",
+        "shout",
+        "kuoyinqi"
+      ],
+      "bytes": 378132,
+      "sha256": "0bcacccef1d555eba4d3f037211b34ffcd9cf0f82ffe49726b1232ee101b47a3",
+      "w": 320,
+      "h": 320,
+      "frames": 26,
+      "fps": 50,
+      "durationMs": 520,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 378132,
+        "step": 1
+      },
+      "thumb": "kuoyinqi.webp"
+    },
+    {
+      "id": "zhuapai-phone",
+      "name": "抓拍(手机)",
+      "file": "zhuapai-phone.webp",
+      "source": "蓝色大肥鱼_抓拍(手机)_2026-08-18-14-04-40.gif",
+      "seq": null,
+      "tags": [
+        "抓拍(手机)",
+        "拍照",
+        "截图"
+      ],
+      "aliases": [
+        "phone",
+        "photo",
+        "screenshot",
+        "zhuapai-phone"
+      ],
+      "bytes": 582112,
+      "sha256": "1d09a4761f78d96bf6b503c6911c6d15e004984662ebf627d63f704131a9b794",
+      "w": 240,
+      "h": 240,
+      "frames": 63,
+      "fps": 50,
+      "durationMs": 1260,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 582112,
+        "step": 5
+      },
+      "thumb": "zhuapai-phone.webp"
+    },
+    {
+      "id": "zhuapai-camera",
+      "name": "抓拍(摄像机)",
+      "file": "zhuapai-camera.webp",
+      "source": "蓝色大肥鱼_抓拍(摄像机)_2026-08-18-14-04-46.gif",
+      "seq": null,
+      "tags": [
+        "抓拍(摄像机)",
+        "录像",
+        "拍下来"
+      ],
+      "aliases": [
+        "camera",
+        "record",
+        "capture",
+        "zhuapai-camera"
+      ],
+      "bytes": 711974,
+      "sha256": "f14c37fbfe2d969f5e6c847f388a71671de31b8bf42e0c6b414ddec52f7eddbf",
+      "w": 280,
+      "h": 280,
+      "frames": 62,
+      "fps": 50,
+      "durationMs": 1240,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 711974,
+        "step": 4
+      },
+      "thumb": "zhuapai-camera.webp"
+    },
+    {
+      "id": "zheshan",
+      "name": "折扇",
+      "file": "zheshan.webp",
+      "source": "蓝色大肥鱼_折扇_2026-08-18-14-12-51.gif",
+      "seq": null,
+      "tags": [
+        "折扇",
+        "扇风",
+        "从容"
+      ],
+      "aliases": [
+        "fan",
+        "fold",
+        "chill",
+        "zheshan"
+      ],
+      "bytes": 672300,
+      "sha256": "3b3bb04638c20e883fc83a66e8ca0ba1d56881729a8d6b503691d869b6ce0f77",
+      "w": 280,
+      "h": 280,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 672300,
+        "step": 4
+      },
+      "thumb": "zheshan.webp"
+    },
+    {
+      "id": "paiying",
+      "name": "拍蝇",
+      "file": "paiying.webp",
+      "source": "蓝色大肥鱼_拍蝇_2026-08-18-14-36-19.gif",
+      "seq": null,
+      "tags": [
+        "拍蝇",
+        "拍苍蝇",
+        "消灭bug"
+      ],
+      "aliases": [
+        "swat",
+        "fly",
+        "bug",
+        "killbug",
+        "paiying"
+      ],
+      "bytes": 436814,
+      "sha256": "675b7e64b7dd99792e72b8cdd96ad0e598f44f57e07d14dc6ed2f85f3762d1af",
+      "w": 320,
+      "h": 320,
+      "frames": 29,
+      "fps": 50,
+      "durationMs": 580,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 436814,
+        "step": 1
+      },
+      "thumb": "paiying.webp"
+    },
+    {
+      "id": "tuoxie-1",
+      "name": "拖鞋",
+      "file": "tuoxie-1.webp",
+      "source": "蓝色大肥鱼_拖鞋 1_2026-08-18-14-29-10.gif",
+      "seq": 1,
+      "tags": [
+        "拖鞋",
+        "拖鞋",
+        "打人"
+      ],
+      "aliases": [
+        "slipper",
+        "smack",
+        "tuoxie",
+        "tuoxie-1"
+      ],
+      "bytes": 92838,
+      "sha256": "ed12c225a3b8eb159ac3d3bd08d4d0d81550cc1cdee9f09eb1ecfcb3a4136c33",
+      "w": 320,
+      "h": 320,
+      "frames": 19,
+      "fps": 50,
+      "durationMs": 380,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 92838,
+        "step": 1
+      },
+      "thumb": "tuoxie-1.webp"
+    },
+    {
+      "id": "tuoxie-2",
+      "name": "拖鞋",
+      "file": "tuoxie-2.webp",
+      "source": "蓝色大肥鱼_拖鞋 2_2026-08-18-14-29-22.gif",
+      "seq": 2,
+      "tags": [
+        "拖鞋",
+        "拖鞋",
+        "打人"
+      ],
+      "aliases": [
+        "slipper",
+        "smack",
+        "tuoxie",
+        "tuoxie-2"
+      ],
+      "bytes": 814900,
+      "sha256": "64229f6ad7f2abb01a5d808a21b45e12800299eef9995d2dc49b6ffe63afe5c2",
+      "w": 200,
+      "h": 200,
+      "frames": 113,
+      "fps": 50,
+      "durationMs": 2260,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 814900,
+        "step": 6
+      },
+      "thumb": "tuoxie-2.webp"
+    },
+    {
+      "id": "naqian",
+      "name": "拿走我的钱",
+      "file": "naqian.webp",
+      "source": "蓝色大肥鱼_拿走我的钱_2026-08-18-14-37-03.gif",
+      "seq": null,
+      "tags": [
+        "拿走我的钱",
+        "要钱",
+        "花钱",
+        "付费"
+      ],
+      "aliases": [
+        "takemymoney",
+        "pay",
+        "cost",
+        "shutupandtakemymoney",
+        "naqian"
+      ],
+      "bytes": 578346,
+      "sha256": "7b6308c0481caa93480639ed39f2a2a77d651bc1cd44927dea27e7c5e01d287f",
+      "w": 320,
+      "h": 320,
+      "frames": 55,
+      "fps": 50,
+      "durationMs": 1100,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 578346,
+        "step": 3
+      },
+      "thumb": "naqian.webp"
+    },
+    {
+      "id": "zhi",
+      "name": "指",
+      "file": "zhi.webp",
+      "source": "蓝色大肥鱼_指_2026-08-18-14-24-46.gif",
+      "seq": null,
+      "tags": [
+        "指",
+        "指着",
+        "看这个"
+      ],
+      "aliases": [
+        "point",
+        "look",
+        "zhi"
+      ],
+      "bytes": 530962,
+      "sha256": "547134eb32e2050fa53d7ca1bf7a7a99e71f22a4a9626bde08a4c8bcd3978fdb",
+      "w": 320,
+      "h": 320,
+      "frames": 39,
+      "fps": 50,
+      "durationMs": 780,
+      "encode": {
+        "size": 320,
+        "quality": 50,
+        "bytes": 530962,
+        "step": 2
+      },
+      "thumb": "zhi.webp"
+    },
+    {
+      "id": "anniu",
+      "name": "按钮",
+      "file": "anniu.webp",
+      "source": "蓝色大肥鱼_按钮_2026-08-18-14-03-53.gif",
+      "seq": null,
+      "tags": [
+        "按钮",
+        "按按钮",
+        "启动"
+      ],
+      "aliases": [
+        "button",
+        "press",
+        "start",
+        "anniu"
+      ],
+      "bytes": 235370,
+      "sha256": "3b28111349cfb3a66e63f7ff9ff2cb1a11df3b16811032ec271023acfbf77267",
+      "w": 320,
+      "h": 320,
+      "frames": 16,
+      "fps": 50,
+      "durationMs": 320,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 235370,
+        "step": 1
+      },
+      "thumb": "anniu.webp"
+    },
+    {
+      "id": "yaokele",
+      "name": "摇可乐",
+      "file": "yaokele.webp",
+      "source": "蓝色大肥鱼_摇可乐_2026-08-18-14-06-00.gif",
+      "seq": null,
+      "tags": [
+        "摇可乐",
+        "摇可乐",
+        "喷发",
+        "搞事"
+      ],
+      "aliases": [
+        "shake",
+        "cola",
+        "explode",
+        "yaokele"
+      ],
+      "bytes": 185132,
+      "sha256": "085ab28577b50b20173e95b8bf999966ad0ba3ab9252f7dff4d4a2bc6c6b9009",
+      "w": 320,
+      "h": 320,
+      "frames": 12,
+      "fps": 50,
+      "durationMs": 240,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 185132,
+        "step": 1
+      },
+      "thumb": "yaokele.webp"
+    },
+    {
+      "id": "yaotou",
+      "name": "摇头",
+      "file": "yaotou.webp",
+      "source": "蓝色大肥鱼_摇头_2026-08-18-14-15-27.gif",
+      "seq": null,
+      "tags": [
+        "摇头",
+        "不同意",
+        "不是"
+      ],
+      "aliases": [
+        "shake",
+        "no",
+        "disagree",
+        "yaotou"
+      ],
+      "bytes": 434284,
+      "sha256": "580ea1a75d9389a982e708686b48fae63e5d6ac995f635843518e9a4123e1a00",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 434284,
+        "step": 1
+      },
+      "thumb": "yaotou.webp"
+    },
+    {
+      "id": "yaoling",
+      "name": "摇铃",
+      "file": "yaoling.webp",
+      "source": "蓝色大肥鱼_摇铃_2026-08-18-14-03-15.gif",
+      "seq": null,
+      "tags": [
+        "摇铃",
+        "铃铛",
+        "提醒",
+        "开饭"
+      ],
+      "aliases": [
+        "bell",
+        "ring",
+        "notify",
+        "yaoling"
+      ],
+      "bytes": 400144,
+      "sha256": "9c7be0f23627cb314b31269dcc219d8db44f8d86c6f440a48b8626c54831f1bc",
+      "w": 320,
+      "h": 320,
+      "frames": 26,
+      "fps": 50,
+      "durationMs": 520,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 400144,
+        "step": 1
+      },
+      "thumb": "yaoling.webp"
+    },
+    {
+      "id": "mojing-zhai",
+      "name": "摘掉墨镜",
+      "file": "mojing-zhai.webp",
+      "source": "蓝色大肥鱼_摘掉墨镜_2026-08-18-14-36-07.gif",
+      "seq": null,
+      "tags": [
+        "摘掉墨镜",
+        "摘墨镜",
+        "认真"
+      ],
+      "aliases": [
+        "sunglasses",
+        "off",
+        "serious",
+        "mojing-zhai"
+      ],
+      "bytes": 663342,
+      "sha256": "065f7efa3919bfa6dd0d3a92027cb497be0686cf315024c24d437fd17e157456",
+      "w": 240,
+      "h": 240,
+      "frames": 96,
+      "fps": 50,
+      "durationMs": 1920,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 663342,
+        "step": 5
+      },
+      "thumb": "mojing-zhai.webp"
+    },
+    {
+      "id": "motou",
+      "name": "摸头",
+      "file": "motou.webp",
+      "source": "蓝色大肥鱼_摸头_2026-08-18-14-23-48.gif",
+      "seq": null,
+      "tags": [
+        "摸头",
+        "安慰",
+        "拍拍"
+      ],
+      "aliases": [
+        "pat",
+        "headpat",
+        "comfort",
+        "motou"
+      ],
+      "bytes": 466006,
+      "sha256": "96f82507144b065eb028a3ac896a9c2d4dc1e149f07a7c2a971b5c4c496de01c",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 466006,
+        "step": 1
+      },
+      "thumb": "motou.webp"
+    },
+    {
+      "id": "qiaogun-1",
+      "name": "撬棍",
+      "file": "qiaogun-1.webp",
+      "source": "蓝色大肥鱼_撬棍 1_2026-08-18-14-06-29.gif",
+      "seq": 1,
+      "tags": [
+        "撬棍",
+        "撬棍",
+        "砸"
+      ],
+      "aliases": [
+        "crowbar",
+        "smash",
+        "qiaogun",
+        "qiaogun-1"
+      ],
+      "bytes": 710138,
+      "sha256": "95c0ca023a07cec4bb5cd51d480b65442da46d2728532596623ee28ba14ce595",
+      "w": 320,
+      "h": 320,
+      "frames": 57,
+      "fps": 50,
+      "durationMs": 1140,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 710138,
+        "step": 3
+      },
+      "thumb": "qiaogun-1.webp"
+    },
+    {
+      "id": "qiaogun-2",
+      "name": "撬棍",
+      "file": "qiaogun-2.webp",
+      "source": "蓝色大肥鱼_撬棍 2_2026-08-18-14-06-36.gif",
+      "seq": 2,
+      "tags": [
+        "撬棍",
+        "撬棍",
+        "砸"
+      ],
+      "aliases": [
+        "crowbar",
+        "smash",
+        "qiaogun",
+        "qiaogun-2"
+      ],
+      "bytes": 570354,
+      "sha256": "eda9dbf099acf63b153b0885db0d9ba185ff3b66f971c15da957e2c69acada4d",
+      "w": 240,
+      "h": 240,
+      "frames": 74,
+      "fps": 50,
+      "durationMs": 1480,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 570354,
+        "step": 5
+      },
+      "thumb": "qiaogun-2.webp"
+    },
+    {
+      "id": "qiaogun-3",
+      "name": "撬棍",
+      "file": "qiaogun-3.webp",
+      "source": "蓝色大肥鱼_撬棍 3_2026-08-18-14-06-48.gif",
+      "seq": 3,
+      "tags": [
+        "撬棍",
+        "撬棍",
+        "砸"
+      ],
+      "aliases": [
+        "crowbar",
+        "smash",
+        "qiaogun",
+        "qiaogun-3"
+      ],
+      "bytes": 664894,
+      "sha256": "19d089122de41b603f081999430ec3234b2c07660b860e8157bc790c5b3932ed",
+      "w": 280,
+      "h": 280,
+      "frames": 61,
+      "fps": 50,
+      "durationMs": 1220,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 664894,
+        "step": 4
+      },
+      "thumb": "qiaogun-3.webp"
+    },
+    {
+      "id": "qiaotou",
+      "name": "敲头",
+      "file": "qiaotou.webp",
+      "source": "蓝色大肥鱼_敲头_2026-08-18-14-03-25.gif",
+      "seq": null,
+      "tags": [
+        "敲头",
+        "敲打",
+        "提醒",
+        "笨蛋"
+      ],
+      "aliases": [
+        "bonk",
+        "knock",
+        "head",
+        "qiaotou"
+      ],
+      "bytes": 448738,
+      "sha256": "efad14ba3552757dc2687ac109ba7780db95348980d6d5cbf24246116b03e1e8",
+      "w": 320,
+      "h": 320,
+      "frames": 29,
+      "fps": 50,
+      "durationMs": 580,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 448738,
+        "step": 1
+      },
+      "thumb": "qiaotou.webp"
+    },
+    {
+      "id": "qidai-1",
+      "name": "期待",
+      "file": "qidai-1.webp",
+      "source": "蓝色大肥鱼_期待 1_2026-08-18-14-29-36.gif",
+      "seq": 1,
+      "tags": [
+        "期待",
+        "期待",
+        "等着",
+        "催更"
+      ],
+      "aliases": [
+        "expect",
+        "wait",
+        "hope",
+        "qidai",
+        "qidai-1"
+      ],
+      "bytes": 794786,
+      "sha256": "28dce7661fed520982c07487884bb3320b002852fdba469daf92fd0686a9bf60",
+      "w": 200,
+      "h": 200,
+      "frames": 131,
+      "fps": 50,
+      "durationMs": 2620,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 794786,
+        "step": 6
+      },
+      "thumb": "qidai-1.webp"
+    },
+    {
+      "id": "qidai-2",
+      "name": "期待",
+      "file": "qidai-2.webp",
+      "source": "蓝色大肥鱼_期待 2_2026-08-18-14-29-41.gif",
+      "seq": 2,
+      "tags": [
+        "期待",
+        "期待",
+        "等着",
+        "催更"
+      ],
+      "aliases": [
+        "expect",
+        "wait",
+        "hope",
+        "qidai",
+        "qidai-2"
+      ],
+      "bytes": 575680,
+      "sha256": "5678faffc600b08830031c172c2f9b8211726a4d49d1e3c3ea33f80a21c4a788",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 575680,
+        "step": 5
+      },
+      "thumb": "qidai-2.webp"
+    },
+    {
+      "id": "qiang",
+      "name": "枪",
+      "file": "qiang.webp",
+      "source": "蓝色大肥鱼_枪_2026-08-18-14-15-10.gif",
+      "seq": null,
+      "tags": [
+        "枪",
+        "手枪",
+        "威胁"
+      ],
+      "aliases": [
+        "gun",
+        "threat",
+        "qiang"
+      ],
+      "bytes": 457298,
+      "sha256": "8706679bca4a9b70e99fbde032448bb9e9c3bbe7f5efc639168ab685b0dda6dd",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 457298,
+        "step": 1
+      },
+      "thumb": "qiang.webp"
+    },
+    {
+      "id": "sikao",
+      "name": "正在思考",
+      "file": "sikao.webp",
+      "source": "蓝色大肥鱼_正在思考_2026-08-18-14-24-28.gif",
+      "seq": null,
+      "tags": [
+        "正在思考",
+        "思考中",
+        "加载中"
+      ],
+      "aliases": [
+        "thinking",
+        "loading",
+        "hmm",
+        "sikao"
+      ],
+      "bytes": 121212,
+      "sha256": "60b6a1621aaf397b3e9c13bef826b358bd4101137a3dd4f8ae38295132859f2c",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 121212,
+        "step": 1
+      },
+      "thumb": "sikao.webp"
+    },
+    {
+      "id": "siwang",
+      "name": "死亡",
+      "file": "siwang.webp",
+      "source": "蓝色大肥鱼_死亡_2026-08-18-14-08-28.gif",
+      "seq": null,
+      "tags": [
+        "死亡",
+        "挂了",
+        "完蛋",
+        "躺平"
+      ],
+      "aliases": [
+        "dead",
+        "rip",
+        "gameover",
+        "siwang"
+      ],
+      "bytes": 590968,
+      "sha256": "09f6d008105144cc96b4387864653e3da27cef2544c23e7e2122184f29e7cd98",
+      "w": 240,
+      "h": 240,
+      "frames": 65,
+      "fps": 50,
+      "durationMs": 1300,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 590968,
+        "step": 5
+      },
+      "thumb": "siwang.webp"
+    },
+    {
+      "id": "han",
+      "name": "汗",
+      "file": "han.webp",
+      "source": "蓝色大肥鱼_汗_2026-08-18-14-36-26.gif",
+      "seq": null,
+      "tags": [
+        "汗",
+        "无语",
+        "尴尬",
+        "冷汗"
+      ],
+      "aliases": [
+        "sweat",
+        "awkward",
+        "speechless",
+        "han"
+      ],
+      "bytes": 588302,
+      "sha256": "29a342ac08c48ee0755f0521290c842a3a0c17eff4c86903c25f3d8fbc3c0884",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 588302,
+        "step": 5
+      },
+      "thumb": "han.webp"
+    },
+    {
+      "id": "diantou",
+      "name": "点头",
+      "file": "diantou.webp",
+      "source": "蓝色大肥鱼_点头_2026-08-18-14-15-19.gif",
+      "seq": null,
+      "tags": [
+        "点头",
+        "同意",
+        "嗯嗯"
+      ],
+      "aliases": [
+        "nod",
+        "yes",
+        "agree",
+        "diantou"
+      ],
+      "bytes": 522870,
+      "sha256": "f75d6a707308a85e5988f021e7d68752eacb2a78d81ee1b222a5db5d4838ca9f",
+      "w": 320,
+      "h": 320,
+      "frames": 39,
+      "fps": 50,
+      "durationMs": 780,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 522870,
+        "step": 1
+      },
+      "thumb": "diantou.webp"
+    },
+    {
+      "id": "dianzan",
+      "name": "点赞",
+      "file": "dianzan.webp",
+      "source": "蓝色大肥鱼_点赞_2026-08-18-14-38-05.gif",
+      "seq": null,
+      "tags": [
+        "点赞",
+        "好评",
+        "厉害",
+        "牛",
+        "夸",
+        "夸奖"
+      ],
+      "aliases": [
+        "like",
+        "thumbsup",
+        "zan",
+        "ok",
+        "nice",
+        "awesome",
+        "praise",
+        "dianzan"
+      ],
+      "bytes": 645048,
+      "sha256": "c03bff7f9d11a4eb895290203899547684f3f2ddbc3d33c77f5cd39144275753",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 645048,
+        "step": 3
+      },
+      "thumb": "dianzan.webp"
+    },
+    {
+      "id": "shao-1",
+      "name": "烧",
+      "file": "shao-1.webp",
+      "source": "蓝色大肥鱼_烧 1_2026-08-18-14-12-34.gif",
+      "seq": 1,
+      "tags": [
+        "烧",
+        "着火",
+        "烧了"
+      ],
+      "aliases": [
+        "fire",
+        "burn",
+        "shao",
+        "shao-1"
+      ],
+      "bytes": 635896,
+      "sha256": "a9304c3fb91913ae159943ca10b0b10d13de5904ae320cfa2c327ff70cdafc47",
+      "w": 240,
+      "h": 240,
+      "frames": 79,
+      "fps": 50,
+      "durationMs": 1580,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 635896,
+        "step": 5
+      },
+      "thumb": "shao-1.webp"
+    },
+    {
+      "id": "shao-2",
+      "name": "烧",
+      "file": "shao-2.webp",
+      "source": "蓝色大肥鱼_烧 2_2026-08-18-14-12-42.gif",
+      "seq": 2,
+      "tags": [
+        "烧",
+        "着火",
+        "烧了"
+      ],
+      "aliases": [
+        "fire",
+        "burn",
+        "shao",
+        "shao-2"
+      ],
+      "bytes": 638572,
+      "sha256": "30c925f2969939432f3ed64d795439d5fb59bb15f09c4e011581f83f6f06b0e8",
+      "w": 240,
+      "h": 240,
+      "frames": 79,
+      "fps": 50,
+      "durationMs": 1580,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 638572,
+        "step": 5
+      },
+      "thumb": "shao-2.webp"
+    },
+    {
+      "id": "aixin-1",
+      "name": "爱心",
+      "file": "aixin-1.webp",
+      "source": "蓝色大肥鱼_爱心 1_2026-08-18-14-20-15.gif",
+      "seq": 1,
+      "tags": [
+        "爱心",
+        "喜欢",
+        "爱",
+        "比心",
+        "感谢",
+        "谢谢"
+      ],
+      "aliases": [
+        "love",
+        "heart",
+        "like",
+        "thanks",
+        "aixin",
+        "aixin-1"
+      ],
+      "bytes": 708646,
+      "sha256": "c242a004e7cb9cb59cc9535331f3248b1a521101095a2116d144edf84be67c17",
+      "w": 200,
+      "h": 200,
+      "frames": 107,
+      "fps": 50,
+      "durationMs": 2140,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 708646,
+        "step": 6
+      },
+      "thumb": "aixin-1.webp"
+    },
+    {
+      "id": "aixin-2",
+      "name": "爱心",
+      "file": "aixin-2.webp",
+      "source": "蓝色大肥鱼_爱心 2_2026-08-18-14-20-22.gif",
+      "seq": 2,
+      "tags": [
+        "爱心",
+        "喜欢",
+        "爱",
+        "比心",
+        "感谢",
+        "谢谢"
+      ],
+      "aliases": [
+        "love",
+        "heart",
+        "like",
+        "thanks",
+        "aixin",
+        "aixin-2"
+      ],
+      "bytes": 680290,
+      "sha256": "06710ae0b3fbe7310cd4c1ec592d4f08f48932d15fefbe283950c7956f7e6ba0",
+      "w": 200,
+      "h": 200,
+      "frames": 106,
+      "fps": 50,
+      "durationMs": 2120,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 680290,
+        "step": 6
+      },
+      "thumb": "aixin-2.webp"
+    },
+    {
+      "id": "aixin-3",
+      "name": "爱心",
+      "file": "aixin-3.webp",
+      "source": "蓝色大肥鱼_爱心 3_2026-08-18-14-20-29.gif",
+      "seq": 3,
+      "tags": [
+        "爱心",
+        "喜欢",
+        "爱",
+        "比心",
+        "感谢",
+        "谢谢"
+      ],
+      "aliases": [
+        "love",
+        "heart",
+        "like",
+        "thanks",
+        "aixin",
+        "aixin-3"
+      ],
+      "bytes": 702504,
+      "sha256": "9f9f29611334ac122fe8b32cc7c130c8bf59e41ed1e65eb25a2e995444395329",
+      "w": 240,
+      "h": 240,
+      "frames": 96,
+      "fps": 50,
+      "durationMs": 1920,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 702504,
+        "step": 5
+      },
+      "thumb": "aixin-3.webp"
+    },
+    {
+      "id": "meigui",
+      "name": "玫瑰",
+      "file": "meigui.webp",
+      "source": "蓝色大肥鱼_玫瑰_2026-08-18-14-26-27.gif",
+      "seq": null,
+      "tags": [
+        "玫瑰",
+        "花",
+        "送花",
+        "浪漫"
+      ],
+      "aliases": [
+        "rose",
+        "flower",
+        "love",
+        "meigui"
+      ],
+      "bytes": 707600,
+      "sha256": "43f66564af1b788fbe22cee4b04434211b0925a51ba35669a0d37a5068754b48",
+      "w": 320,
+      "h": 320,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 707600,
+        "step": 3
+      },
+      "thumb": "meigui.webp"
+    },
+    {
+      "id": "shengqi",
+      "name": "生气",
+      "file": "shengqi.webp",
+      "source": "蓝色大肥鱼_生气_2026-08-18-14-02-17.gif",
+      "seq": null,
+      "tags": [
+        "生气",
+        "愤怒",
+        "火大",
+        "不满",
+        "气死"
+      ],
+      "aliases": [
+        "angry",
+        "mad",
+        "rage",
+        "furious",
+        "shengqi"
+      ],
+      "bytes": 790366,
+      "sha256": "bad170e808ad3339c92c67ed2c20631430fafeab7ffcdc8c22a25646f269dde6",
+      "w": 200,
+      "h": 200,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 790366,
+        "step": 6
+      },
+      "thumb": "shengqi.webp"
+    },
+    {
+      "id": "dianfengshan-1",
+      "name": "电风扇",
+      "file": "dianfengshan-1.webp",
+      "source": "蓝色大肥鱼_电风扇 1_2026-08-18-14-11-56.gif",
+      "seq": 1,
+      "tags": [
+        "电风扇",
+        "吹风",
+        "冷静"
+      ],
+      "aliases": [
+        "fan",
+        "cool",
+        "wind",
+        "dianfengshan",
+        "dianfengshan-1"
+      ],
+      "bytes": 619786,
+      "sha256": "939fbafa75b3bf1b5f4316b0d957a221bc1dc8349971b1e0edd92af0a2af9956",
+      "w": 280,
+      "h": 280,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 619786,
+        "step": 4
+      },
+      "thumb": "dianfengshan-1.webp"
+    },
+    {
+      "id": "dianfengshan-2",
+      "name": "电风扇",
+      "file": "dianfengshan-2.webp",
+      "source": "蓝色大肥鱼_电风扇 2_2026-08-18-14-12-00.gif",
+      "seq": 2,
+      "tags": [
+        "电风扇",
+        "吹风",
+        "冷静"
+      ],
+      "aliases": [
+        "fan",
+        "cool",
+        "wind",
+        "dianfengshan",
+        "dianfengshan-2"
+      ],
+      "bytes": 621744,
+      "sha256": "64668c670370286d0495d7fa0b1bf231fdec8bceb99df688d42996ab9c4588de",
+      "w": 280,
+      "h": 280,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 621744,
+        "step": 4
+      },
+      "thumb": "dianfengshan-2.webp"
+    },
+    {
+      "id": "huaban",
+      "name": "画板",
+      "file": "huaban.webp",
+      "source": "蓝色大肥鱼_画板_2026-08-18-14-36-39.gif",
+      "seq": null,
+      "tags": [
+        "画板",
+        "画图",
+        "设计"
+      ],
+      "aliases": [
+        "draw",
+        "canvas",
+        "design",
+        "huaban"
+      ],
+      "bytes": 500090,
+      "sha256": "fa3f17bab4acde845fc6bb2b843427f0c71014d8b9a354564c832dca453d6089",
+      "w": 320,
+      "h": 320,
+      "frames": 39,
+      "fps": 50,
+      "durationMs": 780,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 500090,
+        "step": 1
+      },
+      "thumb": "huaban.webp"
+    },
+    {
+      "id": "zhayan",
+      "name": "眨眼",
+      "file": "zhayan.webp",
+      "source": "蓝色大肥鱼_眨眼_2026-08-18-14-38-44.gif",
+      "seq": null,
+      "tags": [
+        "眨眼",
+        "眨眼",
+        "暗示"
+      ],
+      "aliases": [
+        "wink",
+        "hint",
+        "zhayan"
+      ],
+      "bytes": 653636,
+      "sha256": "fac3242448f3288ac7dc6548426389851ae9157d237b4be54938cbba80ae421a",
+      "w": 240,
+      "h": 240,
+      "frames": 74,
+      "fps": 50,
+      "durationMs": 1480,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 653636,
+        "step": 5
+      },
+      "thumb": "zhayan.webp"
+    },
+    {
+      "id": "shuijiao-uu",
+      "name": "睡觉 (UU)",
+      "file": "shuijiao-uu.webp",
+      "source": "蓝色大肥鱼_睡觉 (UU)_2026-08-18-14-29-04.gif",
+      "seq": null,
+      "tags": [
+        "睡觉 (UU)",
+        "睡觉",
+        "UU"
+      ],
+      "aliases": [
+        "sleep",
+        "zzz",
+        "uu",
+        "shuijiao-uu"
+      ],
+      "bytes": 794268,
+      "sha256": "b864b5c523de67dc6535cb74b8a8bfe9b75e06139800fcfaae50cc8cf8109ba9",
+      "w": 200,
+      "h": 200,
+      "frames": 132,
+      "fps": 50,
+      "durationMs": 2640,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 794268,
+        "step": 6
+      },
+      "thumb": "shuijiao-uu.webp"
+    },
+    {
+      "id": "shuijiao-zhunbei-1",
+      "name": "睡觉(准备阶段1)",
+      "file": "shuijiao-zhunbei-1.webp",
+      "source": "蓝色大肥鱼_睡觉(准备阶段1)_2026-08-18-14-28-50.gif",
+      "seq": null,
+      "tags": [
+        "睡觉(准备阶段1)",
+        "准备睡觉"
+      ],
+      "aliases": [
+        "sleep",
+        "prepare",
+        "shuijiao-zhunbei-1"
+      ],
+      "bytes": 194534,
+      "sha256": "4b5c83d9adb051cba02f3b2881b3d20dab960e6d87f8d4971ab394775082a80f",
+      "w": 320,
+      "h": 320,
+      "frames": 75,
+      "fps": 33.33,
+      "durationMs": 2250,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 194534,
+        "step": 1
+      },
+      "thumb": "shuijiao-zhunbei-1.webp"
+    },
+    {
+      "id": "shuijiao-zhunbei-2",
+      "name": "睡觉(准备阶段2)",
+      "file": "shuijiao-zhunbei-2.webp",
+      "source": "蓝色大肥鱼_睡觉(准备阶段2)_2026-08-18-14-28-57.gif",
+      "seq": null,
+      "tags": [
+        "睡觉(准备阶段2)",
+        "准备睡觉"
+      ],
+      "aliases": [
+        "sleep",
+        "prepare",
+        "shuijiao-zhunbei-2"
+      ],
+      "bytes": 171182,
+      "sha256": "3a547f64ee86fcc77b612f830a6b5fad0ae6fdee6b418299f2e12435f16ec24f",
+      "w": 320,
+      "h": 320,
+      "frames": 68,
+      "fps": 31,
+      "durationMs": 2194,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 171182,
+        "step": 1
+      },
+      "thumb": "shuijiao-zhunbei-2.webp"
+    },
+    {
+      "id": "shuijiao",
+      "name": "睡觉(普通)",
+      "file": "shuijiao.webp",
+      "source": "蓝色大肥鱼_睡觉(普通)_2026-08-18-14-28-41.gif",
+      "seq": null,
+      "tags": [
+        "睡觉(普通)",
+        "睡觉",
+        "晚安",
+        "摸鱼",
+        "困了",
+        "睡了"
+      ],
+      "aliases": [
+        "sleep",
+        "zzz",
+        "night",
+        "tired",
+        "shuijiao"
+      ],
+      "bytes": 783670,
+      "sha256": "7d006d99e054bc8f725766d2e98e4a9ddeb6ae62d79e103a96a4a7ddf49f0d25",
+      "w": 200,
+      "h": 200,
+      "frames": 132,
+      "fps": 50,
+      "durationMs": 2640,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 783670,
+        "step": 6
+      },
+      "thumb": "shuijiao.webp"
+    },
+    {
+      "id": "liwu-1",
+      "name": "礼物",
+      "file": "liwu-1.webp",
+      "source": "蓝色大肥鱼_礼物 1_2026-08-18-14-14-11.gif",
+      "seq": 1,
+      "tags": [
+        "礼物",
+        "送礼",
+        "礼物"
+      ],
+      "aliases": [
+        "gift",
+        "present",
+        "liwu",
+        "liwu-1"
+      ],
+      "bytes": 685800,
+      "sha256": "72bd8974066cf934749aad4fd06bb57f7636803e5556d22e384a6417bab54cd4",
+      "w": 240,
+      "h": 240,
+      "frames": 83,
+      "fps": 50,
+      "durationMs": 1660,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 685800,
+        "step": 5
+      },
+      "thumb": "liwu-1.webp"
+    },
+    {
+      "id": "liwu-2",
+      "name": "礼物",
+      "file": "liwu-2.webp",
+      "source": "蓝色大肥鱼_礼物 2_2026-08-18-14-14-21.gif",
+      "seq": 2,
+      "tags": [
+        "礼物",
+        "送礼",
+        "礼物"
+      ],
+      "aliases": [
+        "gift",
+        "present",
+        "liwu",
+        "liwu-2"
+      ],
+      "bytes": 569642,
+      "sha256": "c72642fbdf6ab48db06fb9d0ca6ebb8b414813bf18217f3dae166319e7cde734",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 569642,
+        "step": 5
+      },
+      "thumb": "liwu-2.webp"
+    },
+    {
+      "id": "xiao-zhi",
+      "name": "笑(指)",
+      "file": "xiao-zhi.webp",
+      "source": "蓝色大肥鱼_笑(指)_2026-08-18-14-16-39.gif",
+      "seq": null,
+      "tags": [
+        "笑(指)",
+        "嘲笑",
+        "指着笑",
+        "你看他"
+      ],
+      "aliases": [
+        "pointlaugh",
+        "mock",
+        "lmao",
+        "xiao-zhi"
+      ],
+      "bytes": 591852,
+      "sha256": "a307744a74861146bfbe969efe1f30c4887cb42601404328ddaf79a965869083",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 591852,
+        "step": 3
+      },
+      "thumb": "xiao-zhi.webp"
+    },
+    {
+      "id": "xiao",
+      "name": "笑",
+      "file": "xiao.webp",
+      "source": "蓝色大肥鱼_笑_2026-08-18-14-16-28.gif",
+      "seq": null,
+      "tags": [
+        "笑",
+        "开心",
+        "哈哈",
+        "大笑"
+      ],
+      "aliases": [
+        "laugh",
+        "lol",
+        "happy",
+        "haha",
+        "xiao"
+      ],
+      "bytes": 669964,
+      "sha256": "c52fecf206fad1a86b85d47bbd73520c267c615e7df6563f6fac684fba870d65",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 669964,
+        "step": 3
+      },
+      "thumb": "xiao.webp"
+    },
+    {
+      "id": "jinzhang-1",
+      "name": "紧张",
+      "file": "jinzhang-1.webp",
+      "source": "蓝色大肥鱼_紧张 1_2026-08-18-14-22-46.gif",
+      "seq": 1,
+      "tags": [
+        "紧张",
+        "忐忑",
+        "压力",
+        "着急",
+        "焦虑"
+      ],
+      "aliases": [
+        "nervous",
+        "anxious",
+        "tense",
+        "hurry",
+        "jinzhang",
+        "jinzhang-1"
+      ],
+      "bytes": 624418,
+      "sha256": "dbd8cd25549ae8ddad5c5762bfeaa922f5692b829e771e8e8776df74f3402623",
+      "w": 280,
+      "h": 280,
+      "frames": 59,
+      "fps": 50,
+      "durationMs": 1180,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 624418,
+        "step": 4
+      },
+      "thumb": "jinzhang-1.webp"
+    },
+    {
+      "id": "jinzhang-2",
+      "name": "紧张",
+      "file": "jinzhang-2.webp",
+      "source": "蓝色大肥鱼_紧张 2_2026-08-18-14-22-53.gif",
+      "seq": 2,
+      "tags": [
+        "紧张",
+        "忐忑",
+        "压力",
+        "着急",
+        "焦虑"
+      ],
+      "aliases": [
+        "nervous",
+        "anxious",
+        "tense",
+        "hurry",
+        "jinzhang",
+        "jinzhang-2"
+      ],
+      "bytes": 624762,
+      "sha256": "934f6521e0e63198fdec79ae56506839d656a4d8d944241a785c9b7c0cebd2c8",
+      "w": 280,
+      "h": 280,
+      "frames": 59,
+      "fps": 50,
+      "durationMs": 1180,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 624762,
+        "step": 4
+      },
+      "thumb": "jinzhang-2.webp"
+    },
+    {
+      "id": "hongbao-1",
+      "name": "红包",
+      "file": "hongbao-1.webp",
+      "source": "蓝色大肥鱼_红包 1_2026-08-18-14-25-33.gif",
+      "seq": 1,
+      "tags": [
+        "红包",
+        "红包",
+        "打赏",
+        "祝福"
+      ],
+      "aliases": [
+        "redpacket",
+        "gift",
+        "lucky",
+        "hongbao",
+        "hongbao-1"
+      ],
+      "bytes": 607988,
+      "sha256": "d1d50ec1d97d65e2846c34244469fba75f4466190dd032101c9fcdf524fb4254",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 607988,
+        "step": 3
+      },
+      "thumb": "hongbao-1.webp"
+    },
+    {
+      "id": "hongbao-2",
+      "name": "红包",
+      "file": "hongbao-2.webp",
+      "source": "蓝色大肥鱼_红包 2_2026-08-18-14-25-45.gif",
+      "seq": 2,
+      "tags": [
+        "红包",
+        "红包",
+        "打赏",
+        "祝福"
+      ],
+      "aliases": [
+        "redpacket",
+        "gift",
+        "lucky",
+        "hongbao",
+        "hongbao-2"
+      ],
+      "bytes": 700338,
+      "sha256": "509298d74f590bc3dbbc7f503eaa8dfc86bb38f5870bd3eee5706f971e27ec55",
+      "w": 320,
+      "h": 320,
+      "frames": 72,
+      "fps": 50,
+      "durationMs": 1440,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 700338,
+        "step": 3
+      },
+      "thumb": "hongbao-2.webp"
+    },
+    {
+      "id": "jiaodai",
+      "name": "胶带",
+      "file": "jiaodai.webp",
+      "source": "蓝色大肥鱼_胶带_2026-08-18-14-37-14.gif",
+      "seq": null,
+      "tags": [
+        "胶带",
+        "封嘴",
+        "贴住"
+      ],
+      "aliases": [
+        "tape",
+        "silence",
+        "jiaodai"
+      ],
+      "bytes": 602940,
+      "sha256": "6cd32b0cbb6319e44c1b2022eedb89d7eb9095a16bcc86a0f587130050735993",
+      "w": 240,
+      "h": 240,
+      "frames": 69,
+      "fps": 50,
+      "durationMs": 1380,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 602940,
+        "step": 5
+      },
+      "thumb": "jiaodai.webp"
+    },
+    {
+      "id": "ziwoanwei",
+      "name": "自我安慰",
+      "file": "ziwoanwei.webp",
+      "source": "蓝色大肥鱼_自我安慰_2026-08-18-14-06-15.gif",
+      "seq": null,
+      "tags": [
+        "自我安慰",
+        "安慰自己",
+        "没事的",
+        "崩溃",
+        "破防"
+      ],
+      "aliases": [
+        "selfcomfort",
+        "cope",
+        "itsfine",
+        "overwhelmed",
+        "ziwoanwei"
+      ],
+      "bytes": 611694,
+      "sha256": "0393267ddbb2a53c3048f637b1b1f4c624b94e0891af0dd965a2a6e46ce5b5e7",
+      "w": 200,
+      "h": 200,
+      "frames": 92,
+      "fps": 50,
+      "durationMs": 1840,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 611694,
+        "step": 6
+      },
+      "thumb": "ziwoanwei.webp"
+    },
+    {
+      "id": "tiantian",
+      "name": "舔舔",
+      "file": "tiantian.webp",
+      "source": "蓝色大肥鱼_舔舔_2026-08-18-14-16-54.gif",
+      "seq": null,
+      "tags": [
+        "舔舔",
+        "舔",
+        "馋"
+      ],
+      "aliases": [
+        "lick",
+        "tongue",
+        "tiantian"
+      ],
+      "bytes": 519130,
+      "sha256": "1bda80065bc2f1bb19a339d6f8097d07f0d6f71b0a9352e862187620b830e267",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 519130,
+        "step": 3
+      },
+      "thumb": "tiantian.webp"
+    },
+    {
+      "id": "tiaowu-sanwei",
+      "name": "舞蹈(散味)",
+      "file": "tiaowu-sanwei.webp",
+      "source": "蓝色大肥鱼_舞蹈(散味)_2026-08-18-14-08-18.gif",
+      "seq": null,
+      "tags": [
+        "舞蹈(散味)",
+        "散味",
+        "扇风",
+        "臭"
+      ],
+      "aliases": [
+        "smell",
+        "fart",
+        "dance",
+        "tiaowu-sanwei"
+      ],
+      "bytes": 610720,
+      "sha256": "a69fc8f94d518cfaa45d1885e107bb68fcf53a818b1937a900d09435a31cef8d",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 610720,
+        "step": 5
+      },
+      "thumb": "tiaowu-sanwei.webp"
+    },
+    {
+      "id": "yingguangbang",
+      "name": "荧光棒",
+      "file": "yingguangbang.webp",
+      "source": "蓝色大肥鱼_荧光棒 2_2026-08-18-14-18-47.gif",
+      "seq": 2,
+      "tags": [
+        "荧光棒",
+        "打call",
+        "应援"
+      ],
+      "aliases": [
+        "glowstick",
+        "cheer",
+        "support",
+        "yingguangbang"
+      ],
+      "bytes": 678766,
+      "sha256": "ff4a4c89dfd4264eeda8ea9f97df660c5f92fb68416e828fec2ab776d567cd32",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 678766,
+        "step": 3
+      },
+      "thumb": "yingguangbang.webp"
+    },
+    {
+      "id": "dangao",
+      "name": "蛋糕",
+      "file": "dangao.webp",
+      "source": "蓝色大肥鱼_蛋糕_2026-08-18-14-04-05.gif",
+      "seq": null,
+      "tags": [
+        "蛋糕",
+        "生日",
+        "蛋糕",
+        "庆祝"
+      ],
+      "aliases": [
+        "cake",
+        "birthday",
+        "dangao"
+      ],
+      "bytes": 664850,
+      "sha256": "d64a6c8547951c0744912217d49aac50dcccf0a83a264a8a7de9890d0efa74a3",
+      "w": 240,
+      "h": 240,
+      "frames": 76,
+      "fps": 50,
+      "durationMs": 1520,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 664850,
+        "step": 5
+      },
+      "thumb": "dangao.webp"
+    },
+    {
+      "id": "beiji-bits",
+      "name": "被击中(Bits)",
+      "file": "beiji-bits.webp",
+      "source": "蓝色大肥鱼_被击中(Bits)_2026-08-18-14-13-19.gif",
+      "seq": null,
+      "tags": [
+        "被击中(Bits)",
+        "被打赏",
+        "Bits"
+      ],
+      "aliases": [
+        "hitbits",
+        "donate",
+        "beiji-bits"
+      ],
+      "bytes": 495576,
+      "sha256": "94dccf8c2b3aca74dc921eb149db1d27c881bc7325f3f462124b76f77316f481",
+      "w": 320,
+      "h": 320,
+      "frames": 37,
+      "fps": 50,
+      "durationMs": 740,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 495576,
+        "step": 1
+      },
+      "thumb": "beiji-bits.webp"
+    },
+    {
+      "id": "beiji-tuoxie",
+      "name": "被击中(拖鞋)",
+      "file": "beiji-tuoxie.webp",
+      "source": "蓝色大肥鱼_被击中(拖鞋)_2026-08-18-14-13-52.gif",
+      "seq": null,
+      "tags": [
+        "被击中(拖鞋)",
+        "被拖鞋打",
+        "挨打"
+      ],
+      "aliases": [
+        "hitslipper",
+        "ouch",
+        "beiji-tuoxie"
+      ],
+      "bytes": 502944,
+      "sha256": "5df3e21544da0aa1f2942bb46aa60fbc824324d657521c546461e5c7662cea8d",
+      "w": 320,
+      "h": 320,
+      "frames": 39,
+      "fps": 50,
+      "durationMs": 780,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 502944,
+        "step": 1
+      },
+      "thumb": "beiji-tuoxie.webp"
+    },
+    {
+      "id": "beiji-aixin",
+      "name": "被击中(爱心)",
+      "file": "beiji-aixin.webp",
+      "source": "蓝色大肥鱼_被击中(爱心)_2026-08-18-14-13-47.gif",
+      "seq": null,
+      "tags": [
+        "被击中(爱心)",
+        "被爱心击中",
+        "心动"
+      ],
+      "aliases": [
+        "hitheart",
+        "heart",
+        "beiji-aixin"
+      ],
+      "bytes": 466288,
+      "sha256": "b7af80bf8405121c56a7b6ce4a616a1f9a33e65ac07725aaa25b4293782d8f76",
+      "w": 320,
+      "h": 320,
+      "frames": 36,
+      "fps": 50,
+      "durationMs": 720,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 466288,
+        "step": 1
+      },
+      "thumb": "beiji-aixin.webp"
+    },
+    {
+      "id": "beiji-yingbi",
+      "name": "被击中(硬币)",
+      "file": "beiji-yingbi.webp",
+      "source": "蓝色大肥鱼_被击中(硬币)_2026-08-18-14-13-30.gif",
+      "seq": null,
+      "tags": [
+        "被击中(硬币)",
+        "被打赏",
+        "收到钱"
+      ],
+      "aliases": [
+        "hitcoin",
+        "donate",
+        "beiji-yingbi"
+      ],
+      "bytes": 485742,
+      "sha256": "1ee83d0550ac12ef594d8a9ac0b61702e17506a046ae42034e87f64d99d1f060",
+      "w": 320,
+      "h": 320,
+      "frames": 37,
+      "fps": 50,
+      "durationMs": 740,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 485742,
+        "step": 1
+      },
+      "thumb": "beiji-yingbi.webp"
+    },
+    {
+      "id": "yaomi",
+      "name": "要米",
+      "file": "yaomi.webp",
+      "source": "蓝色大肥鱼_要米_2026-08-18-14-22-34.gif",
+      "seq": null,
+      "tags": [
+        "要米",
+        "要钱",
+        "讨饭",
+        "打赏"
+      ],
+      "aliases": [
+        "beg",
+        "money",
+        "donate",
+        "tip",
+        "yaomi"
+      ],
+      "bytes": 616230,
+      "sha256": "1e6a458617d778534ee84d4d73a61d24f27bf3c0dd8fe11d4a4b7ad4d4444da0",
+      "w": 280,
+      "h": 280,
+      "frames": 82,
+      "fps": 50,
+      "durationMs": 1640,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 616230,
+        "step": 4
+      },
+      "thumb": "yaomi.webp"
+    },
+    {
+      "id": "jilu-1",
+      "name": "记录",
+      "file": "jilu-1.webp",
+      "source": "蓝色大肥鱼_记录 1_2026-08-18-14-23-06.gif",
+      "seq": 1,
+      "tags": [
+        "记录",
+        "记笔记",
+        "小本本"
+      ],
+      "aliases": [
+        "note",
+        "record",
+        "log",
+        "jilu",
+        "jilu-1"
+      ],
+      "bytes": 838412,
+      "sha256": "0915995670c8b6306098b7d3f6e645710fc22b144ac5b1e21d41df3e4244e26b",
+      "w": 200,
+      "h": 200,
+      "frames": 132,
+      "fps": 50,
+      "durationMs": 2640,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 838412,
+        "step": 6
+      },
+      "thumb": "jilu-1.webp"
+    },
+    {
+      "id": "jilu-2",
+      "name": "记录",
+      "file": "jilu-2.webp",
+      "source": "蓝色大肥鱼_记录 2_2026-08-18-14-23-16.gif",
+      "seq": 2,
+      "tags": [
+        "记录",
+        "记笔记",
+        "小本本"
+      ],
+      "aliases": [
+        "note",
+        "record",
+        "log",
+        "jilu",
+        "jilu-2"
+      ],
+      "bytes": 654230,
+      "sha256": "6403487a969e598e59f80241dc2ee5407fe2999bb2320d14f9bf0c0c862e77bc",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 654230,
+        "step": 3
+      },
+      "thumb": "jilu-2.webp"
+    },
+    {
+      "id": "tiaowu",
+      "name": "跳舞",
+      "file": "tiaowu.webp",
+      "source": "蓝色大肥鱼_跳舞 1_2026-08-18-14-07-32.gif",
+      "seq": 1,
+      "tags": [
+        "跳舞",
+        "舞蹈",
+        "开心"
+      ],
+      "aliases": [
+        "dance",
+        "dancing",
+        "tiaowu"
+      ],
+      "bytes": 694820,
+      "sha256": "26e86399e36c4fb3ce600738277d49ad9e81451105a5a8c09ee73955ab2ed114",
+      "w": 200,
+      "h": 200,
+      "frames": 99,
+      "fps": 50,
+      "durationMs": 1980,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 694820,
+        "step": 6
+      },
+      "thumb": "tiaowu.webp"
+    },
+    {
+      "id": "tiaowu-caramelldansen",
+      "name": "跳舞(Caramelldansen)",
+      "file": "tiaowu-caramelldansen.webp",
+      "source": "蓝色大肥鱼_跳舞(Caramelldansen)_2026-08-18-14-07-42.gif",
+      "seq": null,
+      "tags": [
+        "跳舞(Caramelldansen)",
+        "洗脑舞"
+      ],
+      "aliases": [
+        "caramelldansen",
+        "dance",
+        "tiaowu-caramelldansen"
+      ],
+      "bytes": 618498,
+      "sha256": "561807a36b37537e351ed9975a858bc48887a43fc11450e09623c48cb9cf9b31",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 618498,
+        "step": 5
+      },
+      "thumb": "tiaowu-caramelldansen.webp"
+    },
+    {
+      "id": "tiaowu-helltaker",
+      "name": "跳舞(Helltaker)",
+      "file": "tiaowu-helltaker.webp",
+      "source": "蓝色大肥鱼_跳舞(Helltaker)_2026-08-18-14-07-49.gif",
+      "seq": null,
+      "tags": [
+        "跳舞(Helltaker)",
+        "节奏舞"
+      ],
+      "aliases": [
+        "helltaker",
+        "dance",
+        "tiaowu-helltaker"
+      ],
+      "bytes": 664358,
+      "sha256": "f2895a756ce50d3ce9f248bb7fc62d43cc77d3d6c99247c3ff641fb7290e5f62",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 664358,
+        "step": 3
+      },
+      "thumb": "tiaowu-helltaker.webp"
+    },
+    {
+      "id": "tiaowu-pizhichun",
+      "name": "跳舞(低皮质醇)",
+      "file": "tiaowu-pizhichun.webp",
+      "source": "蓝色大肥鱼_跳舞(低皮质醇)_2026-08-18-14-08-05.gif",
+      "seq": null,
+      "tags": [
+        "跳舞(低皮质醇)",
+        "低皮质醇",
+        "从容",
+        "松弛"
+      ],
+      "aliases": [
+        "lowcortisol",
+        "chill",
+        "relax",
+        "tiaowu-pizhichun"
+      ],
+      "bytes": 629686,
+      "sha256": "b28911036e35e7b7a0de35744121853dc0b71cd64990e8f7f3ef1d2d002aaf32",
+      "w": 240,
+      "h": 240,
+      "frames": 66,
+      "fps": 50,
+      "durationMs": 1320,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 629686,
+        "step": 5
+      },
+      "thumb": "tiaowu-pizhichun.webp"
+    },
+    {
+      "id": "notice-bits",
+      "name": "通知_提示 Bits",
+      "file": "notice-bits.webp",
+      "source": "蓝色大肥鱼_通知_提示 Bits_2026-08-18-14-01-30.gif",
+      "seq": null,
+      "tags": [
+        "通知_提示 Bits",
+        "通知",
+        "打赏动画"
+      ],
+      "aliases": [
+        "notice",
+        "bits",
+        "donate",
+        "notice-bits"
+      ],
+      "bytes": 715886,
+      "sha256": "8bdbeb7a16612c890ea43918eb4f154ff78bb2e4f41ab30efbb409a90b707706",
+      "w": 240,
+      "h": 240,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 715886,
+        "step": 5
+      },
+      "thumb": "notice-bits.webp"
+    },
+    {
+      "id": "notice-star",
+      "name": "通知_提示 星星_收藏",
+      "file": "notice-star.webp",
+      "source": "蓝色大肥鱼_通知_提示 星星_收藏_2026-08-18-14-02-04.gif",
+      "seq": null,
+      "tags": [
+        "通知_提示 星星_收藏",
+        "通知",
+        "收藏动画"
+      ],
+      "aliases": [
+        "notice",
+        "star",
+        "save",
+        "favorite",
+        "notice-star"
+      ],
+      "bytes": 553818,
+      "sha256": "c5fd6ce4fcbbf2823e28375041ecdb55f5dcc53f1323f40e2fa4fa830e4673c3",
+      "w": 200,
+      "h": 200,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 553818,
+        "step": 6
+      },
+      "thumb": "notice-star.webp"
+    },
+    {
+      "id": "notice-dianzan",
+      "name": "通知_提示 点赞",
+      "file": "notice-dianzan.webp",
+      "source": "蓝色大肥鱼_通知_提示 点赞_2026-08-18-14-01-58.gif",
+      "seq": null,
+      "tags": [
+        "通知_提示 点赞",
+        "通知",
+        "点赞动画"
+      ],
+      "aliases": [
+        "notice",
+        "like",
+        "notice-dianzan"
+      ],
+      "bytes": 716366,
+      "sha256": "c4e6701c716624e26019beb117678d37e31e61215128699adf3db8396d4b633d",
+      "w": 240,
+      "h": 240,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 716366,
+        "step": 5
+      },
+      "thumb": "notice-dianzan.webp"
+    },
+    {
+      "id": "notice-like",
+      "name": "通知_提示 爱心_喜欢",
+      "file": "notice-like.webp",
+      "source": "蓝色大肥鱼_通知_提示 爱心_喜欢_2026-08-18-14-01-51.gif",
+      "seq": null,
+      "tags": [
+        "通知_提示 爱心_喜欢",
+        "通知",
+        "喜欢",
+        "点赞动画"
+      ],
+      "aliases": [
+        "notice",
+        "like",
+        "notification",
+        "notice-like"
+      ],
+      "bytes": 552600,
+      "sha256": "d3d23b1d48f6a06415694531e9a77404c0a8e68e9332d8cb2ea5261a1095b688",
+      "w": 200,
+      "h": 200,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 552600,
+        "step": 6
+      },
+      "thumb": "notice-like.webp"
+    },
+    {
+      "id": "notice-coin",
+      "name": "通知_提示 硬币",
+      "file": "notice-coin.webp",
+      "source": "蓝色大肥鱼_通知_提示 硬币_2026-08-18-14-01-45.gif",
+      "seq": null,
+      "tags": [
+        "通知_提示 硬币",
+        "通知",
+        "投币动画"
+      ],
+      "aliases": [
+        "notice",
+        "coin",
+        "donate",
+        "notice-coin"
+      ],
+      "bytes": 562526,
+      "sha256": "f97a2fdde11b6bcccf4f581bcaa6e50c26313700f84ed8cfaf12628b92c6d784",
+      "w": 200,
+      "h": 200,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 562526,
+        "step": 6
+      },
+      "thumb": "notice-coin.webp"
+    },
+    {
+      "id": "notice-custom",
+      "name": "通知_自定义",
+      "file": "notice-custom.webp",
+      "source": "蓝色大肥鱼_通知_自定义_2026-08-18-14-01-38.gif",
+      "seq": null,
+      "tags": [
+        "通知_自定义",
+        "通知",
+        "自定义"
+      ],
+      "aliases": [
+        "notice",
+        "custom",
+        "notice-custom"
+      ],
+      "bytes": 567546,
+      "sha256": "2fc75ba32ae5b2aa46cff3bba5f969585c215adf762ec1d396271e9ac61d5951",
+      "w": 200,
+      "h": 200,
+      "frames": 86,
+      "fps": 50,
+      "durationMs": 1720,
+      "encode": {
+        "size": 200,
+        "quality": 30,
+        "bytes": 567546,
+        "step": 6
+      },
+      "thumb": "notice-custom.webp"
+    },
+    {
+      "id": "qian",
+      "name": "钱",
+      "file": "qian.webp",
+      "source": "蓝色大肥鱼_钱_2026-08-18-14-21-34.gif",
+      "seq": null,
+      "tags": [
+        "钱",
+        "钞票",
+        "付费",
+        "预算"
+      ],
+      "aliases": [
+        "money",
+        "cash",
+        "cost",
+        "budget",
+        "qian"
+      ],
+      "bytes": 603880,
+      "sha256": "d557b383e094b19f45fac84705354b28e17b0be31c76b0a1bc53912184419230",
+      "w": 320,
+      "h": 320,
+      "frames": 49,
+      "fps": 50,
+      "durationMs": 980,
+      "encode": {
+        "size": 320,
+        "quality": 40,
+        "bytes": 603880,
+        "step": 3
+      },
+      "thumb": "qian.webp"
+    },
+    {
+      "id": "wenhao",
+      "name": "问号",
+      "file": "wenhao.webp",
+      "source": "蓝色大肥鱼_问号_2026-08-18-14-25-05.gif",
+      "seq": null,
+      "tags": [
+        "问号",
+        "疑惑",
+        "不懂"
+      ],
+      "aliases": [
+        "question",
+        "confused",
+        "what",
+        "wenhao"
+      ],
+      "bytes": 678166,
+      "sha256": "fa9361a2f6cbb1f9f3b6e6387bd2ec02cf68c7fc3e293ff41430598bbf6ed48e",
+      "w": 280,
+      "h": 280,
+      "frames": 57,
+      "fps": 50,
+      "durationMs": 1140,
+      "encode": {
+        "size": 280,
+        "quality": 40,
+        "bytes": 678166,
+        "step": 4
+      },
+      "thumb": "wenhao.webp"
+    },
+    {
+      "id": "jingyin-1",
+      "name": "静音",
+      "file": "jingyin-1.webp",
+      "source": "蓝色大肥鱼_静音 1_2026-08-18-14-21-45.gif",
+      "seq": 1,
+      "tags": [
+        "静音",
+        "闭嘴",
+        "安静"
+      ],
+      "aliases": [
+        "mute",
+        "quiet",
+        "shutup",
+        "jingyin",
+        "jingyin-1"
+      ],
+      "bytes": 532416,
+      "sha256": "2b009e2fa51b12c6af76df159b1ab32266a0d749b6603eaf474d1981eb04989d",
+      "w": 320,
+      "h": 320,
+      "frames": 41,
+      "fps": 41.49,
+      "durationMs": 988,
+      "encode": {
+        "size": 320,
+        "quality": 50,
+        "bytes": 532416,
+        "step": 2
+      },
+      "thumb": "jingyin-1.webp"
+    },
+    {
+      "id": "jingyin-2",
+      "name": "静音",
+      "file": "jingyin-2.webp",
+      "source": "蓝色大肥鱼_静音 2_2026-08-18-14-22-18.gif",
+      "seq": 2,
+      "tags": [
+        "静音",
+        "闭嘴",
+        "安静"
+      ],
+      "aliases": [
+        "mute",
+        "quiet",
+        "shutup",
+        "jingyin",
+        "jingyin-2"
+      ],
+      "bytes": 690160,
+      "sha256": "cecbf413e4cfd91f8b144987f0e0f90fcb231d7e9c28e47e938481010cc62644",
+      "w": 240,
+      "h": 240,
+      "frames": 82,
+      "fps": 50,
+      "durationMs": 1640,
+      "encode": {
+        "size": 240,
+        "quality": 35,
+        "bytes": 690160,
+        "step": 5
+      },
+      "thumb": "jingyin-2.webp"
+    },
+    {
+      "id": "chan-daocha",
+      "name": "馋(刀叉)",
+      "file": "chan-daocha.webp",
+      "source": "蓝色大肥鱼_馋(刀叉)_2026-08-18-14-09-51.gif",
+      "seq": null,
+      "tags": [
+        "馋(刀叉)",
+        "嘴馋",
+        "开饭"
+      ],
+      "aliases": [
+        "hungry",
+        "crave",
+        "fork",
+        "chan-daocha"
+      ],
+      "bytes": 509530,
+      "sha256": "11e517c30f85d2539b0505f6fd7361eea2ade16f2abc867bce578370d9c771d0",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 509530,
+        "step": 1
+      },
+      "thumb": "chan-daocha.webp"
+    },
+    {
+      "id": "chan-kuaizi",
+      "name": "馋(筷子)",
+      "file": "chan-kuaizi.webp",
+      "source": "蓝色大肥鱼_馋(筷子)_2026-08-18-14-09-43.gif",
+      "seq": null,
+      "tags": [
+        "馋(筷子)",
+        "嘴馋",
+        "想吃"
+      ],
+      "aliases": [
+        "hungry",
+        "crave",
+        "chopsticks",
+        "chan-kuaizi"
+      ],
+      "bytes": 501394,
+      "sha256": "e0560a52fab2c90a9b4b0a89b9b066f238b9ae7759735c5e4bb702200082805e",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 501394,
+        "step": 1
+      },
+      "thumb": "chan-kuaizi.webp"
+    },
+    {
+      "id": "jiashi",
+      "name": "驾驶",
+      "file": "jiashi.webp",
+      "source": "蓝色大肥鱼_驾驶_2026-08-18-14-09-11.gif",
+      "seq": null,
+      "tags": [
+        "驾驶",
+        "开车",
+        "上路"
+      ],
+      "aliases": [
+        "drive",
+        "car",
+        "roadtrip",
+        "jiashi"
+      ],
+      "bytes": 345932,
+      "sha256": "1fd3d5f5011914adcfc649eb1b9e961f1ac32b89727cf69dc20a8a747c46fd6a",
+      "w": 320,
+      "h": 320,
+      "frames": 26,
+      "fps": 50,
+      "durationMs": 520,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 345932,
+        "step": 1
+      },
+      "thumb": "jiashi.webp"
+    },
+    {
+      "id": "mofa",
+      "name": "魔法",
+      "file": "mofa.webp",
+      "source": "蓝色大肥鱼_魔法_2026-08-18-14-20-35.gif",
+      "seq": null,
+      "tags": [
+        "魔法",
+        "魔法",
+        "施法",
+        "变"
+      ],
+      "aliases": [
+        "magic",
+        "spell",
+        "abracadabra",
+        "mofa"
+      ],
+      "bytes": 437366,
+      "sha256": "c34bf1a9d124307f98a835babdcf26e991ba6e9286b92b534832881f7187af7f",
+      "w": 320,
+      "h": 320,
+      "frames": 32,
+      "fps": 50,
+      "durationMs": 640,
+      "encode": {
+        "size": 320,
+        "quality": 60,
+        "bytes": 437366,
+        "step": 1
+      },
+      "thumb": "mofa.webp"
+    }
+  ]
+}
