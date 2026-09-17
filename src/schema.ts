@@ -32,12 +32,6 @@ export function stateFilePath(): string {
 /** 设置面板 schema（schemastery）。 */
 export const MemesSettingsSchema = Schema.object({
   enabled: Schema.boolean().default(DEFAULT_CONFIG.enabled).description('总开关：关掉后不再贴图'),
-  form: Schema.union([
-    Schema.const('inline' as const),
-    Schema.const('sticker' as const),
-  ])
-    .default(DEFAULT_CONFIG.form)
-    .description('呈现形态：inline = 图片 URL 写进回复正文；sticker = 正文零 URL，改用客户端贴纸层（输入框上方）'),
   quality: Schema.union([
     Schema.const('compressed' as const),
     Schema.const('original' as const),
@@ -47,14 +41,14 @@ export const MemesSettingsSchema = Schema.object({
   assetRoot: Schema.string().default(DEFAULT_CONFIG.assetRoot).description('压缩副本目录，留空 = <DSH_HOME>/memes-reply/assets'),
   originalRoot: Schema.string().default(DEFAULT_CONFIG.originalRoot).description('原始素材目录（quality=original 时使用）'),
   cooldownTurns: Schema.number().default(DEFAULT_CONFIG.cooldownTurns).description('同一张贴纸连续 N 轮内不重复，0 = 关闭'),
-  fallback: Schema.string().default(DEFAULT_CONFIG.fallback).description('兜底贴纸 id：关键词一个都匹配不上时用它，保证总有鱼；留空 = 不兜底'),
+  fallback: Schema.string().default(DEFAULT_CONFIG.fallback).description('兜底贴纸 id：规则一个都没选中时用它，保证总有鱼；留空 = 不兜底'),
   autoMode: Schema.union([
     Schema.const('off' as const),
     Schema.const('keyword' as const),
     Schema.const('every' as const),
   ])
     .default(DEFAULT_CONFIG.autoMode)
-    .description('自动贴纸：off = 只由模型决定；keyword = 回复命中情绪词就贴（默认）；every = 每 N 轮必贴一张'),
+    .description('贴纸规则：off = 只在模型点名时贴；keyword = 回复命中情绪词就贴（默认）；every = 每 N 轮必贴一张'),
   autoEveryTurns: Schema.number().default(DEFAULT_CONFIG.autoEveryTurns).description('autoMode=every 时的间隔轮数'),
   petVisible: Schema.boolean().default(DEFAULT_CONFIG.petVisible).description('常驻挂件：页面上一直显示一只大肥鱼（随时能看到）'),
   petSize: Schema.number().default(DEFAULT_CONFIG.petSize).description('常驻挂件边长（px），建议 96–240'),
@@ -66,6 +60,21 @@ export const MemesSettingsSchema = Schema.object({
   ])
     .default(DEFAULT_CONFIG.petCorner)
     .description('常驻挂件默认停靠角（拖动过之后以拖拽坐标为准）'),
+  shape: Schema.union([Schema.const('circle' as const), Schema.const('rounded' as const)])
+    .default(DEFAULT_CONFIG.shape)
+    .description('贴纸外形：circle = 圆形；rounded = 圆角方形（贴纸节点与挂件共用）'),
+  radius: Schema.number().default(DEFAULT_CONFIG.radius).description('圆角方形时的圆角半径（px）'),
+  borderWidth: Schema.number().default(DEFAULT_CONFIG.borderWidth).description('边框粗细（px，0 = 无边框）'),
+  borderStyle: Schema.union([
+    Schema.const('solid' as const),
+    Schema.const('dashed' as const),
+    Schema.const('none' as const),
+  ])
+    .default(DEFAULT_CONFIG.borderStyle)
+    .description('边框样式：实线 / 虚线 / 无'),
+  borderColor: Schema.string().default(DEFAULT_CONFIG.borderColor).description('边框颜色（#rrggbb 之类；留空 = 跟随主题强调色）'),
+  bubbleSize: Schema.number().default(DEFAULT_CONFIG.bubbleSize).description('贴纸边长（px，按在回复气泡右下角的那张）'),
+  bubbleRise: Schema.number().default(DEFAULT_CONFIG.bubbleRise).description('贴纸上移量（px，压住气泡右下角用）'),
 })
 
 /** 把设置面板读到的原始值补成完整配置。 */
@@ -73,7 +82,6 @@ export function resolveConfig(raw: unknown): MemesConfig {
   const value = (raw ?? {}) as Partial<MemesConfig>
   return {
     enabled: value.enabled ?? DEFAULT_CONFIG.enabled,
-    form: value.form ?? DEFAULT_CONFIG.form,
     quality: value.quality ?? DEFAULT_CONFIG.quality,
     assetRoot: value.assetRoot ?? DEFAULT_CONFIG.assetRoot,
     originalRoot: value.originalRoot ?? DEFAULT_CONFIG.originalRoot,
@@ -84,5 +92,12 @@ export function resolveConfig(raw: unknown): MemesConfig {
     petVisible: value.petVisible ?? DEFAULT_CONFIG.petVisible,
     petSize: value.petSize ?? DEFAULT_CONFIG.petSize,
     petCorner: value.petCorner ?? DEFAULT_CONFIG.petCorner,
+    shape: value.shape ?? DEFAULT_CONFIG.shape,
+    radius: value.radius ?? DEFAULT_CONFIG.radius,
+    borderWidth: value.borderWidth ?? DEFAULT_CONFIG.borderWidth,
+    borderStyle: value.borderStyle ?? DEFAULT_CONFIG.borderStyle,
+    borderColor: value.borderColor ?? DEFAULT_CONFIG.borderColor,
+    bubbleSize: value.bubbleSize ?? DEFAULT_CONFIG.bubbleSize,
+    bubbleRise: value.bubbleRise ?? DEFAULT_CONFIG.bubbleRise,
   }
 }

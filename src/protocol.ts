@@ -17,14 +17,30 @@ export const THUMB_PATH = `${ROUTE_PREFIX}/thumb`
 /** 素材清单端点（预览墙数据）。 */
 export const CATALOG_PATH = `${ROUTE_PREFIX}/catalog`
 
+/**
+ * 检索词表端点（v2.0 客户端派生用）。
+ *
+ * 与 `/catalog` 的区别：这里是**全量**的精简词表（id/name/tags/aliases + 全尺寸 URL），
+ * 一次拉取、只在客户端做关键词扫描用；`/catalog` 是分页+种子的预览墙数据。
+ */
+export const VOCAB_PATH = `${ROUTE_PREFIX}/vocab`
+
+/**
+ * 会话态端点（静音 / 一次性指定 / 最近用过）。
+ *
+ * v2.0 把"贴哪张"的**算法**搬到了客户端（纯派生、刷新即重放），但"人按过的开关"
+ * 仍然由宿主说了算：这个端点就是客户端读那三个字段的唯一入口。
+ */
+export const SESSION_STATE_PATH = `${ROUTE_PREFIX}/session-state`
+
 /** 「下一轮用这张」端点（设置面板写入）。 */
 export const LATCH_PATH = `${ROUTE_PREFIX}/latch`
 
-/** 自动贴纸待取位（客户端轮询取走）。 */
-export const AUTO_PENDING_PATH = `${ROUTE_PREFIX}/auto/pending`
+/** 界面落点（常驻挂件的拖拽坐标，客户端读写，落在 state.json）。 */
+export const LAYOUT_PATH = `${ROUTE_PREFIX}/layout`
 
-/** 常驻挂件的位置与形态（客户端读写，落在 state.json）。 */
-export const PET_PATH = `${ROUTE_PREFIX}/pet`
+/** 旧名保留：`/pet` 与 `/layout` 等价（早期版本只服务挂件）。 */
+export const PET_PATH = LAYOUT_PATH
 
 /** 诊断端点。 */
 export const STATS_PATH = `${ROUTE_PREFIX}/stats`
@@ -78,9 +94,4 @@ export function thumbFileOf(entry: { id: string; thumb?: string | null }): strin
 /** 组装一张缩略图的绝对 URL。 */
 export function thumbUrl(origin: string, entry: { id: string; thumb?: string | null }): string {
   return `${origin}${THUMB_PATH}/${thumbFileOf(entry)}`
-}
-
-/** 组装正文里的 markdown 图片片段。alt 留空：流式期间未出图时不至于显示杂字。 */
-export function markdownImage(url: string): string {
-  return `![](${url})`
 }

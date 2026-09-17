@@ -1,14 +1,38 @@
 # dsh-memes-reply
 
-让 DSH 在回复里贴一张**会动的**蓝色大肥鱼表情包。素材经插件自有 HTTP 路由直出，保留动画（**动画 WebP，默认保留全部帧**）。
+让 DSH 在**每一条回复**右下角贴一张**会动的**蓝色大肥鱼表情包。
 
-- 模型按语境用一个工具挑图，**一轮最多一张**（硬性拦在工具层，不指望模型自觉）
-- 素材不进系统提示词：157 张全在 `index.json` 里，靠关键词/中文标签检索
-- 不动任何既有 UI：图片用 markdown 内联进回复正文，流式打字期间就能看到
-- **原生风格的配置面板**（设置 → 插件 → 可配置）：实时状态行 + 12 个配置字段 + 素材预览墙，"点一张＝下一轮贴它"
+## v2.0：贴纸是"会话流里的一个节点"
+
+贴纸不再是"宿主发事件、客户端抢座位渲染"的浮层，而是**会话事件的纯函数**：
+一轮 = 一个节点，跟着那条回复走 —— 向上滚回历史能看到、刷新页面还在、每个会话各是各的。
+生成中先显示「思考中 / 打字中」，回复写完的瞬间**同一个节点**换成这一轮的最终贴纸。
+
+- **每回合一张**，不用模型操心（`autoMode=every` 时每轮必贴；模型也可以用 `use_sticker` 点名要哪张）
+- **两阶段**：生成中 = 占位表情 → 落定 = 最终贴纸（结构性替换，不是遮住）
+- **会动**：永远加载全尺寸动画 WebP，不走首帧缩略图
+- **零日志污染**：不往 session log 写自定义事件（那会让日志在别的构建里"拒绝解释"，见下）
+- **原生风格的配置面板**（设置 → 插件 → 可配置）：状态行 + 18 个字段 + 素材预览墙
 - **常驻挂件**：页面上**一直**有一只大肥鱼（点一下换一张、可拖、可收成小圆点）——随时能看到
-- **自动贴纸（B-auto）**：模型没贴时，按规则**不问模型**也补一张（关键词命中 / 每 N 轮），出现在输入框上方
 - 一键关掉：面板总开关 + `/fish off` 本会话静音
+
+### 它长在哪（三个座位）
+
+| 面 | 座位 | 说明 |
+| --- | --- | --- |
+| 贴纸层（主线） | keyed `conversation.chat.node` + 自定义 `ConversationNodeDefinition` | 一轮一个节点；`anchorSeq` = 收尾回复的 seq + 0.1，正好落在回复下面、操作行上面 |
+| 常驻挂件 | `shell.overlay`（加法型，frame-wide） | "随时能看到"是硬需求，与"这条回复的贴纸"是两个职责 |
+| 设置面板 | `settings.plugin.item`（key = 命名空间） | 官方折叠卡片风格 |
+
+### 为什么不用自定义会话事件
+
+最"正统"的写法是像官方 `present` 工具那样把决定 `session.append('memes-reply/sticker', …)` 写进日志。
+**这条路对本插件是危险的**：`Session.append()` 没有任何渠道设置 `ignorable` 标记，而持久化读取的规则是
+"未知类型且未标记 `ignorable` → **拒绝解释整个日志**"，且已知类型表是**仓库内生成**的静态表、
+下游插件类型按构造就不在里面。写自定义事件 = 让用户的历史会话变成打不开。
+
+所以 v2.0 只**读**会话事件：决定完全是 `(会话, 轮次, 收尾正文, 模型的工具实参, 宿主开关)` 的纯函数
+（`src/derive.ts`，host 与浏览器共用同一份实现），可重放、无竞态、零污染。
 
 ## 安装
 
@@ -24,7 +48,22 @@ node scripts/import-assets.mjs --format webp --also-package --thumbs
 
 `dsh --profile web --dump-config` 里能看到 `id: memes-reply` 就说明装对了。
 装好后 `node test/live-probe.mjs` 会一次性把客户端 bundle、贴纸字节、缩略图、清单、
-「下一轮用这张」与状态行全部打一遍。
+`/vocab`、`/session-state`、「下一轮用这张」与状态行全部打一遍。
+
+> **改了 host 半区必须重启 `dsh web`**（路由是启动时注册的）；只改浏览器半边则刷新页面即可。
+> 客户端贴纸层为此带了一份**打包词表兜底**：宿主没重启（`/vocab` 还是 404）时它照样工作。
+
+## 用法
+
+| 入口 | 说明 |
+| --- | --- |
+| （默认） | `autoMode=every` 时**每回合一张**，什么都不用做 |
+| 工具 `use_sticker(mood, id?)` | 模型点名要哪张：`mood` 是**2–4 字情绪词**（得意、翻车、摸鱼、bug、收工…）。工具**只回 id/name**，不产出任何 URL —— 渲染由贴纸层负责 |
+| `/fish` | 状态 + 前 40 张清单 |
+| `/fish list <关键词>` | 过滤清单 |
+| `/fish on` \| `/fish off` | 本会话静音开关（状态持久在 `<DSH_HOME>/memes-reply/state.json`） |
+| `/fish <id\|关键词>` | 给**下一轮**指定一张（一次性；优先于面板的全局指定） |
+| 设置面板 | 状态行 + 18 个字段 + 预览墙 + 「下一轮用这张」（全局一次性指定） |
 
 ## 配置面板
 
@@ -34,24 +73,13 @@ node scripts/import-assets.mjs --format webp --also-package --thumbs
 | 区域 | 内容 |
 | --- | --- |
 | 状态行 | 素材张数 / 格式 / 总体积 / 已服务次数 / 生效的 `index.json` 路径（12 秒轮询 + 手动刷新） |
-| 字段 | 总开关、呈现形态、画质来源、压缩副本目录、原图目录、冷却轮数；每个字段右侧「默认」＝清掉该字段的覆盖（官方 `scope.unset`） |
+| 字段 | 总开关、画质来源、压缩副本目录、原图目录、冷却轮数、兜底贴纸、规则（off/keyword/every）、间隔轮数、挂件三件（开关/大小/停靠角）、外观（形状/圆角/边框粗细/样式/颜色）、贴纸大小与上移量 |
 | 预览墙 | 12 格缩略图（静态首帧，均值 7 KB）＋「换一批」；点一张即 `POST /latch` 设为下一轮指定，并加载全尺寸动画确认 |
 | 底部 | 换一批 · 取消指定 · 丢弃 · 保存 |
 
 配置字段走官方 `ctx.settingsScope`（草稿→保存，revision 冲突自带恢复），落盘到
 `~/.dsh/settings.yaml` 的 `dsh-memes-reply:` 段；状态行/预览墙/指定走插件自己的同源路由。
-
-## 用法
-
-| 入口 | 说明 |
-| --- | --- |
-| 工具 `use_sticker(mood, id?)` | 模型自己调：`mood` 是**2–4 字情绪词**（得意、翻车、摸鱼、bug、收工…）。`form=inline` 返回可粘进正文的 markdown；`form=sticker` 只回"已交给贴纸层"，正文零 URL |
-| `/fish` | 状态 + 前 40 张清单 |
-| `/fish list <关键词>` | 过滤清单 |
-| `/fish on` \| `/fish off` | 本会话静音开关（状态持久在 `<DSH_HOME>/memes-reply/state.json`） |
-| `/fish <id\|关键词>` | 给**下一轮**指定一张（一次性；优先于面板的全局指定） |
-| `/fish mode inline\|sticker` | 本会话形态覆盖（sticker = 正文零 URL，模型挑的那张改走贴纸层） |
-| 设置面板 | 状态行 + 12 个字段 + 预览墙 + 「下一轮用这张」（全局一次性指定） |
+面板里改的规则（`autoMode` / 间隔 / 兜底 / 冷却）由**浏览器半边直接读设置**生效，不需要重启。
 
 ## 常驻挂件：随时能看到大肥鱼
 
@@ -69,147 +97,18 @@ node scripts/import-assets.mjs --format webp --also-package --thumbs
 | 收起后 | 变成 32px 小圆点（用缩略图当图标），点它随时再展开 |
 | 设置 | 常驻挂件开关 / 大小（64–320）/ 默认停靠角 |
 
-## 自动贴纸（B-auto）：不问模型也能贴
+## 贴纸贴在哪一轮、什么时候出现
 
-模型"用不用"是概率，你要的是确定性 —— 所以有第二条路：**host 自己判断，客户端自己画**。
-
-| 环节 | 做法 |
+| 环节 | 说明 |
 | --- | --- |
-| 输入 | host 观察 `llm/stream` 的 `text-delta`，攒下这一轮的助手正文（有上限，只用于扫词） |
-| 决策 | **最后一步的流结束时**（这一步没调工具 ⇒ 正文已完整）就决策；`agent/turn-stopping` 只作兜底，且对同一轮幂等 |
-| 传递 | 结果进"待取位"，客户端每 **0.8 秒**轮询 `/auto/pending`；拿到就放进落地仓（`src/store.ts`，按轮次索引） |
-| 渲染 | `conversation.chat.turnTail` 上的**气泡角圆贴纸**（见下），点图看大图、`✕` 收起 |
+| 一轮一个节点 | 定义匹配 `turn/start`（建）、`step/start` / `assistant/message` / `tool/call` / `turn/end`（更新） |
+| 生成中 | `phase=streaming` → 从「思考 / 打字」那一组里确定性挑一张（同回合永远同一张） |
+| 落定 | `turn/end` 后 `phase=settled` → 按优先级派生：会话/面板指定 > 模型点名 > 规则（keyword/every）> 兜底 |
+| 锚点 | 落定后 = 收尾回复的 seq + 0.1（官方给"助手之后的补充节点"留的偏移）；生成中 = 最后一个持久事件的 seq |
+| 不被折叠 | 锚点落在**收尾回复之后**，因此不进入官方"过程展示"的折叠窗口（探针实测 `过程成员=no`） |
+| 与交付卡片共存 | 我们不在 `turnTail` 那条竞争链上，所以**回复里提文件路径时贴纸照样在**（v1.0 的老事故点） |
 
-### 为什么是"隐形轮询器 + 落地仓 + 链式座位"三件套
-
-链式座位的 `select` 是**同步纯函数**（只拿得到 `{turn, seq, openFile}`，没有 `sessionId`，也不能异步），
-所以自己发不了请求。于是拆成三件：
-
-1. **隐形轮询器**（`conversation.input.dock`，渲染 `null`）：这个座位常驻且拿得到 `sessionId`，负责把待取位搬进仓；
-2. **落地仓**（`src/store.ts`）：按 `turn` 索引 + 新鲜度 + 收起标记，`peek(turn)` 是纯查询（反复调用不会"消费"掉，否则贴纸会闪一下就没）；
-3. **链式座位**（`conversation.chat.turnTail`，`priority: 10`）：`select` 同步查仓，有就接下渲染，没有就让位。
-
-`autoMode` 三档：
-
-- `keyword`（默认）：**整词命中**某个标签/别名才贴（"修好了"→ Bug、"收工"→ 庆祝）。不看整段文本打分，而是反向扫 157 条的关键词表，命中最长的那个词。
-- `every`：每 N 轮必贴一张（`autoEveryTurns`，确定性挑图：`hash(会话:轮次)`，可复现）。
-- `off`：只由模型决定。
-
-三道闸门（任一命中就不补），避免"两条路同时贴"：
-
-1. 模型这一轮已经贴过（同一轮最多一张这条纪律对两条路径都成立）；
-2. 本会话被 `/fish off` 静音；
-3. 命中的贴纸在最近用过列表里（**与手动贴纸共享冷却**）。
-
-代价与取舍：
-
-- 轮询 0.8 秒一次本地 JSON（`autoMode=off` 时响应只有几十字节）；
-- `turnTail` 是**竞争性**链，我用 `priority: 10` 排在 `present` 交付卡片（`priority: 0`）**之后**：
-  **有交付卡片的回合不显示贴纸**，但交付卡片本身完全正常 —— 这是刻意的让位，不是 bug；
-- 链的 ownerProps 里没有 `sessionId`，组件里用 `matched.sessionId === props.sessionId` **再核对一次**；
-  万一误判，失败模式只是"这一回合不显示"。
-
-### 绑定：为什么按 `seq` 而不是按轮次号
-
-真事故（trace 实证，2026-09-16）：
-
-```
-21:52:01  host:publish      turn=22  id=tanhao       ← host 认为这是第 22 轮
-21:52:02  client:poll-event turn=22  id=tanhao       ← 事件已正确送达
-21:52:05  client:select     turn=20  miss            ← 客户端来问的是第 20 轮
-```
-
-host 的轮次号来自 `agent/pre-step`（agent 计数器），客户端的来自 `TurnLocation.turn`
-（会话事件计数器）—— **同一时刻差 2，而且差值会漂移**。所以"按轮次号对齐"这条路本身不成立
-（我最初写的 ±1 兜底只是碰运气）。
-
-改用 `ownerProps.seq`（该轮 `finalNode` 的会话序号，**单调递增、跨编号体系稳定**）：
-
-| 步骤 | 规则 |
-| --- | --- |
-| 事件到达 | 记下"已见过的最大 seq"作为**水线** |
-| selector 判定 | 本轮已认领过 → 稳定返回；编号恰巧一致 → 直接命中；否则**第一条 seq 越过水线的尾巴**接手 |
-| 页面刚加载就收到事件 | 水线还是 0 → 用**第一条**渲染的尾巴立基线，不接手（否则历史上最旧的那一轮会抢走它） |
-| 组件挂载 | `claim(turn)` 把待绑定那张搬到本轮，之后本轮稳定返回、别的轮次再也拿不走 |
-| 保留时长 | 客户端仓 30 分钟（比 host 投递 TTL 长得多）：`every` 在轮次开始就发布，而长回合可能跑十几分钟 |
-
-> 备选 `conversation.chat.assistant-actions` 看着更合适（**list** 加法型、还给 `messageId`），
-> 但被否掉了：`data-actions-reveal=hover` 的 CSS 只命中 `.actions` 容器，而 `extraActions`
-> 渲染在它**内部** —— 贴纸会跟着图标行在**旧回合**一起被 hover 隐藏。尾巴链的内容是它的
-> **兄弟节点**，不受影响。
-
-### 时序：为什么 `every` 模式在"轮次开始"就发布
-
-链式座位的 `select` 是**渲染期同步判定**，而轮询是 800ms 一次 —— 如果等到"流结束"才发布，
-渲染那一刻仓里大概率还是空的（发布到渲染的窗口只有几十毫秒），**约 94% 的回合必然 miss**，
-而且那个节点之后不会再重渲染。所以：
-
-| 模式 | 发布时机 | 理由 |
-| --- | --- | --- |
-| `every` | **`agent/pre-step`（轮次开始）** | 不需要正文，越早越稳：事件必然先于尾巴节点渲染进仓 |
-| `keyword` | 最后一步的流结束 | 需要正文；仍有极小概率赶不上，此时下一轮的 ±1 兜底会把它补上（晚一轮显示） |
-| 模型 `form=sticker` | 工具调用时 | 更早，天然安全 |
-
-另外修掉两个"会静默不出图"的坑：
-
-- **游标跨进程失效**：重启后 host 的 `seq` 归零，而浏览器里的旧游标还停在上一进程的值 →
-  `event.seq <= since` 会把事件**永久**过滤掉。现在 `pending` 会把"超前"的游标夹回 0。
-- **坏轮次号**：`every` 模式下 `turn` 缺失时 `NaN % 1 !== 0` → 永远不发布且零报错。
-  现在轮次号/间隔非法一律按 `1` 处理（宁可按规则贴一张，也不要静默不贴）。
-
-### 出问题时怎么查（`/stats.trace`）
-
-这条链有四个环节：host 决策 → 待取位 → 客户端轮询 → 链式座位渲染。任何一环静默失败都表现为
-"什么都没出现"。所以两端都把关键动作写进同一个**内存环形缓冲**（最新 48 条，不落盘），
-`GET /api/dsh-memes-reply/stats` 的 `trace` 字段一次读全：
-
-| 谁记的 | kind | 说明 |
-| --- | --- | --- |
-| host | `host:tap-installed` / `host:tap-no-session` | 模型流观察者挂上了吗 / 请求里没带 sessionId |
-| host | `host:final-step` | 最后一步（没调工具）→ 该决策了 |
-| host | `host:turn-stopping` | 兜底路径触发 |
-| host | `host:bail` | **为什么没贴**（总开关 / autoMode=off / 本轮已贴 / 静音 / 模型已贴 / 索引缺失 / 没选中） |
-| host | `host:publish` | 已发布（带 id 与 reason） |
-| 浏览器 | `client:poller-mount` | 隐形轮询器挂上了（带它拿到的 `sessionId`） |
-| 浏览器 | `client:poll-alive` | 心跳（`ticks`/`since`）→ 证明真的在轮询 |
-| 浏览器 | `client:poll-failed` / `client:poll-event` | 请求失败 / 收到事件（带 `response.turn`） |
-| 浏览器 | `client:select` | 链式选择器判定（`hit:<id>` / `miss`，带 owner 的轮次号） |
-| 浏览器 | `client:bubble-mount` | 气泡组件真的挂载了（带 `event.turn`） |
-
-对照 `client:select` 的 `turn` 与 `host:publish` 的 `turn`，就能立刻看出"两侧轮次号是否一致"。
-
-> 顺带修掉一个真会静默失效的 bug：`every` 模式下若轮次号缺失，`NaN % 1 !== 0` 会永远不发布、
-> 且没有任何报错。现在轮次号/间隔非法时按 `1` 处理（宁可按规则贴一张，也不要静默不贴），
-> 并有回归测试钉住。
-
-## 为什么自己写路由
-
-官方 `/api/file` 是给"正文里显示本地文件"准备的，但它 `Cache-Control: private, no-store`、无 Range、且带连接服务鉴权；贴纸动辄几百 KB 到 3 MB，靠它会每次渲染重下。自带路由可以：
-
-- `ETag`（素材 sha256）+ `Cache-Control: private, max-age=31536000, immutable` → 同一张只下载一次
-- 只接受回环 Host，不发任何 CORS 头（与 `dsh-showme-html` 同款围栏）
-- id 走白名单正则（`^[a-z0-9][a-z0-9-]{0,39}$`），**不存在路径穿越面**
-
-也**没有**走 DSH 附件流水线：那条路会把 GIF 归一化成静态图（只留第一帧），鱼就不动了。
-
-## 为什么别的会话不贴纸（以及怎么解决）
-
-工具对**所有会话**都可用——扫全部会话日志可见：装好之后跑过的别的会话，请求里都带着
-`use_sticker`（`ds-tts` 连续 6 轮都带着），但**一次都没调用过**。原因是它排在 71 个工具的目录末尾，
-在正常写代码/查问题的流程里，模型没有理由去动一个"装饰性"工具；**可用 ≠ 会用**。
-
-所以插件除了注册工具，还往系统提示里加**一行**（`ctx.systemPrompt.section()`，顺序锚在所有内置工具
-说明之后）：
-
-> 情绪合适时（问题修好、踩了坑、夸一句、任务收工）可以用 use_sticker 贴一张大肥鱼；一轮最多一张，用户说不要图时别贴。
-
-- 只在 **工具真的注册了 + 总开关开着 + 本会话没被 `/fish off` 静音** 时输出，否则输出空串（0 token）；
-- 约 60 token/请求；把总开关关掉就全省掉；
-- 想要**确定性**（每条回复都有图、完全不问模型）得靠 M2 的客户端贴纸层，那是另一条路。
-
-## 素材与画质
-
-原图 460 MB / 500×500 / **50fps**。50fps 对卡通贴纸是浪费，但既然选了"保留全部帧"，压缩就只动尺寸与质量：
+## 素材与体积
 
 | 档 | 参数（动画 WebP） |
 | --- | --- |
@@ -217,8 +116,6 @@ host 的轮次号来自 `agent/pre-step`（agent 计数器），客户端的来�
 | 4 | 280px · q40 |
 | 5 | 240px · q35 |
 | 6 | 200px · q30 |
-
-320px 是前端 markdown 图片的满尺寸显示上限（CSS `width:auto; max-width:100%`），再大纯属浪费。
 
 ```bash
 # 默认：保留全部帧，单张上限 700 KB（体积换顺滑）
@@ -241,6 +138,9 @@ node scripts/import-assets.mjs --reindex --also-package   # 只重算元数据+�
 改素材语义/标签：编辑 `scripts/sticker-map.json`（128 条：id + 中文 tags + 英文 aliases），重跑导入。
 `id` 是 ASCII 短名（`dianzan`、`aixin-2`），进 URL；原名只留在索引里。
 
+> 重跑导入后要执行 `npm run build`：客户端自带一份**打包词表**（`src/client/vocab-fallback.json`，
+> 由 `scripts/build-client-vocab.mjs` 从 `assets/index.json` 生成），有测试盯着它与索引不漂移。
+
 ### 词的纪律（踩过两次）
 
 **凡是展示给模型看的词，都必须能被自己的检索器命中**：工具描述里的例子、系统提示里的场景短语、
@@ -248,65 +148,85 @@ node scripts/import-assets.mjs --reindex --also-package   # 只重算元数据+�
 踩过的两次：描述里写「得意」却检索不到；提示里写「任务收工」导致模型传「扒源码收工」也检索不到。
 
 检索器对中文是容忍的：`修好了`→`修好`、`踩了坑`→`踩坑`、`扒源码收工`→（含）`收工` 都能落到图上，
-而 ≤2 字的短查询（`点赞`、`哭`）行为不变。匹配不上时工具会**明说可以重试**并给出保证命中的词；
-设置里的「兜底贴纸」（默认关）能让它无论如何都贴一张，并如实标注是兜底。
+而 ≤2 字的短查询（`点赞`、`哭`）行为不变。模型只给 `mood` 时，**客户端用同一套检索器解出 id**。
+匹配不上时工具会**明说可以重试**；设置里的「兜底贴纸」（默认关）能让它无论如何都贴一张，并如实标注。
 
-查"最近到底有没有人用上"：
+## 诊断
 
 ```bash
-node scripts/scan-sticker-usage.mjs           # 每个会话：提示是否进请求 / 工具是否可用 / 是否真调用 / 出了几张图
+node scripts/probe-report.mjs 40     # 读 /stats：这一版 bundle 加载了吗 / 节点渲染了吗 / 选的是哪张 / 有没有被折叠
+node scripts/scan-sticker-usage.mjs  # 每个会话：提示是否进请求 / 工具是否可用 / 是否真调用 / 出了几张图
 ```
+
+浏览器控制台宿主看不到，所以客户端的关键动作都会经 `POST /debug` 回传到 host 的环形缓冲
+（`/stats` 一次读全）——这是"某条回复为什么没有贴纸"唯一能看见的办法。
 
 ## 开发
 
 ```bash
 npm run typecheck          # tsc --noEmit（host + client 全量）
-npm run build              # tsc 出 host（lib/*.js + d.ts）→ tsdown 出客户端 bundle（lib/client.js）
+npm run build              # 生成打包词表 → tsc 出 host（lib/*.js + d.ts）→ tsdown 出客户端 bundle
 npm run check:client       # 客户端 bundle 纯净化检查（宿主依赖不得进浏览器）
-npm test                   # 先 build + 纯洁检查，再跑 53 个测试
-node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字节/304/缩略图/清单/latch/状态行）
+npm test                   # 先 build + 纯洁检查，再跑 62 个测试
+node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字节/304/缩略图/词表/会话态/latch/状态行）
 ```
 
-测试分四类：`route.test.mjs`（路由分支：字节/缩略图/清单/latch/围栏）、`search.test.mjs`（检索，含
-"工具描述里的示例词必须命中"的回归）、`apply.test.mjs`（桩服务跑 `apply()`，串通"工具→URL→字节→
-限额→/fish→面板指定"）、`index.test.mjs` + `thumbs.test.mjs`（真实产物体检）、`client-bundle.test.mjs`（产物契约）。
+测试分工：`route.test.mjs`（路由分支：字节/缩略图/清单/词表/会话态/latch/围栏）、
+`search.test.mjs`（检索，含"工具描述里的示例词必须命中"的回归）、`derive.test.mjs`（v2.0 派生优先级与确定性）、
+`auto.test.mjs`（规则）、`apply.test.mjs`（桩服务跑 `apply()`：工具→字节→/fish→面板指定→两个新端点）、
+`index.test.mjs` + `thumbs.test.mjs`（真实产物体检）、`vocab-fallback.test.mjs`（打包词表不许漂移）、
+`client-bundle.test.mjs`（产物契约）。
 
 浏览器半边的纪律：`src/client/**` 只能 import `react`、`@deepseek-ai/dsh-client-*` 和本包的
-`types.ts`/`protocol.ts`/`config.ts`。**绝不能** import `schema.ts`（会把 schemastery 打进浏览器），
-这条由 `npm run check:client` 强制。
+纯模块（`types.ts` / `protocol.ts` / `config.ts` / `derive.ts` / `search.ts`）。
+**绝不能** import `schema.ts`（会把 schemastery 打进浏览器），这条由 `npm run check:client` 强制。
+
+改客户端后要在 `/stats` 里核对 `client-apply` 回执里的 `build=`（`src/client/index.tsx` 顶部的
+`CLIENT_BUILD`）——不然你看到的可能还是上一版 bundle。
 
 ## 已知局限
 
-- **形态 B 已实现**：`form=sticker` 时模型挑的那张走贴纸层（正文零 URL），另有 B-auto 的自动贴纸
-- 配置面板只在 **Web GUI** 存在（Electron/CLI 没有这个 surface），不影响 host 侧功能
+- 贴纸层依赖浏览器半边的**节点定义 API**（部署版 `@deepseek-ai/dsh-client-ui-conversation` 1.5-rc.1
+  的 `ctx.uiConversation.events.register`）：CLI/headless 没有这个 surface，那里只有工具与路由
+- 构建期依赖（rc.8）里注册表还叫 `ctx.conversationEvents`，所以客户端是**按运行时的名字**做的兼容
+  （`src/client/node.tsx` 顶部有说明），不 import 那个包的类型
+- 历史回合不补贴纸：派生只对"装了之后产生的回合"生效（刻意不改写已有历史）
 - 预览墙依赖缩略图：没跑过 `--thumbs` 时该格降级成名字 chip（不会破图）
 - 动画 WebP 需要现代浏览器（Chrome/Edge/Firefox，Safari 14+）；老浏览器只会显示第一帧
-- 图片只在 Web GUI 有意义：CLI/headless 场景里 markdown 只是文本，URL 会变成噪音
-- 路由无 Range：图片是整文件读（单张 ≤16 MiB 上限）；WebP 本身已压缩，不做 gzip
-- 素材字节走 `ctx.fs`：会话处于受限沙箱模式时读取可能被拒，此时工具**不产出 URL**（宁可让模型换一张，也不出破图）
+- 素材字节走 `ctx.fs`：会话处于受限沙箱模式时读取可能被拒，此时工具不选图（宁可没有，也不出破图）
 - 原图目录是可选项：`quality=original` 需要自己填 `originalRoot`，否则静默回落压缩副本
+- 路由无 Range：图片是整文件读（单张 ≤16 MiB 上限）；WebP 本身已压缩，不做 gzip
 - `POST /latch` 没有鉴权（本机任意页面可调）：只影响"下一轮贴哪张"，且有回环围栏 + 不发 CORS 头 + id 白名单
 
 ## 文件地图
 
 | 路径 | 作用 |
 | --- | --- |
-| `src/index.ts` | host 装配：路由 + 工具 + 命令 + 设置 + 轮次观察者 |
-| `src/route.ts` | 七条端点：`/sticker`、`/thumb`、`/catalog`、`/latch`、`/auto/pending`、`/pet`、`/stats`（回环围栏、ETag/304） |
-| `src/tool.ts` | `use_sticker`：选图（会话指定 > 面板指定 > id > 检索）、每轮限额、形态分支 |
-| `src/assets.ts` | 索引加载与三根解析（原图 → assetRoot → 包内 assets；缩略图同理） |
+| `src/index.ts` | host 装配：路由（含 `/vocab` `/session-state`）+ 工具 + 命令 + 设置 |
+| `src/route.ts` | 九条端点：`/sticker`、`/thumb`、`/catalog`、`/vocab`、`/session-state`、`/latch`、`/layout`、`/stats`、`/debug`（回环围栏、ETag/304） |
+| `src/derive.ts` | **v2.0 核心**：派生优先级与确定性（host 与浏览器共用） |
+| `src/auto.ts` | 三条规则的纯逻辑（keyword / every / off） |
 | `src/search.ts` | 关键词检索（纯函数，中文反向包含 + 同分按名字短优先） |
+| `src/tool.ts` | `use_sticker`：点名校验 + 维护宿主开关（静音/指定/冷却） |
 | `src/command.ts` | `/fish` |
-| `src/auto.ts` | 自动贴纸引擎：文本缓冲、规则（keyword/every）、待取位、流观察者 + "最后一步"信号（纯函数可测） |
-| `src/store.ts` | 贴纸落地仓（按轮次索引 + 新鲜度 + 收起标记），host 与浏览器共用、纯逻辑可单测 |
+| `src/assets.ts` | 索引加载与三根解析（原图 → assetRoot → 包内 assets；缩略图同理） |
 | `src/prompt.ts` | 系统提示里的一行"贴纸可用"提示（按开关/静音/工具是否注册动态输出） |
-| `src/state.ts` / `src/schema.ts` / `src/config.ts` / `src/turn.ts` / `src/protocol.ts` / `src/types.ts` | 状态、设置 schema（含 schemastery）、纯常量、每轮账本、共享常量与类型 |
-| `src/client/index.tsx` | 浏览器半边：注入样式 + 注册 `settings.plugin.item`、`shell.overlay`、`conversation.input.dock`、`conversation.chat.turnTail` |
+| `src/state.ts` / `src/schema.ts` / `src/config.ts` / `src/protocol.ts` / `src/types.ts` / `src/theme.ts` | 状态、设置 schema、纯常量、共享协议、类型、外观变量 |
+| `src/client/index.tsx` | 浏览器半边入口：最外层回执 + 样式 + 面板 + 挂件 + 贴纸层 |
+| `src/client/node.tsx` | **贴纸层**：`ConversationNodeDefinition` + keyed 渲染器（两阶段、锚点、动画、可观测回执） |
+| `src/client/vocab.ts` | 词表来源：优先 `/vocab`，兜底打包词表 |
 | `src/client/pet.tsx` | 常驻挂件（点击换图 / 拖拽 / 悬停工具 / 收起成小圆点） |
-| `src/client/bubble.tsx` | 气泡角圆贴纸（链式座位，让位交付卡片） |
-| `src/client/poller.tsx` | 隐形轮询器（拿 sessionId 喂落地仓，渲染 null） |
-| `src/client/panel.tsx` / `api.ts` / `auto.ts` / `styles.ts` | 折叠卡片、同源数据通道、轮询封装、主题变量 CSS |
+| `src/client/panel.tsx` / `api.ts` / `styles.ts` | 折叠卡片、同源数据通道、面板 CSS |
 | `scripts/import-assets.mjs` | 压素材 + 缩略图 + `index.json`（零依赖，只要 ffmpeg） |
+| `scripts/build-client-vocab.mjs` | 从 `index.json` 生成客户端打包词表 |
 | `scripts/sticker-map.json` | 128 条语义 → id/tags/aliases（人工可改） |
+| `scripts/probe-report.mjs` | 读 `/stats` 把客户端回执读成人话 |
 | `scripts/check-client-purity.mjs` | 客户端 bundle 纯净化门禁 |
 | `tsdown.config.ts` | 客户端 bundle 构建（CJS closure + 平台模块 external） |
+
+## 历史
+
+v1.0 的贴纸是"宿主发事件 → 客户端轮询取走 → 抢 `turnTail` 座位渲染"，留下了一串事故：
+渲染的是首帧静图（不会动）、尾巴座位被 `present` 交付卡片抢走、刷新即空、事件赶不上渲染。
+复盘与证据都在 `docs/需求与方案-v1.0.md`（§12–§15），v2.0 的重做理由与探针记录在
+`docs/需求与方案-v2.0-贴纸层.md`。

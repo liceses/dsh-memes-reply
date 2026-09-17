@@ -5,8 +5,11 @@
  *   /fish                     看状态与清单
  *   /fish list [关键词]        过滤清单
  *   /fish on | off            本会话静音开关
- *   /fish mode inline|sticker 本会话形态覆盖
  *   /fish <id | 关键词>        给下一轮指定一张（一次性）
+ *
+ * v2.0 变更：`/fish mode inline|sticker` 随 `form` 设置一起退役 —— 贴纸只有一种形态
+ * （会话流里的派生节点，见 `client/node.tsx`），静音与指定仍由宿主状态说了算，
+ * 客户端经 `/session-state` 读取。
  */
 
 import type { CommandDefinition, CommandInvocation, CommandResult } from '@deepseek-ai/dsh-commands'
@@ -15,7 +18,7 @@ import { COMMAND_NAME } from './protocol.js'
 import { effectiveAssetRoot } from './assets.js'
 import { searchStickers } from './search.js'
 import { sessionState } from './state.js'
-import type { MemesConfig, PluginState, StickerForm } from './types.js'
+import type { MemesConfig, PluginState } from './types.js'
 
 /** 命令依赖。 */
 export interface CommandDeps {
@@ -36,11 +39,10 @@ function failure(text: string): CommandResult {
 
 const USAGE = [
   '用法：',
-  '  /fish                      状态与清单',
-  '  /fish list [关键词]         过滤清单',
-  '  /fish on | off             本会话静音开关',
-  '  /fish mode inline|sticker  本会话形态覆盖',
-  '  /fish <id | 关键词>         下一轮指定一张（一次性）',
+  '  /fish                   状态与清单',
+  '  /fish list [关键词]      过滤清单',
+  '  /fish on | off          本会话静音开关',
+  '  /fish <id | 关键词>      下一轮指定一张（一次性）',
 ].join('\n')
 
 /** 构建 `/fish`。 */
@@ -48,7 +50,7 @@ export function createFishCommand(deps: CommandDeps): CommandDefinition {
   return {
     name: COMMAND_NAME,
     description: '大肥鱼贴纸：状态、清单、本会话静音、下一轮指定',
-    input: { hint: '[list|on|off|mode|<id|关键词>]' },
+    input: { hint: '[list|on|off|<id|关键词>]' },
     handler: (invocation: CommandInvocation): CommandResult => {
       const cfg = deps.config()
       const index = deps.index()
@@ -62,11 +64,10 @@ export function createFishCommand(deps: CommandDeps): CommandDefinition {
       const raw = invocation.rawInput.trim()
       const parts = raw.split(/\s+/).filter((part) => part !== '')
       const head = (parts[0] ?? '').toLowerCase()
-      const form: StickerForm = session.form ?? cfg.form
 
       const status = (): string =>
         [
-          `状态：${cfg.enabled ? '总开关开' : '总开关关'} · 形态 ${form} · 画质 ${cfg.quality} · 本会话${session.muted === true ? '已静音' : '正常'}`,
+          `状态：${cfg.enabled ? '总开关开' : '总开关关'} · 规则 ${cfg.autoMode}（每 ${cfg.autoEveryTurns} 轮）· 画质 ${cfg.quality} · 本会话${session.muted === true ? '已静音' : '正常'}`,
           `素材：${index.entries.length} 张 · ${effectiveAssetRoot(cfg)}`,
           session.latch !== undefined && session.latch !== ''
             ? `下一轮指定：《${index.byId.get(session.latch)?.name ?? session.latch}》`
@@ -95,19 +96,6 @@ export function createFishCommand(deps: CommandDeps): CommandDefinition {
         session.muted = head === 'off'
         deps.state.write(state)
         return success(head === 'off' ? '本会话已静音：之后不会再贴图（历史里的图仍可显示）' : '本会话已恢复贴图')
-      }
-
-      if (head === 'mode') {
-        const next = (parts[1] ?? '').toLowerCase()
-        if (next !== 'inline' && next !== 'sticker') return failure(`mode 只支持 inline | sticker\n\n${USAGE}`)
-        if (next === 'sticker') {
-          session.form = 'sticker'
-          deps.state.write(state)
-          return failure('sticker（贴纸层）要等 M2 才能真出图：现在切过去只会"登记但不显示"。已记住你的选择。')
-        }
-        session.form = 'inline'
-        deps.state.write(state)
-        return success('本会话形态：inline（正文内联图片）')
       }
 
       // 其余一律当"下一轮指定一张"。

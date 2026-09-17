@@ -1,0 +1,2663 @@
+{
+  "generatedAt": "2026-09-17T14:01:56.522Z",
+  "source": "assets/index.json",
+  "total": 157,
+  "items": [
+    {
+      "id": "bug",
+      "name": "Bug",
+      "tags": [
+        "Bug",
+        "虫子",
+        "报错",
+        "修bug",
+        "修好",
+        "修复",
+        "踩坑",
+        "调通"
+      ],
+      "aliases": [
+        "bug",
+        "error",
+        "debug",
+        "issue",
+        "fix"
+      ],
+      "file": "bug.webp"
+    },
+    {
+      "id": "popcat-frame",
+      "name": "Popcat 帧",
+      "tags": [
+        "Popcat 帧",
+        "popcat",
+        "逐帧"
+      ],
+      "aliases": [
+        "popcat",
+        "frame",
+        "popcat-frame"
+      ],
+      "file": "popcat-frame.webp"
+    },
+    {
+      "id": "popcat-smooth",
+      "name": "Popcat 平滑",
+      "tags": [
+        "Popcat 平滑",
+        "popcat",
+        "张嘴"
+      ],
+      "aliases": [
+        "popcat",
+        "smooth",
+        "popcat-smooth"
+      ],
+      "file": "popcat-smooth.webp"
+    },
+    {
+      "id": "raid-1",
+      "name": "Raid",
+      "tags": [
+        "Raid",
+        "突袭",
+        "冲击"
+      ],
+      "aliases": [
+        "raid",
+        "rush",
+        "attack",
+        "raid-1"
+      ],
+      "file": "raid-1.webp"
+    },
+    {
+      "id": "raid-2",
+      "name": "Raid",
+      "tags": [
+        "Raid",
+        "突袭",
+        "冲击"
+      ],
+      "aliases": [
+        "raid",
+        "rush",
+        "attack",
+        "raid-2"
+      ],
+      "file": "raid-2.webp"
+    },
+    {
+      "id": "all-good-1",
+      "name": "一切都好",
+      "tags": [
+        "一切都好",
+        "没问题",
+        "放心",
+        "稳了",
+        "跑通",
+        "通过"
+      ],
+      "aliases": [
+        "allgood",
+        "fine",
+        "ok",
+        "noproblem",
+        "works",
+        "all-good",
+        "all-good-1"
+      ],
+      "file": "all-good-1.webp"
+    },
+    {
+      "id": "all-good-2",
+      "name": "一切都好",
+      "tags": [
+        "一切都好",
+        "没问题",
+        "放心",
+        "稳了",
+        "跑通",
+        "通过"
+      ],
+      "aliases": [
+        "allgood",
+        "fine",
+        "ok",
+        "noproblem",
+        "works",
+        "all-good",
+        "all-good-2"
+      ],
+      "file": "all-good-2.webp"
+    },
+    {
+      "id": "all-good-3",
+      "name": "一切都好",
+      "tags": [
+        "一切都好",
+        "没问题",
+        "放心",
+        "稳了",
+        "跑通",
+        "通过"
+      ],
+      "aliases": [
+        "allgood",
+        "fine",
+        "ok",
+        "noproblem",
+        "works",
+        "all-good",
+        "all-good-3"
+      ],
+      "file": "all-good-3.webp"
+    },
+    {
+      "id": "zhuyi",
+      "name": "主意",
+      "tags": [
+        "主意",
+        "灵光一闪",
+        "有办法了"
+      ],
+      "aliases": [
+        "idea",
+        "eureka",
+        "brainwave",
+        "zhuyi"
+      ],
+      "file": "zhuyi.webp"
+    },
+    {
+      "id": "tingzhi-gongzuo",
+      "name": "停止工作",
+      "tags": [
+        "停止工作",
+        "下班",
+        "不干了",
+        "摆烂",
+        "收工",
+        "完工",
+        "下班了"
+      ],
+      "aliases": [
+        "stop",
+        "offwork",
+        "quit",
+        "done",
+        "tingzhi-gongzuo"
+      ],
+      "file": "tingzhi-gongzuo.webp"
+    },
+    {
+      "id": "cuimian",
+      "name": "催眠",
+      "tags": [
+        "催眠",
+        "催眠",
+        "睡觉"
+      ],
+      "aliases": [
+        "hypnosis",
+        "sleep",
+        "focus",
+        "cuimian"
+      ],
+      "file": "cuimian.webp"
+    },
+    {
+      "id": "mojing-fanguang-pixel",
+      "name": "像素墨镜反光",
+      "tags": [
+        "像素墨镜反光",
+        "像素墨镜",
+        "酷"
+      ],
+      "aliases": [
+        "sunglasses",
+        "pixel",
+        "cool",
+        "mojing-fanguang-pixel"
+      ],
+      "file": "mojing-fanguang-pixel.webp"
+    },
+    {
+      "id": "liuqi-dai",
+      "name": "六七(呆)",
+      "tags": [
+        "六七(呆)",
+        "67",
+        "发呆"
+      ],
+      "aliases": [
+        "67",
+        "blank",
+        "liuqi-dai"
+      ],
+      "file": "liuqi-dai.webp"
+    },
+    {
+      "id": "liuqi",
+      "name": "六七",
+      "tags": [
+        "六七",
+        "67",
+        "六七"
+      ],
+      "aliases": [
+        "67",
+        "liuqi"
+      ],
+      "file": "liuqi.webp"
+    },
+    {
+      "id": "maopao-1",
+      "name": "冒泡",
+      "tags": [
+        "冒泡",
+        "冒泡",
+        "出现",
+        "潜水"
+      ],
+      "aliases": [
+        "bubble",
+        "appear",
+        "lurk",
+        "maopao",
+        "maopao-1"
+      ],
+      "file": "maopao-1.webp"
+    },
+    {
+      "id": "maopao-2",
+      "name": "冒泡",
+      "tags": [
+        "冒泡",
+        "冒泡",
+        "出现",
+        "潜水"
+      ],
+      "aliases": [
+        "bubble",
+        "appear",
+        "lurk",
+        "maopao",
+        "maopao-2"
+      ],
+      "file": "maopao-2.webp"
+    },
+    {
+      "id": "dao-1",
+      "name": "刀",
+      "tags": [
+        "刀",
+        "菜刀",
+        "威胁"
+      ],
+      "aliases": [
+        "knife",
+        "threat",
+        "dao",
+        "dao-1"
+      ],
+      "file": "dao-1.webp"
+    },
+    {
+      "id": "dao-2",
+      "name": "刀",
+      "tags": [
+        "刀",
+        "菜刀",
+        "威胁"
+      ],
+      "aliases": [
+        "knife",
+        "threat",
+        "dao",
+        "dao-2"
+      ],
+      "file": "dao-2.webp"
+    },
+    {
+      "id": "daoda-shaozi",
+      "name": "到达(拿勺子)",
+      "tags": [
+        "到达(拿勺子)",
+        "来吃饭",
+        "到了"
+      ],
+      "aliases": [
+        "arrive",
+        "spoon",
+        "eat",
+        "daoda-shaozi"
+      ],
+      "file": "daoda-shaozi.webp"
+    },
+    {
+      "id": "daoda-kuaizi",
+      "name": "到达(拿筷子)",
+      "tags": [
+        "到达(拿筷子)",
+        "来吃饭",
+        "到了"
+      ],
+      "aliases": [
+        "arrive",
+        "chopsticks",
+        "eat",
+        "daoda-kuaizi"
+      ],
+      "file": "daoda-kuaizi.webp"
+    },
+    {
+      "id": "daoda",
+      "name": "到达",
+      "tags": [
+        "到达",
+        "来了",
+        "到了"
+      ],
+      "aliases": [
+        "arrive",
+        "here",
+        "coming",
+        "daoda"
+      ],
+      "file": "daoda.webp"
+    },
+    {
+      "id": "shuaka",
+      "name": "刷卡",
+      "tags": [
+        "刷卡",
+        "付款",
+        "消费"
+      ],
+      "aliases": [
+        "pay",
+        "card",
+        "checkout",
+        "shuaka"
+      ],
+      "file": "shuaka.webp"
+    },
+    {
+      "id": "jiayou",
+      "name": "加油",
+      "tags": [
+        "加油",
+        "鼓励",
+        "打气"
+      ],
+      "aliases": [
+        "cheer",
+        "gogogo",
+        "fight",
+        "jiayou"
+      ],
+      "file": "jiayou.webp"
+    },
+    {
+      "id": "dianzan-fan",
+      "name": "反向点赞",
+      "tags": [
+        "反向点赞",
+        "差评",
+        "不赞",
+        "反对"
+      ],
+      "aliases": [
+        "dislike",
+        "thumbsdown",
+        "boo",
+        "nope",
+        "dianzan-fan"
+      ],
+      "file": "dianzan-fan.webp"
+    },
+    {
+      "id": "fanzhuan",
+      "name": "反转",
+      "tags": [
+        "反转",
+        "反转",
+        "翻盘"
+      ],
+      "aliases": [
+        "reverse",
+        "flip",
+        "plot-twist",
+        "fanzhuan"
+      ],
+      "file": "fanzhuan.webp"
+    },
+    {
+      "id": "tanhao",
+      "name": "叹号",
+      "tags": [
+        "叹号",
+        "感叹",
+        "重要"
+      ],
+      "aliases": [
+        "exclamation",
+        "important",
+        "alert",
+        "tanhao"
+      ],
+      "file": "tanhao.webp"
+    },
+    {
+      "id": "chi-baomihua",
+      "name": "吃(爆米花)",
+      "tags": [
+        "吃(爆米花)",
+        "吃瓜",
+        "看戏"
+      ],
+      "aliases": [
+        "popcorn",
+        "watch",
+        "drama",
+        "chi-baomihua"
+      ],
+      "file": "chi-baomihua.webp"
+    },
+    {
+      "id": "chi-tiantianquan",
+      "name": "吃(甜甜圈)",
+      "tags": [
+        "吃(甜甜圈)",
+        "吃",
+        "甜食"
+      ],
+      "aliases": [
+        "donut",
+        "eat",
+        "snack",
+        "chi-tiantianquan"
+      ],
+      "file": "chi-tiantianquan.webp"
+    },
+    {
+      "id": "chi-xigua",
+      "name": "吃(西瓜)",
+      "tags": [
+        "吃(西瓜)",
+        "吃瓜",
+        "围观"
+      ],
+      "aliases": [
+        "watermelon",
+        "eat",
+        "drama",
+        "chi-xigua"
+      ],
+      "file": "chi-xigua.webp"
+    },
+    {
+      "id": "jita",
+      "name": "吉他",
+      "tags": [
+        "吉他",
+        "弹吉他",
+        "音乐"
+      ],
+      "aliases": [
+        "guitar",
+        "music",
+        "jita"
+      ],
+      "file": "jita.webp"
+    },
+    {
+      "id": "dai-1",
+      "name": "呆",
+      "tags": [
+        "呆",
+        "发呆",
+        "懵",
+        "无聊",
+        "发愣"
+      ],
+      "aliases": [
+        "blank",
+        "stare",
+        "dumb",
+        "bored",
+        "dai",
+        "dai-1"
+      ],
+      "file": "dai-1.webp"
+    },
+    {
+      "id": "dai-2",
+      "name": "呆",
+      "tags": [
+        "呆",
+        "发呆",
+        "懵",
+        "无聊",
+        "发愣"
+      ],
+      "aliases": [
+        "blank",
+        "stare",
+        "dumb",
+        "bored",
+        "dai",
+        "dai-2"
+      ],
+      "file": "dai-2.webp"
+    },
+    {
+      "id": "dai-3",
+      "name": "呆",
+      "tags": [
+        "呆",
+        "发呆",
+        "懵",
+        "无聊",
+        "发愣"
+      ],
+      "aliases": [
+        "blank",
+        "stare",
+        "dumb",
+        "bored",
+        "dai",
+        "dai-3"
+      ],
+      "file": "dai-3.webp"
+    },
+    {
+      "id": "dai-tiezhi-1",
+      "name": "呆(贴纸)",
+      "tags": [
+        "呆(贴纸)",
+        "贴纸",
+        "发呆"
+      ],
+      "aliases": [
+        "sticker",
+        "blank",
+        "dai-tiezhi",
+        "dai-tiezhi-1"
+      ],
+      "file": "dai-tiezhi-1.webp"
+    },
+    {
+      "id": "dai-tiezhi-2",
+      "name": "呆(贴纸)",
+      "tags": [
+        "呆(贴纸)",
+        "贴纸",
+        "发呆"
+      ],
+      "aliases": [
+        "sticker",
+        "blank",
+        "dai-tiezhi",
+        "dai-tiezhi-2"
+      ],
+      "file": "dai-tiezhi-2.webp"
+    },
+    {
+      "id": "dai-tiezhi-3",
+      "name": "呆(贴纸)",
+      "tags": [
+        "呆(贴纸)",
+        "贴纸",
+        "发呆"
+      ],
+      "aliases": [
+        "sticker",
+        "blank",
+        "dai-tiezhi",
+        "dai-tiezhi-3"
+      ],
+      "file": "dai-tiezhi-3.webp"
+    },
+    {
+      "id": "ku-1",
+      "name": "哭",
+      "tags": [
+        "哭",
+        "难过",
+        "委屈",
+        "眼泪"
+      ],
+      "aliases": [
+        "cry",
+        "sad",
+        "tears",
+        "sob",
+        "ku",
+        "ku-1"
+      ],
+      "file": "ku-1.webp"
+    },
+    {
+      "id": "ku-2",
+      "name": "哭",
+      "tags": [
+        "哭",
+        "难过",
+        "委屈",
+        "眼泪"
+      ],
+      "aliases": [
+        "cry",
+        "sad",
+        "tears",
+        "sob",
+        "ku",
+        "ku-2"
+      ],
+      "file": "ku-2.webp"
+    },
+    {
+      "id": "ku-3",
+      "name": "哭",
+      "tags": [
+        "哭",
+        "难过",
+        "委屈",
+        "眼泪"
+      ],
+      "aliases": [
+        "cry",
+        "sad",
+        "tears",
+        "sob",
+        "ku",
+        "ku-3"
+      ],
+      "file": "ku-3.webp"
+    },
+    {
+      "id": "changge",
+      "name": "唱歌",
+      "tags": [
+        "唱歌",
+        "唱歌",
+        "K歌"
+      ],
+      "aliases": [
+        "sing",
+        "song",
+        "karaoke",
+        "changge"
+      ],
+      "file": "changge.webp"
+    },
+    {
+      "id": "he-yinliao",
+      "name": "喝(饮料杯)",
+      "tags": [
+        "喝(饮料杯)",
+        "喝饮料",
+        "奶茶"
+      ],
+      "aliases": [
+        "drink",
+        "juice",
+        "coffee",
+        "he-yinliao"
+      ],
+      "file": "he-yinliao.webp"
+    },
+    {
+      "id": "penji",
+      "name": "喷剂",
+      "tags": [
+        "喷剂",
+        "喷雾",
+        "驱散"
+      ],
+      "aliases": [
+        "spray",
+        "repel",
+        "penji"
+      ],
+      "file": "penji.webp"
+    },
+    {
+      "id": "zuolao-1",
+      "name": "坐牢",
+      "tags": [
+        "坐牢",
+        "难受",
+        "被困",
+        "加班"
+      ],
+      "aliases": [
+        "jail",
+        "trapped",
+        "grind",
+        "zuolao",
+        "zuolao-1"
+      ],
+      "file": "zuolao-1.webp"
+    },
+    {
+      "id": "zuolao-2",
+      "name": "坐牢",
+      "tags": [
+        "坐牢",
+        "难受",
+        "被困",
+        "加班"
+      ],
+      "aliases": [
+        "jail",
+        "trapped",
+        "grind",
+        "zuolao",
+        "zuolao-2"
+      ],
+      "file": "zuolao-2.webp"
+    },
+    {
+      "id": "lajitong",
+      "name": "垃圾桶",
+      "tags": [
+        "垃圾桶",
+        "扔掉",
+        "垃圾"
+      ],
+      "aliases": [
+        "trash",
+        "bin",
+        "delete",
+        "lajitong"
+      ],
+      "file": "lajitong.webp"
+    },
+    {
+      "id": "mojing-fanguang",
+      "name": "墨镜反光",
+      "tags": [
+        "墨镜反光",
+        "墨镜",
+        "帅",
+        "酷",
+        "得意",
+        "得瑟",
+        "自信"
+      ],
+      "aliases": [
+        "sunglasses",
+        "cool",
+        "shine",
+        "smug",
+        "mojing-fanguang"
+      ],
+      "file": "mojing-fanguang.webp"
+    },
+    {
+      "id": "mojing-xunhuan",
+      "name": "墨镜循环",
+      "tags": [
+        "墨镜循环",
+        "墨镜",
+        "循环"
+      ],
+      "aliases": [
+        "sunglasses",
+        "loop",
+        "cool",
+        "mojing-xunhuan"
+      ],
+      "file": "mojing-xunhuan.webp"
+    },
+    {
+      "id": "fuhuojie",
+      "name": "复活节",
+      "tags": [
+        "复活节",
+        "彩蛋",
+        "节日"
+      ],
+      "aliases": [
+        "easter",
+        "egg",
+        "fuhuojie"
+      ],
+      "file": "fuhuojie.webp"
+    },
+    {
+      "id": "touyun",
+      "name": "头晕",
+      "tags": [
+        "头晕",
+        "晕",
+        "绕晕",
+        "懵"
+      ],
+      "aliases": [
+        "dizzy",
+        "confused",
+        "spinning",
+        "touyun"
+      ],
+      "file": "touyun.webp"
+    },
+    {
+      "id": "nailao-hulian",
+      "name": "奶酪糊脸",
+      "tags": [
+        "奶酪糊脸",
+        "翻车",
+        "糊脸"
+      ],
+      "aliases": [
+        "fail",
+        "pie",
+        "facepalm",
+        "nailao-hulian"
+      ],
+      "file": "nailao-hulian.webp"
+    },
+    {
+      "id": "haipa-1",
+      "name": "害怕",
+      "tags": [
+        "害怕",
+        "恐惧",
+        "吓到",
+        "发抖"
+      ],
+      "aliases": [
+        "fear",
+        "scared",
+        "afraid",
+        "horror",
+        "haipa",
+        "haipa-1"
+      ],
+      "file": "haipa-1.webp"
+    },
+    {
+      "id": "haipa-2",
+      "name": "害怕",
+      "tags": [
+        "害怕",
+        "恐惧",
+        "吓到",
+        "发抖"
+      ],
+      "aliases": [
+        "fear",
+        "scared",
+        "afraid",
+        "horror",
+        "haipa",
+        "haipa-2"
+      ],
+      "file": "haipa-2.webp"
+    },
+    {
+      "id": "haixiu-1",
+      "name": "害羞",
+      "tags": [
+        "害羞",
+        "脸红",
+        "不好意思",
+        "扭捏"
+      ],
+      "aliases": [
+        "shy",
+        "blush",
+        "embarrassed",
+        "haixiu",
+        "haixiu-1"
+      ],
+      "file": "haixiu-1.webp"
+    },
+    {
+      "id": "haixiu-2",
+      "name": "害羞",
+      "tags": [
+        "害羞",
+        "脸红",
+        "不好意思",
+        "扭捏"
+      ],
+      "aliases": [
+        "shy",
+        "blush",
+        "embarrassed",
+        "haixiu",
+        "haixiu-2"
+      ],
+      "file": "haixiu-2.webp"
+    },
+    {
+      "id": "xiaochou-1",
+      "name": "小丑",
+      "tags": [
+        "小丑",
+        "尴尬",
+        "自作自受",
+        "打脸"
+      ],
+      "aliases": [
+        "clown",
+        "joker",
+        "cringe",
+        "selfown",
+        "xiaochou",
+        "xiaochou-1"
+      ],
+      "file": "xiaochou-1.webp"
+    },
+    {
+      "id": "xiaochou-2",
+      "name": "小丑",
+      "tags": [
+        "小丑",
+        "尴尬",
+        "自作自受",
+        "打脸"
+      ],
+      "aliases": [
+        "clown",
+        "joker",
+        "cringe",
+        "selfown",
+        "xiaochou",
+        "xiaochou-2"
+      ],
+      "file": "xiaochou-2.webp"
+    },
+    {
+      "id": "gongzuo-xiaoshui",
+      "name": "工作(小睡)",
+      "tags": [
+        "工作(小睡)",
+        "摸鱼",
+        "打盹",
+        "划水"
+      ],
+      "aliases": [
+        "work",
+        "nap",
+        "slack",
+        "idle",
+        "gongzuo-xiaoshui"
+      ],
+      "file": "gongzuo-xiaoshui.webp"
+    },
+    {
+      "id": "gongzuo",
+      "name": "工作(普通)",
+      "tags": [
+        "工作(普通)",
+        "上班",
+        "干活"
+      ],
+      "aliases": [
+        "work",
+        "coding",
+        "busy",
+        "gongzuo"
+      ],
+      "file": "gongzuo.webp"
+    },
+    {
+      "id": "gongzuo-shengqi",
+      "name": "工作(生气)",
+      "tags": [
+        "工作(生气)",
+        "上班气",
+        "暴躁"
+      ],
+      "aliases": [
+        "work",
+        "angry",
+        "gongzuo-shengqi"
+      ],
+      "file": "gongzuo-shengqi.webp"
+    },
+    {
+      "id": "gongzuo-pijuan",
+      "name": "工作(疲倦)",
+      "tags": [
+        "工作(疲倦)",
+        "累",
+        "疲惫",
+        "加班"
+      ],
+      "aliases": [
+        "work",
+        "tired",
+        "exhausted",
+        "gongzuo-pijuan"
+      ],
+      "file": "gongzuo-pijuan.webp"
+    },
+    {
+      "id": "daixin-lashi-hard",
+      "name": "带薪拉屎(困难模式)",
+      "tags": [
+        "带薪拉屎(困难模式)",
+        "摸鱼",
+        "带薪拉屎"
+      ],
+      "aliases": [
+        "slack",
+        "paidpoop",
+        "hard",
+        "daixin-lashi-hard"
+      ],
+      "file": "daixin-lashi-hard.webp"
+    },
+    {
+      "id": "daixin-lashi-easy",
+      "name": "带薪拉屎(简单模式)",
+      "tags": [
+        "带薪拉屎(简单模式)",
+        "摸鱼",
+        "带薪拉屎"
+      ],
+      "aliases": [
+        "slack",
+        "paidpoop",
+        "easy",
+        "daixin-lashi-easy"
+      ],
+      "file": "daixin-lashi-easy.webp"
+    },
+    {
+      "id": "ganbei",
+      "name": "干杯",
+      "tags": [
+        "干杯",
+        "喝酒",
+        "聚会",
+        "合作"
+      ],
+      "aliases": [
+        "cheers",
+        "toast",
+        "drink",
+        "ganbei"
+      ],
+      "file": "ganbei.webp"
+    },
+    {
+      "id": "qingzhu",
+      "name": "庆祝",
+      "tags": [
+        "庆祝",
+        "成功",
+        "撒花",
+        "搞定",
+        "完成",
+        "收工",
+        "完工"
+      ],
+      "aliases": [
+        "celebrate",
+        "success",
+        "done",
+        "ship",
+        "finished",
+        "qingzhu"
+      ],
+      "file": "qingzhu.webp"
+    },
+    {
+      "id": "defen-0",
+      "name": "得分(0分)",
+      "tags": [
+        "得分(0分)",
+        "零分",
+        "失败",
+        "翻车"
+      ],
+      "aliases": [
+        "score",
+        "zero",
+        "fail",
+        "defen-0"
+      ],
+      "file": "defen-0.webp"
+    },
+    {
+      "id": "defen-10",
+      "name": "得分(10分)",
+      "tags": [
+        "得分(10分)",
+        "满分",
+        "成功"
+      ],
+      "aliases": [
+        "score",
+        "perfect",
+        "win",
+        "defen-10"
+      ],
+      "file": "defen-10.webp"
+    },
+    {
+      "id": "sikao-zixin",
+      "name": "思考(自信地)",
+      "tags": [
+        "思考(自信地)",
+        "自信",
+        "想通了"
+      ],
+      "aliases": [
+        "think",
+        "confident",
+        "sure",
+        "sikao-zixin"
+      ],
+      "file": "sikao-zixin.webp"
+    },
+    {
+      "id": "sikao-renzhen",
+      "name": "思考(认真地)",
+      "tags": [
+        "思考(认真地)",
+        "认真思考",
+        "分析"
+      ],
+      "aliases": [
+        "think",
+        "serious",
+        "analyze",
+        "sikao-renzhen"
+      ],
+      "file": "sikao-renzhen.webp"
+    },
+    {
+      "id": "qingshu",
+      "name": "情书",
+      "tags": [
+        "情书",
+        "表白",
+        "信"
+      ],
+      "aliases": [
+        "loveletter",
+        "letter",
+        "confession",
+        "qingshu"
+      ],
+      "file": "qingshu.webp"
+    },
+    {
+      "id": "jingxia",
+      "name": "惊吓",
+      "tags": [
+        "惊吓",
+        "震惊",
+        "吓一跳"
+      ],
+      "aliases": [
+        "shock",
+        "startled",
+        "surprise",
+        "jingxia"
+      ],
+      "file": "jingxia.webp"
+    },
+    {
+      "id": "dazi-naonu",
+      "name": "打字(恼怒)",
+      "tags": [
+        "打字(恼怒)",
+        "恼怒打字",
+        "暴躁"
+      ],
+      "aliases": [
+        "typing",
+        "annoyed",
+        "dazi-naonu"
+      ],
+      "file": "dazi-naonu.webp"
+    },
+    {
+      "id": "dazi",
+      "name": "打字(普通)",
+      "tags": [
+        "打字(普通)",
+        "打字中",
+        "输出中"
+      ],
+      "aliases": [
+        "typing",
+        "writing",
+        "dazi"
+      ],
+      "file": "dazi.webp"
+    },
+    {
+      "id": "dazi-shengqi",
+      "name": "打字(生气)",
+      "tags": [
+        "打字(生气)",
+        "生气打字",
+        "狂敲"
+      ],
+      "aliases": [
+        "typing",
+        "angry",
+        "rant",
+        "dazi-shengqi"
+      ],
+      "file": "dazi-shengqi.webp"
+    },
+    {
+      "id": "dazhaohu-1",
+      "name": "打招呼",
+      "tags": [
+        "打招呼",
+        "你好",
+        "招手",
+        "hi"
+      ],
+      "aliases": [
+        "hello",
+        "hi",
+        "wave",
+        "greet",
+        "dazhaohu",
+        "dazhaohu-1"
+      ],
+      "file": "dazhaohu-1.webp"
+    },
+    {
+      "id": "dazhaohu-2",
+      "name": "打招呼",
+      "tags": [
+        "打招呼",
+        "你好",
+        "招手",
+        "hi"
+      ],
+      "aliases": [
+        "hello",
+        "hi",
+        "wave",
+        "greet",
+        "dazhaohu",
+        "dazhaohu-2"
+      ],
+      "file": "dazhaohu-2.webp"
+    },
+    {
+      "id": "dayouxi",
+      "name": "打游戏",
+      "tags": [
+        "打游戏",
+        "游戏",
+        "打电动"
+      ],
+      "aliases": [
+        "game",
+        "gaming",
+        "play",
+        "dayouxi"
+      ],
+      "file": "dayouxi.webp"
+    },
+    {
+      "id": "kuoyinqi",
+      "name": "扩音器",
+      "tags": [
+        "扩音器",
+        "喊话",
+        "喇叭",
+        "广播"
+      ],
+      "aliases": [
+        "megaphone",
+        "announce",
+        "shout",
+        "kuoyinqi"
+      ],
+      "file": "kuoyinqi.webp"
+    },
+    {
+      "id": "zhuapai-phone",
+      "name": "抓拍(手机)",
+      "tags": [
+        "抓拍(手机)",
+        "拍照",
+        "截图"
+      ],
+      "aliases": [
+        "phone",
+        "photo",
+        "screenshot",
+        "zhuapai-phone"
+      ],
+      "file": "zhuapai-phone.webp"
+    },
+    {
+      "id": "zhuapai-camera",
+      "name": "抓拍(摄像机)",
+      "tags": [
+        "抓拍(摄像机)",
+        "录像",
+        "拍下来"
+      ],
+      "aliases": [
+        "camera",
+        "record",
+        "capture",
+        "zhuapai-camera"
+      ],
+      "file": "zhuapai-camera.webp"
+    },
+    {
+      "id": "zheshan",
+      "name": "折扇",
+      "tags": [
+        "折扇",
+        "扇风",
+        "从容"
+      ],
+      "aliases": [
+        "fan",
+        "fold",
+        "chill",
+        "zheshan"
+      ],
+      "file": "zheshan.webp"
+    },
+    {
+      "id": "paiying",
+      "name": "拍蝇",
+      "tags": [
+        "拍蝇",
+        "拍苍蝇",
+        "消灭bug"
+      ],
+      "aliases": [
+        "swat",
+        "fly",
+        "bug",
+        "killbug",
+        "paiying"
+      ],
+      "file": "paiying.webp"
+    },
+    {
+      "id": "tuoxie-1",
+      "name": "拖鞋",
+      "tags": [
+        "拖鞋",
+        "拖鞋",
+        "打人"
+      ],
+      "aliases": [
+        "slipper",
+        "smack",
+        "tuoxie",
+        "tuoxie-1"
+      ],
+      "file": "tuoxie-1.webp"
+    },
+    {
+      "id": "tuoxie-2",
+      "name": "拖鞋",
+      "tags": [
+        "拖鞋",
+        "拖鞋",
+        "打人"
+      ],
+      "aliases": [
+        "slipper",
+        "smack",
+        "tuoxie",
+        "tuoxie-2"
+      ],
+      "file": "tuoxie-2.webp"
+    },
+    {
+      "id": "naqian",
+      "name": "拿走我的钱",
+      "tags": [
+        "拿走我的钱",
+        "要钱",
+        "花钱",
+        "付费"
+      ],
+      "aliases": [
+        "takemymoney",
+        "pay",
+        "cost",
+        "shutupandtakemymoney",
+        "naqian"
+      ],
+      "file": "naqian.webp"
+    },
+    {
+      "id": "zhi",
+      "name": "指",
+      "tags": [
+        "指",
+        "指着",
+        "看这个"
+      ],
+      "aliases": [
+        "point",
+        "look",
+        "zhi"
+      ],
+      "file": "zhi.webp"
+    },
+    {
+      "id": "anniu",
+      "name": "按钮",
+      "tags": [
+        "按钮",
+        "按按钮",
+        "启动"
+      ],
+      "aliases": [
+        "button",
+        "press",
+        "start",
+        "anniu"
+      ],
+      "file": "anniu.webp"
+    },
+    {
+      "id": "yaokele",
+      "name": "摇可乐",
+      "tags": [
+        "摇可乐",
+        "摇可乐",
+        "喷发",
+        "搞事"
+      ],
+      "aliases": [
+        "shake",
+        "cola",
+        "explode",
+        "yaokele"
+      ],
+      "file": "yaokele.webp"
+    },
+    {
+      "id": "yaotou",
+      "name": "摇头",
+      "tags": [
+        "摇头",
+        "不同意",
+        "不是"
+      ],
+      "aliases": [
+        "shake",
+        "no",
+        "disagree",
+        "yaotou"
+      ],
+      "file": "yaotou.webp"
+    },
+    {
+      "id": "yaoling",
+      "name": "摇铃",
+      "tags": [
+        "摇铃",
+        "铃铛",
+        "提醒",
+        "开饭"
+      ],
+      "aliases": [
+        "bell",
+        "ring",
+        "notify",
+        "yaoling"
+      ],
+      "file": "yaoling.webp"
+    },
+    {
+      "id": "mojing-zhai",
+      "name": "摘掉墨镜",
+      "tags": [
+        "摘掉墨镜",
+        "摘墨镜",
+        "认真"
+      ],
+      "aliases": [
+        "sunglasses",
+        "off",
+        "serious",
+        "mojing-zhai"
+      ],
+      "file": "mojing-zhai.webp"
+    },
+    {
+      "id": "motou",
+      "name": "摸头",
+      "tags": [
+        "摸头",
+        "安慰",
+        "拍拍"
+      ],
+      "aliases": [
+        "pat",
+        "headpat",
+        "comfort",
+        "motou"
+      ],
+      "file": "motou.webp"
+    },
+    {
+      "id": "qiaogun-1",
+      "name": "撬棍",
+      "tags": [
+        "撬棍",
+        "撬棍",
+        "砸"
+      ],
+      "aliases": [
+        "crowbar",
+        "smash",
+        "qiaogun",
+        "qiaogun-1"
+      ],
+      "file": "qiaogun-1.webp"
+    },
+    {
+      "id": "qiaogun-2",
+      "name": "撬棍",
+      "tags": [
+        "撬棍",
+        "撬棍",
+        "砸"
+      ],
+      "aliases": [
+        "crowbar",
+        "smash",
+        "qiaogun",
+        "qiaogun-2"
+      ],
+      "file": "qiaogun-2.webp"
+    },
+    {
+      "id": "qiaogun-3",
+      "name": "撬棍",
+      "tags": [
+        "撬棍",
+        "撬棍",
+        "砸"
+      ],
+      "aliases": [
+        "crowbar",
+        "smash",
+        "qiaogun",
+        "qiaogun-3"
+      ],
+      "file": "qiaogun-3.webp"
+    },
+    {
+      "id": "qiaotou",
+      "name": "敲头",
+      "tags": [
+        "敲头",
+        "敲打",
+        "提醒",
+        "笨蛋"
+      ],
+      "aliases": [
+        "bonk",
+        "knock",
+        "head",
+        "qiaotou"
+      ],
+      "file": "qiaotou.webp"
+    },
+    {
+      "id": "qidai-1",
+      "name": "期待",
+      "tags": [
+        "期待",
+        "期待",
+        "等着",
+        "催更"
+      ],
+      "aliases": [
+        "expect",
+        "wait",
+        "hope",
+        "qidai",
+        "qidai-1"
+      ],
+      "file": "qidai-1.webp"
+    },
+    {
+      "id": "qidai-2",
+      "name": "期待",
+      "tags": [
+        "期待",
+        "期待",
+        "等着",
+        "催更"
+      ],
+      "aliases": [
+        "expect",
+        "wait",
+        "hope",
+        "qidai",
+        "qidai-2"
+      ],
+      "file": "qidai-2.webp"
+    },
+    {
+      "id": "qiang",
+      "name": "枪",
+      "tags": [
+        "枪",
+        "手枪",
+        "威胁"
+      ],
+      "aliases": [
+        "gun",
+        "threat",
+        "qiang"
+      ],
+      "file": "qiang.webp"
+    },
+    {
+      "id": "sikao",
+      "name": "正在思考",
+      "tags": [
+        "正在思考",
+        "思考中",
+        "加载中"
+      ],
+      "aliases": [
+        "thinking",
+        "loading",
+        "hmm",
+        "sikao"
+      ],
+      "file": "sikao.webp"
+    },
+    {
+      "id": "siwang",
+      "name": "死亡",
+      "tags": [
+        "死亡",
+        "挂了",
+        "完蛋",
+        "躺平"
+      ],
+      "aliases": [
+        "dead",
+        "rip",
+        "gameover",
+        "siwang"
+      ],
+      "file": "siwang.webp"
+    },
+    {
+      "id": "han",
+      "name": "汗",
+      "tags": [
+        "汗",
+        "无语",
+        "尴尬",
+        "冷汗"
+      ],
+      "aliases": [
+        "sweat",
+        "awkward",
+        "speechless",
+        "han"
+      ],
+      "file": "han.webp"
+    },
+    {
+      "id": "diantou",
+      "name": "点头",
+      "tags": [
+        "点头",
+        "同意",
+        "嗯嗯"
+      ],
+      "aliases": [
+        "nod",
+        "yes",
+        "agree",
+        "diantou"
+      ],
+      "file": "diantou.webp"
+    },
+    {
+      "id": "dianzan",
+      "name": "点赞",
+      "tags": [
+        "点赞",
+        "好评",
+        "厉害",
+        "牛",
+        "夸",
+        "夸奖"
+      ],
+      "aliases": [
+        "like",
+        "thumbsup",
+        "zan",
+        "ok",
+        "nice",
+        "awesome",
+        "praise",
+        "dianzan"
+      ],
+      "file": "dianzan.webp"
+    },
+    {
+      "id": "shao-1",
+      "name": "烧",
+      "tags": [
+        "烧",
+        "着火",
+        "烧了"
+      ],
+      "aliases": [
+        "fire",
+        "burn",
+        "shao",
+        "shao-1"
+      ],
+      "file": "shao-1.webp"
+    },
+    {
+      "id": "shao-2",
+      "name": "烧",
+      "tags": [
+        "烧",
+        "着火",
+        "烧了"
+      ],
+      "aliases": [
+        "fire",
+        "burn",
+        "shao",
+        "shao-2"
+      ],
+      "file": "shao-2.webp"
+    },
+    {
+      "id": "aixin-1",
+      "name": "爱心",
+      "tags": [
+        "爱心",
+        "喜欢",
+        "爱",
+        "比心",
+        "感谢",
+        "谢谢"
+      ],
+      "aliases": [
+        "love",
+        "heart",
+        "like",
+        "thanks",
+        "aixin",
+        "aixin-1"
+      ],
+      "file": "aixin-1.webp"
+    },
+    {
+      "id": "aixin-2",
+      "name": "爱心",
+      "tags": [
+        "爱心",
+        "喜欢",
+        "爱",
+        "比心",
+        "感谢",
+        "谢谢"
+      ],
+      "aliases": [
+        "love",
+        "heart",
+        "like",
+        "thanks",
+        "aixin",
+        "aixin-2"
+      ],
+      "file": "aixin-2.webp"
+    },
+    {
+      "id": "aixin-3",
+      "name": "爱心",
+      "tags": [
+        "爱心",
+        "喜欢",
+        "爱",
+        "比心",
+        "感谢",
+        "谢谢"
+      ],
+      "aliases": [
+        "love",
+        "heart",
+        "like",
+        "thanks",
+        "aixin",
+        "aixin-3"
+      ],
+      "file": "aixin-3.webp"
+    },
+    {
+      "id": "meigui",
+      "name": "玫瑰",
+      "tags": [
+        "玫瑰",
+        "花",
+        "送花",
+        "浪漫"
+      ],
+      "aliases": [
+        "rose",
+        "flower",
+        "love",
+        "meigui"
+      ],
+      "file": "meigui.webp"
+    },
+    {
+      "id": "shengqi",
+      "name": "生气",
+      "tags": [
+        "生气",
+        "愤怒",
+        "火大",
+        "不满",
+        "气死"
+      ],
+      "aliases": [
+        "angry",
+        "mad",
+        "rage",
+        "furious",
+        "shengqi"
+      ],
+      "file": "shengqi.webp"
+    },
+    {
+      "id": "dianfengshan-1",
+      "name": "电风扇",
+      "tags": [
+        "电风扇",
+        "吹风",
+        "冷静"
+      ],
+      "aliases": [
+        "fan",
+        "cool",
+        "wind",
+        "dianfengshan",
+        "dianfengshan-1"
+      ],
+      "file": "dianfengshan-1.webp"
+    },
+    {
+      "id": "dianfengshan-2",
+      "name": "电风扇",
+      "tags": [
+        "电风扇",
+        "吹风",
+        "冷静"
+      ],
+      "aliases": [
+        "fan",
+        "cool",
+        "wind",
+        "dianfengshan",
+        "dianfengshan-2"
+      ],
+      "file": "dianfengshan-2.webp"
+    },
+    {
+      "id": "huaban",
+      "name": "画板",
+      "tags": [
+        "画板",
+        "画图",
+        "设计"
+      ],
+      "aliases": [
+        "draw",
+        "canvas",
+        "design",
+        "huaban"
+      ],
+      "file": "huaban.webp"
+    },
+    {
+      "id": "zhayan",
+      "name": "眨眼",
+      "tags": [
+        "眨眼",
+        "眨眼",
+        "暗示"
+      ],
+      "aliases": [
+        "wink",
+        "hint",
+        "zhayan"
+      ],
+      "file": "zhayan.webp"
+    },
+    {
+      "id": "shuijiao-uu",
+      "name": "睡觉 (UU)",
+      "tags": [
+        "睡觉 (UU)",
+        "睡觉",
+        "UU"
+      ],
+      "aliases": [
+        "sleep",
+        "zzz",
+        "uu",
+        "shuijiao-uu"
+      ],
+      "file": "shuijiao-uu.webp"
+    },
+    {
+      "id": "shuijiao-zhunbei-1",
+      "name": "睡觉(准备阶段1)",
+      "tags": [
+        "睡觉(准备阶段1)",
+        "准备睡觉"
+      ],
+      "aliases": [
+        "sleep",
+        "prepare",
+        "shuijiao-zhunbei-1"
+      ],
+      "file": "shuijiao-zhunbei-1.webp"
+    },
+    {
+      "id": "shuijiao-zhunbei-2",
+      "name": "睡觉(准备阶段2)",
+      "tags": [
+        "睡觉(准备阶段2)",
+        "准备睡觉"
+      ],
+      "aliases": [
+        "sleep",
+        "prepare",
+        "shuijiao-zhunbei-2"
+      ],
+      "file": "shuijiao-zhunbei-2.webp"
+    },
+    {
+      "id": "shuijiao",
+      "name": "睡觉(普通)",
+      "tags": [
+        "睡觉(普通)",
+        "睡觉",
+        "晚安",
+        "摸鱼",
+        "困了",
+        "睡了"
+      ],
+      "aliases": [
+        "sleep",
+        "zzz",
+        "night",
+        "tired",
+        "shuijiao"
+      ],
+      "file": "shuijiao.webp"
+    },
+    {
+      "id": "liwu-1",
+      "name": "礼物",
+      "tags": [
+        "礼物",
+        "送礼",
+        "礼物"
+      ],
+      "aliases": [
+        "gift",
+        "present",
+        "liwu",
+        "liwu-1"
+      ],
+      "file": "liwu-1.webp"
+    },
+    {
+      "id": "liwu-2",
+      "name": "礼物",
+      "tags": [
+        "礼物",
+        "送礼",
+        "礼物"
+      ],
+      "aliases": [
+        "gift",
+        "present",
+        "liwu",
+        "liwu-2"
+      ],
+      "file": "liwu-2.webp"
+    },
+    {
+      "id": "xiao-zhi",
+      "name": "笑(指)",
+      "tags": [
+        "笑(指)",
+        "嘲笑",
+        "指着笑",
+        "你看他"
+      ],
+      "aliases": [
+        "pointlaugh",
+        "mock",
+        "lmao",
+        "xiao-zhi"
+      ],
+      "file": "xiao-zhi.webp"
+    },
+    {
+      "id": "xiao",
+      "name": "笑",
+      "tags": [
+        "笑",
+        "开心",
+        "哈哈",
+        "大笑"
+      ],
+      "aliases": [
+        "laugh",
+        "lol",
+        "happy",
+        "haha",
+        "xiao"
+      ],
+      "file": "xiao.webp"
+    },
+    {
+      "id": "jinzhang-1",
+      "name": "紧张",
+      "tags": [
+        "紧张",
+        "忐忑",
+        "压力",
+        "着急",
+        "焦虑"
+      ],
+      "aliases": [
+        "nervous",
+        "anxious",
+        "tense",
+        "hurry",
+        "jinzhang",
+        "jinzhang-1"
+      ],
+      "file": "jinzhang-1.webp"
+    },
+    {
+      "id": "jinzhang-2",
+      "name": "紧张",
+      "tags": [
+        "紧张",
+        "忐忑",
+        "压力",
+        "着急",
+        "焦虑"
+      ],
+      "aliases": [
+        "nervous",
+        "anxious",
+        "tense",
+        "hurry",
+        "jinzhang",
+        "jinzhang-2"
+      ],
+      "file": "jinzhang-2.webp"
+    },
+    {
+      "id": "hongbao-1",
+      "name": "红包",
+      "tags": [
+        "红包",
+        "红包",
+        "打赏",
+        "祝福"
+      ],
+      "aliases": [
+        "redpacket",
+        "gift",
+        "lucky",
+        "hongbao",
+        "hongbao-1"
+      ],
+      "file": "hongbao-1.webp"
+    },
+    {
+      "id": "hongbao-2",
+      "name": "红包",
+      "tags": [
+        "红包",
+        "红包",
+        "打赏",
+        "祝福"
+      ],
+      "aliases": [
+        "redpacket",
+        "gift",
+        "lucky",
+        "hongbao",
+        "hongbao-2"
+      ],
+      "file": "hongbao-2.webp"
+    },
+    {
+      "id": "jiaodai",
+      "name": "胶带",
+      "tags": [
+        "胶带",
+        "封嘴",
+        "贴住"
+      ],
+      "aliases": [
+        "tape",
+        "silence",
+        "jiaodai"
+      ],
+      "file": "jiaodai.webp"
+    },
+    {
+      "id": "ziwoanwei",
+      "name": "自我安慰",
+      "tags": [
+        "自我安慰",
+        "安慰自己",
+        "没事的",
+        "崩溃",
+        "破防"
+      ],
+      "aliases": [
+        "selfcomfort",
+        "cope",
+        "itsfine",
+        "overwhelmed",
+        "ziwoanwei"
+      ],
+      "file": "ziwoanwei.webp"
+    },
+    {
+      "id": "tiantian",
+      "name": "舔舔",
+      "tags": [
+        "舔舔",
+        "舔",
+        "馋"
+      ],
+      "aliases": [
+        "lick",
+        "tongue",
+        "tiantian"
+      ],
+      "file": "tiantian.webp"
+    },
+    {
+      "id": "tiaowu-sanwei",
+      "name": "舞蹈(散味)",
+      "tags": [
+        "舞蹈(散味)",
+        "散味",
+        "扇风",
+        "臭"
+      ],
+      "aliases": [
+        "smell",
+        "fart",
+        "dance",
+        "tiaowu-sanwei"
+      ],
+      "file": "tiaowu-sanwei.webp"
+    },
+    {
+      "id": "yingguangbang",
+      "name": "荧光棒",
+      "tags": [
+        "荧光棒",
+        "打call",
+        "应援"
+      ],
+      "aliases": [
+        "glowstick",
+        "cheer",
+        "support",
+        "yingguangbang"
+      ],
+      "file": "yingguangbang.webp"
+    },
+    {
+      "id": "dangao",
+      "name": "蛋糕",
+      "tags": [
+        "蛋糕",
+        "生日",
+        "蛋糕",
+        "庆祝"
+      ],
+      "aliases": [
+        "cake",
+        "birthday",
+        "dangao"
+      ],
+      "file": "dangao.webp"
+    },
+    {
+      "id": "beiji-bits",
+      "name": "被击中(Bits)",
+      "tags": [
+        "被击中(Bits)",
+        "被打赏",
+        "Bits"
+      ],
+      "aliases": [
+        "hitbits",
+        "donate",
+        "beiji-bits"
+      ],
+      "file": "beiji-bits.webp"
+    },
+    {
+      "id": "beiji-tuoxie",
+      "name": "被击中(拖鞋)",
+      "tags": [
+        "被击中(拖鞋)",
+        "被拖鞋打",
+        "挨打"
+      ],
+      "aliases": [
+        "hitslipper",
+        "ouch",
+        "beiji-tuoxie"
+      ],
+      "file": "beiji-tuoxie.webp"
+    },
+    {
+      "id": "beiji-aixin",
+      "name": "被击中(爱心)",
+      "tags": [
+        "被击中(爱心)",
+        "被爱心击中",
+        "心动"
+      ],
+      "aliases": [
+        "hitheart",
+        "heart",
+        "beiji-aixin"
+      ],
+      "file": "beiji-aixin.webp"
+    },
+    {
+      "id": "beiji-yingbi",
+      "name": "被击中(硬币)",
+      "tags": [
+        "被击中(硬币)",
+        "被打赏",
+        "收到钱"
+      ],
+      "aliases": [
+        "hitcoin",
+        "donate",
+        "beiji-yingbi"
+      ],
+      "file": "beiji-yingbi.webp"
+    },
+    {
+      "id": "yaomi",
+      "name": "要米",
+      "tags": [
+        "要米",
+        "要钱",
+        "讨饭",
+        "打赏"
+      ],
+      "aliases": [
+        "beg",
+        "money",
+        "donate",
+        "tip",
+        "yaomi"
+      ],
+      "file": "yaomi.webp"
+    },
+    {
+      "id": "jilu-1",
+      "name": "记录",
+      "tags": [
+        "记录",
+        "记笔记",
+        "小本本"
+      ],
+      "aliases": [
+        "note",
+        "record",
+        "log",
+        "jilu",
+        "jilu-1"
+      ],
+      "file": "jilu-1.webp"
+    },
+    {
+      "id": "jilu-2",
+      "name": "记录",
+      "tags": [
+        "记录",
+        "记笔记",
+        "小本本"
+      ],
+      "aliases": [
+        "note",
+        "record",
+        "log",
+        "jilu",
+        "jilu-2"
+      ],
+      "file": "jilu-2.webp"
+    },
+    {
+      "id": "tiaowu",
+      "name": "跳舞",
+      "tags": [
+        "跳舞",
+        "舞蹈",
+        "开心"
+      ],
+      "aliases": [
+        "dance",
+        "dancing",
+        "tiaowu"
+      ],
+      "file": "tiaowu.webp"
+    },
+    {
+      "id": "tiaowu-caramelldansen",
+      "name": "跳舞(Caramelldansen)",
+      "tags": [
+        "跳舞(Caramelldansen)",
+        "洗脑舞"
+      ],
+      "aliases": [
+        "caramelldansen",
+        "dance",
+        "tiaowu-caramelldansen"
+      ],
+      "file": "tiaowu-caramelldansen.webp"
+    },
+    {
+      "id": "tiaowu-helltaker",
+      "name": "跳舞(Helltaker)",
+      "tags": [
+        "跳舞(Helltaker)",
+        "节奏舞"
+      ],
+      "aliases": [
+        "helltaker",
+        "dance",
+        "tiaowu-helltaker"
+      ],
+      "file": "tiaowu-helltaker.webp"
+    },
+    {
+      "id": "tiaowu-pizhichun",
+      "name": "跳舞(低皮质醇)",
+      "tags": [
+        "跳舞(低皮质醇)",
+        "低皮质醇",
+        "从容",
+        "松弛"
+      ],
+      "aliases": [
+        "lowcortisol",
+        "chill",
+        "relax",
+        "tiaowu-pizhichun"
+      ],
+      "file": "tiaowu-pizhichun.webp"
+    },
+    {
+      "id": "notice-bits",
+      "name": "通知_提示 Bits",
+      "tags": [
+        "通知_提示 Bits",
+        "通知",
+        "打赏动画"
+      ],
+      "aliases": [
+        "notice",
+        "bits",
+        "donate",
+        "notice-bits"
+      ],
+      "file": "notice-bits.webp"
+    },
+    {
+      "id": "notice-star",
+      "name": "通知_提示 星星_收藏",
+      "tags": [
+        "通知_提示 星星_收藏",
+        "通知",
+        "收藏动画"
+      ],
+      "aliases": [
+        "notice",
+        "star",
+        "save",
+        "favorite",
+        "notice-star"
+      ],
+      "file": "notice-star.webp"
+    },
+    {
+      "id": "notice-dianzan",
+      "name": "通知_提示 点赞",
+      "tags": [
+        "通知_提示 点赞",
+        "通知",
+        "点赞动画"
+      ],
+      "aliases": [
+        "notice",
+        "like",
+        "notice-dianzan"
+      ],
+      "file": "notice-dianzan.webp"
+    },
+    {
+      "id": "notice-like",
+      "name": "通知_提示 爱心_喜欢",
+      "tags": [
+        "通知_提示 爱心_喜欢",
+        "通知",
+        "喜欢",
+        "点赞动画"
+      ],
+      "aliases": [
+        "notice",
+        "like",
+        "notification",
+        "notice-like"
+      ],
+      "file": "notice-like.webp"
+    },
+    {
+      "id": "notice-coin",
+      "name": "通知_提示 硬币",
+      "tags": [
+        "通知_提示 硬币",
+        "通知",
+        "投币动画"
+      ],
+      "aliases": [
+        "notice",
+        "coin",
+        "donate",
+        "notice-coin"
+      ],
+      "file": "notice-coin.webp"
+    },
+    {
+      "id": "notice-custom",
+      "name": "通知_自定义",
+      "tags": [
+        "通知_自定义",
+        "通知",
+        "自定义"
+      ],
+      "aliases": [
+        "notice",
+        "custom",
+        "notice-custom"
+      ],
+      "file": "notice-custom.webp"
+    },
+    {
+      "id": "qian",
+      "name": "钱",
+      "tags": [
+        "钱",
+        "钞票",
+        "付费",
+        "预算"
+      ],
+      "aliases": [
+        "money",
+        "cash",
+        "cost",
+        "budget",
+        "qian"
+      ],
+      "file": "qian.webp"
+    },
+    {
+      "id": "wenhao",
+      "name": "问号",
+      "tags": [
+        "问号",
+        "疑惑",
+        "不懂"
+      ],
+      "aliases": [
+        "question",
+        "confused",
+        "what",
+        "wenhao"
+      ],
+      "file": "wenhao.webp"
+    },
+    {
+      "id": "jingyin-1",
+      "name": "静音",
+      "tags": [
+        "静音",
+        "闭嘴",
+        "安静"
+      ],
+      "aliases": [
+        "mute",
+        "quiet",
+        "shutup",
+        "jingyin",
+        "jingyin-1"
+      ],
+      "file": "jingyin-1.webp"
+    },
+    {
+      "id": "jingyin-2",
+      "name": "静音",
+      "tags": [
+        "静音",
+        "闭嘴",
+        "安静"
+      ],
+      "aliases": [
+        "mute",
+        "quiet",
+        "shutup",
+        "jingyin",
+        "jingyin-2"
+      ],
+      "file": "jingyin-2.webp"
+    },
+    {
+      "id": "chan-daocha",
+      "name": "馋(刀叉)",
+      "tags": [
+        "馋(刀叉)",
+        "嘴馋",
+        "开饭"
+      ],
+      "aliases": [
+        "hungry",
+        "crave",
+        "fork",
+        "chan-daocha"
+      ],
+      "file": "chan-daocha.webp"
+    },
+    {
+      "id": "chan-kuaizi",
+      "name": "馋(筷子)",
+      "tags": [
+        "馋(筷子)",
+        "嘴馋",
+        "想吃"
+      ],
+      "aliases": [
+        "hungry",
+        "crave",
+        "chopsticks",
+        "chan-kuaizi"
+      ],
+      "file": "chan-kuaizi.webp"
+    },
+    {
+      "id": "jiashi",
+      "name": "驾驶",
+      "tags": [
+        "驾驶",
+        "开车",
+        "上路"
+      ],
+      "aliases": [
+        "drive",
+        "car",
+        "roadtrip",
+        "jiashi"
+      ],
+      "file": "jiashi.webp"
+    },
+    {
+      "id": "mofa",
+      "name": "魔法",
+      "tags": [
+        "魔法",
+        "魔法",
+        "施法",
+        "变"
+      ],
+      "aliases": [
+        "magic",
+        "spell",
+        "abracadabra",
+        "mofa"
+      ],
+      "file": "mofa.webp"
+    }
+  ]
+}

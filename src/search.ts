@@ -5,11 +5,11 @@
  * 命中率很高，而且结果是**确定性**的（同分按索引顺序），便于测试与复现。
  */
 
-import type { StickerEntry } from './types.js'
+import type { StickerTerm } from './types.js'
 
-/** 一次命中的结果。 */
-export interface SearchHit {
-  entry: StickerEntry
+/** 一次命中的结果（`T` 保留调用方的完整条目类型：索引条目与客户端词表都能直接用）。 */
+export interface SearchHit<T extends StickerTerm = StickerTerm> {
+  entry: T
   score: number
 }
 
@@ -81,7 +81,7 @@ function fieldScore(field: string, token: string): number {
 }
 
 /** 一条贴纸对一组 token 的得分。 */
-export function scoreEntry(entry: StickerEntry, tokens: readonly string[]): number {
+export function scoreEntry(entry: StickerTerm, tokens: readonly string[]): number {
   const id = entry.id.toLowerCase()
   let total = 0
   for (const token of tokens) {
@@ -101,10 +101,14 @@ export function scoreEntry(entry: StickerEntry, tokens: readonly string[]): numb
  * @param query - 模型/用户给的关键词。
  * @param limit - 最多返回几条候选。
  */
-export function searchStickers(entries: readonly StickerEntry[], query: string, limit = 5): SearchHit[] {
+export function searchStickers<T extends StickerTerm>(
+  entries: readonly T[],
+  query: string,
+  limit = 5,
+): SearchHit<T>[] {
   const tokens = tokenize(query)
   if (tokens.length === 0) return []
-  const hits: SearchHit[] = []
+  const hits: SearchHit<T>[] = []
   for (const entry of entries) {
     const score = scoreEntry(entry, tokens)
     if (score > 0) hits.push({ entry, score })

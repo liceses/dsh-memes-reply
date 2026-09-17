@@ -11,13 +11,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 import { createStats, createStickerRoute } from '../lib/route.js'
-import { createAutoBus } from '../lib/auto.js'
 import { createTrace } from '../lib/trace.js'
 
 /** 默认配置。 */
 const CFG = {
   enabled: true,
-  form: 'inline',
   quality: 'compressed',
   assetRoot: '',
   originalRoot: '',
@@ -159,7 +157,6 @@ function fakeReq({ url, method = 'GET', host = '127.0.0.1:3080', headers = {}, b
 function harness(root, overrides = {}) {
   let state = { version: 1, sessions: {}, global: {} }
   const cfg = { ...CFG, assetRoot: root, ...overrides }
-  const auto = createAutoBus()
   const trace = createTrace(48)
   const route = createStickerRoute({
     ctx: fakeCtx(),
@@ -173,26 +170,26 @@ function harness(root, overrides = {}) {
         state = next
       },
     },
-    auto,
     trace: { push: (entry) => trace.push(entry), list: () => trace.list() },
   })
-  return { route, getState: () => state, auto, trace }
+  return { route, getState: () => state, trace }
 }
 
 // ---------------------------------------------------------------- 常驻挂件状态
 
-test('/pet：GET 初始为空、POST 记位置/收起/当前那张、非法输入被拒', async () => {
+test('/layout：GET 初始为空、POST 记位置/收起/当前那张、非法输入被拒', async () => {
   const { root } = fixture()
   const h = harness(root)
 
   const initial = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/pet' }), initial)
+  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/layout' }), initial)
+  // v2.0：兜底浮层退役，这里只剩常驻挂件。
   assert.deepEqual(JSON.parse(String(initial.captured.body)), { ok: true, pet: {} })
 
   const saved = fakeRes()
   await h.route.handler(
     fakeReq({
-      url: '/api/dsh-memes-reply/pet',
+      url: '/api/dsh-memes-reply/layout',
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ right: 120.6, bottom: 88, collapsed: true, id: 'dianzan' }),
@@ -208,14 +205,14 @@ test('/pet：GET 初始为空、POST 记位置/收起/当前那张、非法输�
   assert.equal(h.getState().global.pet.id, 'dianzan')
 
   const readBack = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/pet' }), readBack)
+  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/layout' }), readBack)
   assert.equal(JSON.parse(String(readBack.captured.body)).pet.right, 121)
 
   // 局部更新：只改 collapsed，不动坐标
   const partial = fakeRes()
   await h.route.handler(
     fakeReq({
-      url: '/api/dsh-memes-reply/pet',
+      url: '/api/dsh-memes-reply/layout',
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ collapsed: false }),
@@ -230,7 +227,7 @@ test('/pet：GET 初始为空、POST 记位置/收起/当前那张、非法输�
   const badId = fakeRes()
   await h.route.handler(
     fakeReq({
-      url: '/api/dsh-memes-reply/pet',
+      url: '/api/dsh-memes-reply/layout',
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ id: 'nope' }),
@@ -241,13 +238,13 @@ test('/pet：GET 初始为空、POST 记位置/收起/当前那张、非法输�
 
   const badType = fakeRes()
   await h.route.handler(
-    fakeReq({ url: '/api/dsh-memes-reply/pet', method: 'POST', headers: { 'content-type': 'text/plain' }, body: '{}' }),
+    fakeReq({ url: '/api/dsh-memes-reply/layout', method: 'POST', headers: { 'content-type': 'text/plain' }, body: '{}' }),
     badType,
   )
   assert.equal(badType.captured.status, 400)
 
   const badMethod = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/pet', method: 'PUT' }), badMethod)
+  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/layout', method: 'PUT' }), badMethod)
   assert.equal(badMethod.captured.status, 405)
 })
 
@@ -293,55 +290,6 @@ test('/debug：POST 记一条、GET 405、缺 kind 400；/stats 能读回轨迹'
   assert.equal(entry.turn, 7)
   assert.equal(entry.id, 'bug')
   assert.equal(entry.note, 'hit')
-})
-
-// ---------------------------------------------------------------- 自动贴纸待取位
-
-test('/auto/pending：缺 sessionId 400、非 GET 405、有/无事件与 init 语义', async () => {
-  const { root } = fixture()
-  const h = harness(root)
-
-  const missing = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/auto/pending' }), missing)
-  assert.equal(missing.captured.status, 400)
-
-  const post = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/auto/pending?sessionId=s1', method: 'POST' }), post)
-  assert.equal(post.captured.status, 405)
-
-  const empty = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/auto/pending?sessionId=s1&since=0' }), empty)
-  assert.equal(JSON.parse(String(empty.captured.body)).event, null)
-
-  h.auto.publish({
-    sessionId: 's1',
-    turn: 3,
-    id: 'dianzan',
-    name: '点赞',
-    url: 'http://127.0.0.1:3080/api/dsh-memes-reply/sticker/dianzan.gif',
-    thumb: null,
-    reason: 'every',
-    matched: '',
-    at: Date.now(),
-  })
-
-  const got = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/auto/pending?sessionId=s1&since=0' }), got)
-  const body = JSON.parse(String(got.captured.body))
-  assert.equal(body.ok, true)
-  assert.equal(body.seq, 1)
-  assert.equal(body.event.id, 'dianzan')
-  assert.equal(body.event.reason, 'every')
-
-  // 已经取过 → 不再重复
-  const again = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/auto/pending?sessionId=s1&since=1' }), again)
-  assert.equal(JSON.parse(String(again.captured.body)).event, null)
-
-  // init=1 只同步游标
-  const init = fakeRes()
-  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/auto/pending?sessionId=s1&since=0&init=1' }), init)
-  assert.equal(JSON.parse(String(init.captured.body)).event, null)
 })
 
 // ---------------------------------------------------------------- 贴纸字节
@@ -538,6 +486,56 @@ test('素材清单：limit 夹取、关键词过滤、非 GET 405', async () => 
 
   const post = fakeRes()
   await route.handler(fakeReq({ url: '/api/dsh-memes-reply/catalog', method: 'POST' }), post)
+  assert.equal(post.captured.status, 405)
+})
+
+test('/vocab：全量检索词表（id/name/tags/aliases + 全尺寸 URL），非 GET 405', async () => {
+  const { root } = harness0()
+  const { route } = harness(root)
+
+  const response = fakeRes()
+  await route.handler(fakeReq({ url: '/api/dsh-memes-reply/vocab' }), response)
+  const body = JSON.parse(String(response.captured.body))
+  assert.equal(body.ok, true)
+  assert.equal(body.ready, true)
+  assert.equal(body.total, 2)
+  // 全量、不夹取（与 /catalog 的分页预览墙不同）。
+  assert.equal(body.items.length, 2)
+  const first = body.items.find((item) => item.id === 'dianzan')
+  assert.deepEqual(first.tags, ['点赞', '好评'])
+  assert.deepEqual(first.aliases, ['like', 'dianzan'])
+  // v2.0 的硬要求：贴纸永远是**会动的那张**，词表里不给 thumb。
+  assert.match(first.url, /\/sticker\/dianzan\.gif$/)
+  assert.equal(first.thumb, undefined)
+
+  const post = fakeRes()
+  await route.handler(fakeReq({ url: '/api/dsh-memes-reply/vocab', method: 'POST' }), post)
+  assert.equal(post.captured.status, 405)
+})
+
+test('/session-state：静音 / 面板指定 / 最近用过，未知会话返回空态，非 GET 405', async () => {
+  const { root } = harness0()
+  const h = harness(root)
+
+  // 未知会话：空态但不报错（客户端据此走"没静音、没指定"）。
+  const fresh = fakeRes()
+  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/session-state?sessionId=s1' }), fresh)
+  const freshBody = JSON.parse(String(fresh.captured.body))
+  assert.deepEqual(freshBody, { ok: true, sessionId: 's1', muted: false, latch: null, sessionLatch: null, recent: [] })
+
+  // 真写入状态后再读：三个字段都要正确带出来。
+  const state = h.getState()
+  state.sessions.s1 = { muted: true, recent: ['dianzan', 'ku-1'] }
+  state.global = { latch: 'ku-1' }
+  const muted = fakeRes()
+  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/session-state?sessionId=s1' }), muted)
+  const mutedBody = JSON.parse(String(muted.captured.body))
+  assert.equal(mutedBody.muted, true)
+  assert.equal(mutedBody.latch, 'ku-1')
+  assert.deepEqual(mutedBody.recent, ['dianzan', 'ku-1'])
+
+  const post = fakeRes()
+  await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/session-state', method: 'POST' }), post)
   assert.equal(post.captured.status, 405)
 })
 

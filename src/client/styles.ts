@@ -166,56 +166,6 @@ export const CSS = `
 .${P}-failed { font-size: 12.5px; color: var(--dsw-alias-label-error, #e5484d); }
 .${P}-spacer { flex: 1; }
 
-/* ---- 气泡角上的圆贴纸（conversation.chat.turnTail） ----
-   尺寸/位置上移量都集中在下面两个变量里，想调只改这里。 */
-.${P}-bubble {
-  --${P}-bubble-size: 96px;
-  --${P}-bubble-rise: 40px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: 6px;
-  /* 右对齐 + 负上边距：让圆压在助手气泡的右下角上（效果图那个位置） */
-  margin: calc(-1 * var(--${P}-bubble-rise)) 6px 2px 0;
-  pointer-events: none;
-}
-.${P}-bubble-fish {
-  pointer-events: auto;
-  width: var(--${P}-bubble-size);
-  height: var(--${P}-bubble-size);
-  padding: 0;
-  border-radius: 50%;
-  border: 2px solid var(--dsw-alias-brand-primary, #4c9aff);
-  background: var(--dsw-alias-bg-layer-2, rgba(255, 255, 255, 0.92));
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-.${P}-bubble-fish:hover {
-  transform: scale(1.08);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26);
-}
-.${P}-bubble-fish img { width: 100%; height: 100%; border-radius: 50%; object-fit: contain; display: block; }
-.${P}-bubble-close {
-  pointer-events: auto;
-  align-self: flex-start;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid var(--dsw-alias-border-l2, rgba(128, 128, 128, 0.35));
-  background: var(--dsw-alias-bg-layer-3, rgba(255, 255, 255, 0.95));
-  color: var(--dsw-alias-label-tertiary, inherit);
-  font-size: 11px;
-  line-height: 1;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.12s ease;
-}
-.${P}-bubble:hover .${P}-bubble-close, .${P}-bubble-close:focus-visible { opacity: 1; }
-.${P}-bubble-close:hover { color: var(--dsw-alias-label-primary, inherit); }
-
 /* ---- 常驻挂件（shell.overlay）：随时能看到的那只大肥鱼 ---- */
 .${P}-pet-layer { position: fixed; inset: 0; pointer-events: none; }
 .${P}-pet {
@@ -261,4 +211,5 @@ export const CSS = `
 }
 .${P}-pet-tool:hover:not(:disabled) { color: var(--dsw-alias-label-primary, inherit); }
 .${P}-pet-tool:disabled { opacity: 0.5; cursor: default; }
+
 `

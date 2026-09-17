@@ -73,26 +73,33 @@ if (latched !== undefined && latched.res.ok) {
   })
 }
 
-console.log('\n—— 自动贴纸（B-auto）——')
-const pending = await probe('/api/dsh-memes-reply/auto/pending?sessionId=probe&since=0&init=1')
-if (pending !== undefined && pending.res.ok) {
-  const body = JSON.parse(Buffer.from(pending.buf).toString('utf8'))
-  console.log(`     mode=${body.mode} seq=${body.seq} event=${body.event ? body.event.id : 'null'}（init=1 只同步游标，属正常）`)
+console.log('\n—— 客户端派生的两份输入（v2.0）——')
+const vocab = await probe('/api/dsh-memes-reply/vocab')
+if (vocab !== undefined && vocab.res.ok) {
+  const body = JSON.parse(Buffer.from(vocab.buf).toString('utf8'))
+  console.log(`     /vocab -> ready=${body.ready} total=${body.total} 首条=${body.items?.[0]?.id ?? '?'}`)
+} else {
+  console.log('     ⚠️ /vocab 404 —— 宿主还没重启（贴纸层会退回打包词表，仍可工作）')
 }
-await probe('/api/dsh-memes-reply/auto/pending')
+const sessionState = await probe('/api/dsh-memes-reply/session-state?sessionId=probe')
+if (sessionState !== undefined && sessionState.res.ok) {
+  console.log(`     /session-state -> ${Buffer.from(sessionState.buf).toString('utf8')}`)
+} else {
+  console.log('     ⚠️ /session-state 404 —— 宿主还没重启（静音/冷却/指定暂不生效）')
+}
 
 console.log('\n—— 常驻挂件 ——')
-const petRead = await probe('/api/dsh-memes-reply/pet')
+const petRead = await probe('/api/dsh-memes-reply/layout')
 if (petRead !== undefined && petRead.res.ok) {
-  console.log(`     GET /pet -> ${Buffer.from(petRead.buf).toString('utf8')}`)
+  console.log(`     GET /layout -> ${Buffer.from(petRead.buf).toString('utf8')}`)
 }
-const petWrite = await probe('/api/dsh-memes-reply/pet', {
+const petWrite = await probe('/api/dsh-memes-reply/layout', {
   method: 'POST',
   headers: { 'content-type': 'application/json' },
   body: JSON.stringify({ right: 28, bottom: 104 }),
 })
 if (petWrite !== undefined && petWrite.res.ok) {
-  console.log(`     POST /pet -> ${Buffer.from(petWrite.buf).toString('utf8')}`)
+  console.log(`     POST /layout -> ${Buffer.from(petWrite.buf).toString('utf8')}`)
 }
 
 console.log('\n—— 状态行 ——')

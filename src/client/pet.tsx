@@ -16,7 +16,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import { DEFAULT_CONFIG } from '../config.js'
 import type { CatalogItem, MemesConfig, PetCorner, PetState } from '../types.js'
-import { fetchCatalog, fetchPet, putPet } from './api.js'
+import { fetchCatalog, fetchLayout, putLayout } from './api.js'
 
 /** 挂件尺寸的夹取范围。 */
 const MIN_SIZE = 64
@@ -71,7 +71,7 @@ export function StickerPet({ scope }: { scope: SettingsScope<MemesConfig> }): Re
       const picked = response?.items?.[0]
       if (picked === undefined) return
       setItem(picked)
-      void putPet({ id: picked.id })
+      void putLayout({ slot: 'pet', id: picked.id })
     } finally {
       setBusy(false)
     }
@@ -81,7 +81,7 @@ export function StickerPet({ scope }: { scope: SettingsScope<MemesConfig> }): Re
   useEffect(() => {
     let alive = true
     void (async () => {
-      const saved = await fetchPet()
+      const saved = (await fetchLayout())?.pet
       if (!alive) return
       if (saved !== undefined) {
         setPet(saved)
@@ -146,18 +146,18 @@ export function StickerPet({ scope }: { scope: SettingsScope<MemesConfig> }): Re
       // 点击（不是拖）：收起态点一下展开，展开态点一下换一张。
       if (pet.collapsed === true) {
         setPet((previous) => ({ ...previous, collapsed: false }))
-        void putPet({ collapsed: false })
+        void putLayout({ slot: 'pet', collapsed: false })
       } else {
         void shuffle()
       }
       return
     }
-    if (posRef.current !== null) void putPet(posRef.current)
+    if (posRef.current !== null) void putLayout({ slot: 'pet', ...posRef.current })
   }
 
   const collapse = (collapsed: boolean): void => {
     setPet((previous) => ({ ...previous, collapsed }))
-    void putPet({ collapsed })
+    void putLayout({ slot: 'pet', collapsed })
   }
 
   return (

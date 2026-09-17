@@ -27,14 +27,15 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && tsdown",
-    "build:client": "tsdown",
+    "build": "node scripts/build-client-vocab.mjs && tsc -p tsconfig.build.json && tsdown",
+    "build:client": "node scripts/build-client-vocab.mjs && tsdown",
     "typecheck": "tsc --noEmit",
     "check:client": "node scripts/check-client-purity.mjs",
     "pretest": "npm run build && npm run check:client",
     "test": "node --test \"test/*.test.mjs\"",
     "import-assets": "node scripts/import-assets.mjs",
-    "pack": "npm pack"
+    "pack": "npm pack",
+    "prepare": "npm run build"
   },
   "files": [
     "lib/**/*.js",
@@ -78,5 +79,13 @@
     "tsdown": "0.22.2",
     "typescript": "~5.7.2"
   },
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liceses/dsh-memes-reply.git"
+  },
+  "homepage": "https://github.com/liceses/dsh-memes-reply#readme",
+  "bugs": {
+    "url": "https://github.com/liceses/dsh-memes-reply/issues"
+  }
 }

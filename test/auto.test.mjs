@@ -1,17 +1,14 @@
 /**
- * 自动贴纸（B-auto）单测：规则、待取位、文本缓冲。纯函数 + 注入时钟，不碰磁盘。
+ * 贴纸规则单测（v2.0 起只剩"怎么选一张"）。纯函数，不碰磁盘。
+ *
+ * v1.0 的传输件（待取位 AutoBus / 文本缓冲 / llm-stream 观察者）已随"宿主发布 → 客户端轮询"
+ * 那条链一起退役：贴纸现在是**会话事件的纯函数**（见 `lib/derive.js` 与 `src/client/node.tsx`）。
+ * 规则本身仍由这里盯着 —— host 与浏览器半边共用同一份实现。
  */
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 
-import {
-  createAutoBus,
-  createAutoTextBuffer,
-  pickAutoSticker,
-  pickByKeyword,
-  pickEvery,
-  tapTextStream,
-} from '../lib/auto.js'
+import { pickAutoSticker, pickByKeyword, pickEvery } from '../lib/auto.js'
 
 /** 三条最小素材。 */
 const ENTRIES = [
@@ -136,102 +133,3 @@ test('规则入口：轮次号/间隔是坏数字时也不许静默不贴（真�
   assert.equal(pickAutoSticker({ ...base, mode: 'every', everyTurns: 3, turn: 4 }), null)
 })
 
-test('待取位：seq 单调、按 since 去重、init 只同步游标、过期不补发', () => {
-  let now = 1_000_000
-  const bus = createAutoBus(() => now)
-  const published = bus.publish({
-    sessionId: 's1',
-    turn: 1,
-    id: 'bug',
-    name: 'Bug',
-    url: 'http://x/1',
-    thumb: null,
-    reason: 'keyword',
-    matched: '修好了',
-    at: now,
-  })
-  assert.equal(published.seq, 1)
-
-  // 首次（init）只给游标
-  assert.deepEqual(bus.pending('s1', 0, true), { seq: 1, event: null })
-  // 正常取到
-  assert.equal(bus.pending('s1', 0, false).event?.id, 'bug')
-  // 游标"超前"（来自上一个 host 进程：重启后 seq 归零，浏览器却还记着旧游标）→ 必须夹回 0，
-  // 否则事件会被 `event.seq <= since` 永久过滤掉 —— 这正是"重启后怎么都不出贴纸"的原因之一。
-  assert.equal(bus.pending('s1', 40, false).event?.id, 'bug', '超前游标应被夹回 0')
-  // 已经取过的游标不再重复
-  assert.equal(bus.pending('s1', 1, false).event, null)
-  // 别的会话互不干扰
-  assert.equal(bus.pending('s2', 0, false).event, null)
-
-  // 过期（> TTL）不再补发
-  now += 10 * 60 * 1000
-  assert.equal(bus.pending('s1', 0, false).event, null)
-})
-
-test('文本缓冲：累积、取走即清、有上限', () => {
-  const buffer = createAutoTextBuffer()
-  buffer.feed('s1', '前半句')
-  buffer.feed('s1', '后半句')
-  assert.equal(buffer.take('s1'), '前半句后半句')
-  assert.equal(buffer.take('s1'), '')
-  assert.equal(buffer.size(), 0)
-
-  buffer.feed('s1', 'x'.repeat(20_000))
-  assert.ok(buffer.take('s1').length <= 8_000, '缓冲必须有上限')
-})
-
-test('流观察者：只吃 text-delta，且原样透传所有 chunk', async () => {
-  const buffer = createAutoTextBuffer()
-  const chunks = [
-    { type: 'reasoning-delta', text: '不该被收进正文' },
-    { type: 'text-delta', text: '修好' },
-    { type: 'text-delta', text: '了' },
-    { type: 'usage', usage: {} },
-  ]
-  async function* source() {
-    for (const chunk of chunks) yield chunk
-  }
-  const seen = []
-  for await (const chunk of tapTextStream(buffer, 's1', source())) seen.push(chunk)
-  assert.equal(seen.length, chunks.length, '一个 chunk 都不能吞')
-  assert.equal(buffer.take('s1'), '修好了')
-})
-
-test('最后一步信号：这一步没调工具 → 流结束时回调一次（贴纸提前发布）', async () => {
-  const buffer = createAutoTextBuffer()
-  let calls = 0
-  async function* plain() {
-    yield { type: 'text-delta', text: '修好了' }
-    yield { type: 'usage', usage: {} }
-    yield { type: 'finish', reason: 'stop' }
-  }
-  for await (const _chunk of tapTextStream(buffer, 's1', plain(), () => {
-    calls += 1
-  })) {
-    // 跑完即可
-  }
-  assert.equal(calls, 1, '没有工具调用 → 这是最后一步，应该回调')
-})
-
-test('最后一步信号：这一步调了工具 → 不回调（后面还有步，等真正最后一步）', async () => {
-  for (const chunk of [
-    { type: 'tool-call', id: 'c1', name: 'read', arguments: '{}' },
-    { type: 'tool-call-delta', index: 0, id: 'c1', argumentsDelta: '{}' },
-    { type: 'block-start', index: 0, blockType: 'tool-call' },
-    { type: 'block-end', index: 0, block: { type: 'tool-call' } },
-  ]) {
-    const buffer = createAutoTextBuffer()
-    let calls = 0
-    async function* withTool() {
-      yield { type: 'text-delta', text: '先看一下' }
-      yield chunk
-    }
-    for await (const _chunk of tapTextStream(buffer, 's1', withTool(), () => {
-      calls += 1
-    })) {
-      // 跑完即可
-    }
-    assert.equal(calls, 0, `chunk ${chunk.type} 说明这一步调了工具，不该当成最后一步`)
-  }
-})

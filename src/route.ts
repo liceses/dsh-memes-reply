@@ -1,10 +1,12 @@
 /**
  * dsh-memes-reply — HTTP 路由（host）。
  *
- * 一条前缀路由管五件事：
+ * 一条前缀路由管这些事：
  *   GET/HEAD /api/dsh-memes-reply/sticker/<id>.<ext>   贴纸字节（全尺寸动画）
  *   GET/HEAD /api/dsh-memes-reply/thumb/<id>.<ext>     缩略图字节（设置面板预览墙）
  *   GET      /api/dsh-memes-reply/catalog              素材清单（预览墙数据）
+ *   GET      /api/dsh-memes-reply/vocab                全量检索词表（v2.0 客户端派生）
+ *   GET      /api/dsh-memes-reply/session-state        会话态（静音/指定/最近用过）
  *   GET/POST /api/dsh-memes-reply/latch                「下一轮用这张」读写
  *   GET      /api/dsh-memes-reply/stats                诊断 / 面板状态行
  *
@@ -19,7 +21,6 @@ import type { WebRoute } from '@deepseek-ai/dsh-host-webserver'
 import { effectiveAssetRoot, loadIndex, resolveStickerFile, resolveThumbFile, type LoadedIndex, type ResolvedSticker } from './assets.js'
 import { CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT } from './config.js'
 import {
-  AUTO_PENDING_PATH,
   CATALOG_PATH,
   DEBUG_PATH,
   LATCH_PATH,
@@ -27,10 +28,12 @@ import {
   MIME,
   PET_PATH,
   ROUTE_PREFIX,
+  SESSION_STATE_PATH,
   STATS_PATH,
   STICKER_ID_RE,
   STICKER_PATH,
   THUMB_PATH,
+  VOCAB_PATH,
   extensionOf,
   stickerUrl,
   thumbUrl,
@@ -76,11 +79,6 @@ export interface RouteDeps {
   observeOrigin: (origin: string) => void
   /** 插件自有状态（面板的"下一轮用这张"写这里）。 */
   state: { read: () => PluginState; write: (next: PluginState) => void }
-  /** 自动贴纸待取位（客户端轮询取走）与最近一条（诊断）。 */
-  auto: {
-    pending: (sessionId: string, since: number, init: boolean) => { seq: number; event: unknown }
-    last: () => unknown
-  }
   /** 诊断环形缓冲（host 决策 + 客户端回执）。 */
   trace: { push: (entry: Omit<TraceEntry, 'at'> & { at?: number }) => void; list: () => TraceEntry[] }
 }
@@ -204,7 +202,6 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
       assetRoot: effectiveAssetRoot(cfg),
       originalRoot: cfg.originalRoot,
       quality: cfg.quality,
-      form: cfg.form,
       totalBytes,
       served: stats.served,
       miss: stats.miss,
@@ -212,8 +209,6 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
       lastId: stats.lastId,
       lastAt: stats.lastAt,
       latch: globalLatch(deps.state.read()),
-      /** 最近发布的自动贴纸（诊断："贴纸到底是为哪一轮发的"）。 */
-      autoLast: deps.auto.last(),
       /** 两端共用的诊断轨迹（最新 48 条）。 */
       trace: deps.trace.list(),
       ts: Date.now(),
@@ -289,6 +284,52 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
         return
       }
 
+      // ---- 检索词表（v2.0：客户端派生的唯一数据源） -------------------------
+      if (pathname === `${VOCAB_PATH}` || pathname === `${VOCAB_PATH}/`) {
+        if ((req.method ?? 'GET') !== 'GET') {
+          res.writeHead(405, { 'Cache-Control': 'no-store' })
+          res.end()
+          return
+        }
+        const { index } = context()
+        if (index === undefined) {
+          sendJson(res, 200, { ok: true, ready: false, total: 0, items: [] })
+          return
+        }
+        const origin = deps.origin()
+        // 只给派生需要的东西 + 全尺寸动画 URL（**不给 thumb**：v2.0 里贴纸必须是会动的那张）。
+        const items = index.entries.map((entry) => ({
+          id: entry.id,
+          name: entry.name,
+          tags: entry.tags,
+          aliases: entry.aliases,
+          url: stickerUrl(origin, entry),
+        }))
+        sendJson(res, 200, { ok: true, ready: true, total: items.length, items })
+        return
+      }
+
+      // ---- 会话态（客户端派生时"人按过的开关"仍由宿主说了算） ----------------
+      if (pathname === `${SESSION_STATE_PATH}` || pathname === `${SESSION_STATE_PATH}/`) {
+        if ((req.method ?? 'GET') !== 'GET') {
+          res.writeHead(405, { 'Cache-Control': 'no-store' })
+          res.end()
+          return
+        }
+        const sessionId = (url.searchParams.get('sessionId') ?? '').trim()
+        const current = deps.state.read()
+        const session = sessionId === '' ? undefined : current.sessions[sessionId]
+        sendJson(res, 200, {
+          ok: true,
+          sessionId,
+          muted: session?.muted === true,
+          latch: globalLatch(current),
+          sessionLatch: session?.latch ?? null,
+          recent: session?.recent ?? [],
+        })
+        return
+      }
+
       // ---- 诊断回执（客户端把关键动作回传，进内存环形缓冲） -------------------
       if (pathname === DEBUG_PATH || pathname === `${DEBUG_PATH}/`) {
         if ((req.method ?? 'GET') !== 'POST') {
@@ -325,7 +366,7 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
         return
       }
 
-      // ---- 常驻挂件的位置与形态 ---------------------------------------------
+      // ---- 界面落点（常驻挂件的拖拽坐标；兜底浮层已随 v2.0 退役） -------------
       if (pathname === PET_PATH || pathname === `${PET_PATH}/`) {
         const method = req.method ?? 'GET'
         if (method === 'GET') {
@@ -353,14 +394,25 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
           sendJson(res, 400, { ok: false, error: 'bad json' })
           return
         }
-        const input = (parsedPet ?? {}) as { right?: unknown; bottom?: unknown; collapsed?: unknown; id?: unknown }
-        const patch: PetState = {}
+        const input = (parsedPet ?? {}) as {
+          right?: unknown
+          bottom?: unknown
+          collapsed?: unknown
+          id?: unknown
+        }
+        // 落点坐标：数字 = 记录，null = 清除（复位到默认位置）。
+        const coords: { right?: number; bottom?: number } = {}
         for (const key of ['right', 'bottom'] as const) {
           const value = input[key]
-          if (typeof value === 'number' && Number.isFinite(value)) {
-            patch[key] = clampInt(String(Math.round(value)), 0, 0, 20_000)
+          if (value === null) coords[key] = undefined
+          else if (typeof value === 'number' && Number.isFinite(value)) {
+            coords[key] = clampInt(String(Math.round(value)), 0, 0, 20_000)
           }
         }
+
+        const patch: PetState = {}
+        if (coords.right !== undefined) patch.right = coords.right
+        if (coords.bottom !== undefined) patch.bottom = coords.bottom
         if (typeof input.collapsed === 'boolean') patch.collapsed = input.collapsed
         if (input.id === null || input.id === '') {
           patch.id = undefined
@@ -380,25 +432,6 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
         const pet = setPetState(petStore, patch)
         deps.state.write(petStore)
         sendJson(res, 200, { ok: true, pet })
-        return
-      }
-
-      // ---- 自动贴纸待取位（客户端轮询） -------------------------------------
-      if (pathname === AUTO_PENDING_PATH || pathname === `${AUTO_PENDING_PATH}/`) {
-        if ((req.method ?? 'GET') !== 'GET') {
-          res.writeHead(405, { 'Cache-Control': 'no-store' })
-          res.end()
-          return
-        }
-        const sessionId = (url.searchParams.get('sessionId') ?? '').trim()
-        if (sessionId === '' || sessionId.length > 200) {
-          sendJson(res, 400, { ok: false, error: 'sessionId required' })
-          return
-        }
-        const since = clampInt(url.searchParams.get('since'), 0, 0, Number.MAX_SAFE_INTEGER)
-        const init = url.searchParams.get('init') === '1'
-        const result = deps.auto.pending(sessionId, since, init)
-        sendJson(res, 200, { ok: true, mode: config().autoMode, seq: result.seq, event: result.event })
         return
       }
 

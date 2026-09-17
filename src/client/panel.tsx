@@ -10,8 +10,17 @@
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore, type ReactElement, type ReactNode } from 'react'
 import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import { CATALOG_DEFAULT_LIMIT, CONFIG_FIELDS, DEFAULT_CONFIG } from '../config.js'
-import type { AutoMode, CatalogItem, MemesConfig, PanelStats, PetCorner, StickerForm, StickerQuality } from '../types.js'
-import { fetchCatalog, fetchStats, putLatch, type CatalogResponse } from './api.js'
+import type {
+  AutoMode,
+  CatalogItem,
+  MemesConfig,
+  PanelStats,
+  PetCorner,
+  StickerBorderStyle,
+  StickerQuality,
+  StickerShape,
+} from '../types.js'
+import { fetchCatalog, fetchStats, putLatch, putLayout, type CatalogResponse } from './api.js'
 
 /** 预览墙格数。 */
 const WALL_SIZE = CATALOG_DEFAULT_LIMIT
@@ -262,23 +271,6 @@ export function SettingsCard({ scope }: { scope: SettingsScope<MemesConfig> }): 
             </Field>
 
             <Field
-              label="呈现形态"
-              hint="inline = 把图片 URL 写进回复正文；sticker = 正文一个字不写，改用输入框上方的贴纸层"
-              overridden={isOverridden(user, 'form')}
-              disabled={!writable}
-              onReset={() => void resetField('form')}
-            >
-              <select
-                value={current.form}
-                disabled={!writable}
-                onChange={(event) => edit('form', event.target.value as StickerForm)}
-              >
-                <option value="inline">正文内联图片（inline）</option>
-                <option value="sticker">贴纸层，不占正文（sticker）</option>
-              </select>
-            </Field>
-
-            <Field
               label="画质来源"
               hint="original 需要填原图目录；找不到文件会静默回落到压缩副本"
               overridden={isOverridden(user, 'quality')}
@@ -450,6 +442,133 @@ export function SettingsCard({ scope }: { scope: SettingsScope<MemesConfig> }): 
                 <option value="tl">左上</option>
               </select>
             </Field>
+          </div>
+
+          {/* ---- 外观：形状 / 边框 / 尺寸 / 停留 ---- */}
+          <div className="dsh-memes-reply-section-title">
+            外观
+            <span>三种贴纸共用形状与边框；改完立即生效</span>
+          </div>
+          <div className="dsh-memes-reply-fields">
+            <Field
+              label="外形"
+              hint="圆形 / 圆角方形（挂件、气泡角、兜底三种贴纸共用）"
+              overridden={isOverridden(user, 'shape')}
+              disabled={!writable}
+              onReset={() => void resetField('shape')}
+            >
+              <select
+                value={current.shape}
+                disabled={!writable}
+                onChange={(event) => edit('shape', event.target.value as StickerShape)}
+              >
+                <option value="circle">圆形</option>
+                <option value="rounded">圆角方形</option>
+              </select>
+            </Field>
+
+            <Field
+              label="圆角半径"
+              hint="仅「圆角方形」时生效（px）"
+              overridden={isOverridden(user, 'radius')}
+              disabled={!writable}
+              onReset={() => void resetField('radius')}
+            >
+              <input
+                type="number"
+                min={0}
+                max={64}
+                value={current.radius}
+                disabled={!writable}
+                onChange={(event) => edit('radius', Math.max(0, Math.min(64, Number(event.target.value) || 0)))}
+              />
+            </Field>
+
+            <Field
+              label="边框粗细"
+              hint="px，0 = 无边框"
+              overridden={isOverridden(user, 'borderWidth')}
+              disabled={!writable}
+              onReset={() => void resetField('borderWidth')}
+            >
+              <input
+                type="number"
+                min={0}
+                max={8}
+                value={current.borderWidth}
+                disabled={!writable}
+                onChange={(event) => edit('borderWidth', Math.max(0, Math.min(8, Number(event.target.value) || 0)))}
+              />
+            </Field>
+
+            <Field
+              label="边框样式"
+              hint="实线 / 虚线 / 无"
+              overridden={isOverridden(user, 'borderStyle')}
+              disabled={!writable}
+              onReset={() => void resetField('borderStyle')}
+            >
+              <select
+                value={current.borderStyle}
+                disabled={!writable}
+                onChange={(event) => edit('borderStyle', event.target.value as StickerBorderStyle)}
+              >
+                <option value="solid">实线</option>
+                <option value="dashed">虚线</option>
+                <option value="none">无边框</option>
+              </select>
+            </Field>
+
+            <Field
+              label="边框颜色"
+              hint="如 #4c9aff；留空 = 跟随主题强调色"
+              overridden={isOverridden(user, 'borderColor')}
+              disabled={!writable}
+              onReset={() => void resetField('borderColor')}
+            >
+              <input
+                type="text"
+                value={current.borderColor}
+                placeholder="留空 = 主题色"
+                disabled={!writable}
+                onChange={(event) => edit('borderColor', event.target.value.trim())}
+              />
+            </Field>
+
+            <Field
+              label="气泡角贴纸大小"
+              hint="贴在回复右下角那枚的边长（px）"
+              overridden={isOverridden(user, 'bubbleSize')}
+              disabled={!writable}
+              onReset={() => void resetField('bubbleSize')}
+            >
+              <input
+                type="number"
+                min={48}
+                max={240}
+                value={current.bubbleSize}
+                disabled={!writable}
+                onChange={(event) => edit('bubbleSize', Math.max(48, Math.min(240, Number(event.target.value) || 96)))}
+              />
+            </Field>
+
+            <Field
+              label="气泡角上移量"
+              hint="px，越大越往气泡上压；0 = 贴在气泡下方"
+              overridden={isOverridden(user, 'bubbleRise')}
+              disabled={!writable}
+              onReset={() => void resetField('bubbleRise')}
+            >
+              <input
+                type="number"
+                min={0}
+                max={120}
+                value={current.bubbleRise}
+                disabled={!writable}
+                onChange={(event) => edit('bubbleRise', Math.max(0, Math.min(120, Number(event.target.value) || 0)))}
+              />
+            </Field>
+
           </div>
 
           {/* ---- 预览墙 ---- */}

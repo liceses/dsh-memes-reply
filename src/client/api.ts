@@ -1,15 +1,26 @@
 /**
- * dsh-memes-reply — 设置面板的数据通道（浏览器侧）。
+ * dsh-memes-reply — 设置面板与贴纸层的数据通道（浏览器侧）。
  *
  * 一律走本插件自己的同源路由（已实测匿名可达），不需要任何私有 RPC：
- *   GET  /stats         状态行
- *   GET  /catalog       预览墙 / 挂件取图
- *   POST /latch         「下一轮用这张」
- *   GET/POST /pet       常驻挂件的位置与形态
+ *   GET  /stats           状态行
+ *   GET  /catalog         预览墙 / 挂件取图
+ *   GET  /vocab           全量检索词表（v2.0 客户端派生）
+ *   GET  /session-state   会话态（静音 / 一次性指定 / 最近用过）
+ *   POST /latch           「下一轮用这张」
+ *   GET/POST /pet         常驻挂件的位置与形态
  */
 
-import { AUTO_PENDING_PATH, CATALOG_PATH, DEBUG_PATH, LATCH_PATH, PET_PATH, STATS_PATH } from '../protocol.js'
+import {
+  CATALOG_PATH,
+  DEBUG_PATH,
+  LATCH_PATH,
+  LAYOUT_PATH,
+  SESSION_STATE_PATH,
+  STATS_PATH,
+  VOCAB_PATH,
+} from '../protocol.js'
 import type { CatalogItem, PanelStats, PetState } from '../types.js'
+import type { ChoiceTerm } from '../derive.js'
 
 /** /catalog 的响应。 */
 export interface CatalogResponse {
@@ -41,6 +52,53 @@ export function fetchCatalog(limit: number, seed: number, q = ''): Promise<Catal
   return getJson<CatalogResponse>(`${CATALOG_PATH}?limit=${limit}&seed=${seed}${query}`)
 }
 
+/** /vocab 的响应（v2.0：客户端派生的词表）。 */
+export interface VocabResponse {
+  ok: boolean
+  ready: boolean
+  total: number
+  items: ChoiceTerm[]
+}
+
+/** /session-state 的响应（客户端派生里"人按过的开关"）。 */
+export interface SessionStateResponse {
+  ok: boolean
+  sessionId: string
+  /** 本会话静音（`/fish off`）。 */
+  muted: boolean
+  /** 面板的全局一次性指定。 */
+  latch: string | null
+  /** 本会话的一次性指定。 */
+  sessionLatch: string | null
+  /** 最近用过的贴纸 id（倒序，冷却用）。 */
+  recent: string[]
+}
+
+/**
+ * 全量检索词表（v2.0 客户端派生的唯一数据源）。
+ *
+ * 一次拉取、进程内缓存：词表只在重跑导入脚本时变，没必要每个回合都问一次。
+ */
+let vocabPromise: Promise<VocabResponse | undefined> | null = null
+
+/** 取词表（带进程内缓存；失败返回 undefined，调用方降级）。 */
+export function fetchVocab(): Promise<VocabResponse | undefined> {
+  if (vocabPromise === null) {
+    vocabPromise = getJson<VocabResponse>(VOCAB_PATH).then((response) => {
+      // 失败的缓存没有意义：下次渲染重试。
+      if (response === undefined || response.ready !== true) vocabPromise = null
+      return response
+    })
+  }
+  return vocabPromise
+}
+
+/** 取一个会话的状态（静音/指定/冷却）；失败返回 undefined。 */
+export function fetchSessionState(sessionId: string): Promise<SessionStateResponse | undefined> {
+  if (sessionId === '') return Promise.resolve(undefined)
+  return getJson<SessionStateResponse>(`${SESSION_STATE_PATH}?sessionId=${encodeURIComponent(sessionId)}`)
+}
+
 /**
  * 设/清「下一轮用这张」。
  * @returns 生效后的 latch（null = 已清空）；失败返回 undefined。
@@ -61,29 +119,38 @@ export async function putLatch(id: string | null): Promise<string | null | undef
   }
 }
 
-/** /pet 的响应。 */
-export interface PetResponse {
+/** 界面落点：挂件 + 兜底贴纸。 */
+export interface LayoutResponse {
   ok: boolean
-  pet: PetState
+  pet?: PetState
+  fallback?: { right?: number; bottom?: number }
 }
 
-/** 读常驻挂件状态（位置、是否收成小圆点、当前那张）。 */
-export async function fetchPet(): Promise<PetState | undefined> {
-  const response = await getJson<PetResponse>(PET_PATH)
-  return response?.pet
+/** 落点写入：`slot` 决定改哪一个；坐标传 `null` 表示复位。 */
+export interface LayoutPatch {
+  slot?: 'pet' | 'fallback'
+  right?: number | null
+  bottom?: number | null
+  collapsed?: boolean
+  id?: string | null
 }
 
-/** 写常驻挂件状态（只传要改的字段）。 */
-export async function putPet(patch: PetState): Promise<PetState | undefined> {
+/** 读落点（挂件位置/收起态/当前那张 + 兜底贴纸位置）。 */
+export async function fetchLayout(): Promise<LayoutResponse | undefined> {
+  return getJson<LayoutResponse>(LAYOUT_PATH)
+}
+
+/** 写落点（只传要改的字段）。 */
+export async function putLayout(patch: LayoutPatch): Promise<LayoutResponse | undefined> {
   try {
-    const response = await fetch(PET_PATH, {
+    const response = await fetch(LAYOUT_PATH, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(patch),
     })
     if (!response.ok) return undefined
-    const body = (await response.json()) as PetResponse | null
-    return body?.ok === true ? body.pet : undefined
+    const body = (await response.json()) as LayoutResponse | null
+    return body?.ok === true ? body : undefined
   } catch {
     return undefined
   }

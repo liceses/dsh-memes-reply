@@ -6,7 +6,7 @@
  */
 
 /** 一条贴纸（与 index.json 里的一条对应）。 */
-export interface StickerEntry {
+export interface StickerEntry extends StickerTerm {
   /** ASCII 短名，进 URL；形如 `dianzan`、`aixin-1`。 */
   id: string
   /** 中文语义名（由原始文件名派生），显示与检索都用它。 */
@@ -39,6 +39,24 @@ export interface StickerEntry {
   encode: Record<string, unknown> | null
 }
 
+/**
+ * 派生算法（`pickByKeyword` / `pickEvery`）真正需要的字段。
+ *
+ * 为什么单列一个最小形状：贴纸现在有**两个**调用方 —— host（拿完整索引条目）
+ * 与浏览器半边（拿 `/vocab` 的精简词表）。它们只需要这四个字段，算法就不该逼
+ * 客户端造一个假的 `StickerEntry`（那会让"派生是同一套逻辑"变成一句空话）。
+ */
+export interface StickerTerm {
+  /** ASCII 短名。 */
+  id: string
+  /** 中文语义名。 */
+  name: string
+  /** 中文检索词。 */
+  tags: readonly string[]
+  /** 英文/拼音检索词。 */
+  aliases: readonly string[]
+}
+
 /** 设置面板预览墙里的一格。 */
 export interface CatalogItem {
   id: string
@@ -66,7 +84,6 @@ export interface PanelStats {
   assetRoot: string
   originalRoot: string
   quality: StickerQuality
-  form: StickerForm
   totalBytes: number
   served: number
   miss: number
@@ -90,8 +107,7 @@ export interface StickerIndex {
   sticker: StickerEntry[]
 }
 
-/** 呈现形态：inline = 正文内联图片；sticker = 只登记、由客户端渲染（M2）。 */
-export type StickerForm = 'inline' | 'sticker'
+/** 呈现形态：v2.0 只有一种 —— 会话流里的贴纸节点（`StickerForm` 已随 form 设置一起退役）。 */
 
 /** 画质来源：compressed = 压缩副本；original = 原始素材目录。 */
 export type StickerQuality = 'compressed' | 'original'
@@ -107,12 +123,16 @@ export type AutoMode = 'off' | 'keyword' | 'every'
 /** 常驻挂件贴在哪一角（拖过之后以拖拽坐标为准）。 */
 export type PetCorner = 'br' | 'bl' | 'tr' | 'tl'
 
+/** 贴纸外形。 */
+export type StickerShape = 'circle' | 'rounded'
+
+/** 贴纸边框样式。 */
+export type StickerBorderStyle = 'solid' | 'dashed' | 'none'
+
 /** 设置面板里的配置（同时也是运行时的解析后配置）。 */
 export interface MemesConfig {
   /** 总开关。 */
   enabled: boolean
-  /** 呈现形态。 */
-  form: StickerForm
   /** 画质来源。 */
   quality: StickerQuality
   /** 压缩副本目录；空 = `<DSH_HOME>/memes-reply/assets`。 */
@@ -136,6 +156,20 @@ export interface MemesConfig {
   petSize: number
   /** 常驻挂件默认停靠角（拖过之后以拖拽坐标为准）。 */
   petCorner: PetCorner
+  /** 贴纸外形（三种贴纸共用）。 */
+  shape: StickerShape
+  /** 圆角方形时的圆角半径（px）。 */
+  radius: number
+  /** 边框粗细（px，0 = 无边框）。 */
+  borderWidth: number
+  /** 边框样式。 */
+  borderStyle: StickerBorderStyle
+  /** 边框颜色（空 = 跟随主题强调色）。 */
+  borderColor: string
+  /** 气泡角贴纸边长（px）。 */
+  bubbleSize: number
+  /** 气泡角贴纸上移量（px，用来压住气泡右下角）。 */
+  bubbleRise: number
 }
 
 /** 常驻挂件的 UI 状态（拖拽坐标、是否收成小圆点），存在 state.json 里。 */
@@ -163,31 +197,10 @@ export interface TraceEntry {
   note?: string
 }
 
-/** 一次自动贴纸事件（host 决定，客户端渲染）。 */
-export interface AutoEvent {
-  /** 单调递增序号（客户端按它去重）。 */
-  seq: number
-  sessionId: string
-  /** 第几轮（用于诊断与"每 N 轮"语义）。 */
-  turn: number
-  id: string
-  name: string
-  url: string
-  /** 缩略图 URL；没有则为 null。 */
-  thumb: string | null
-  /** 为什么贴：关键词命中 / 到点了 / 模型挑的（form=sticker 时走贴纸层）。 */
-  reason: 'keyword' | 'every' | 'model'
-  /** 命中的词（reason=keyword 时）。 */
-  matched: string
-  at: number
-}
-
 /** 单个会话的可覆盖状态。 */
 export interface SessionState {
   /** 本会话静音。 */
   muted?: boolean
-  /** 本会话形态覆盖。 */
-  form?: StickerForm
   /** 一次性指定：下一轮必须用这张（用完即清）。 */
   latch?: string
   /** 最近用过的贴纸 id（倒序，用于冷却）。 */
@@ -196,7 +209,7 @@ export interface SessionState {
 
 /** 跨会话的全局状态（设置面板的"下一轮用这张"落在这里）。 */
 export interface GlobalState {
-  /** 一次性指定：下一次工具调用必须用它（用完即清）。 */
+  /** 一次性指定：下一次贴纸必须用它（用完即清）。 */
   latch?: string
   /** 常驻挂件的位置与形态。 */
   pet?: PetState
