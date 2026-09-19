@@ -7,13 +7,18 @@
  *   1. 最外层回执（"这一版 bundle 到底加载了没"）—— 浏览器控制台宿主看不到，
  *      这是唯一可观测的办法（v1.0 §15 的教训）；
  *   2. 注入界面样式（面板 + 常驻挂件）；
- *   3. 在 `settings.plugin.item` 里按本插件的 settings 命名空间注册配置卡片；
+ *   3. 在 0.1.6a2 插件管理页的 `plugins.bundle.config` 里按本组合包名注册配置面板
+ *      （侧栏「插件」→「已安装」→「查看 dsh-memes-reply」）；
  *   4. 在 `shell.overlay` 里注册常驻挂件（"随时能看到大肥鱼"，硬需求）；
  *   5. 挂上**贴纸层**：会话流里的派生节点（`node.tsx`）—— 一轮一张、
  *      生成中是"思考/打字中"、落定后换成最终贴纸、跟着会话走、刷新即重放。
  *
  * v1.0 的"尾巴气泡 / 兜底浮层 / 轮询器 / 内存落地仓 / 待取位轮询"已整体退役：
  * 它们正是"不会动 + 不跟会话走 + 被交付卡片抢座位"的来源。
+ *
+ * v2.1：0.1.6a2 统一插件管理后 rc7 时代的 `settings.plugin.item` 槽位已不存在，
+ * 配置面板注册改由内置适配层 `src/vendor/dsh-plugin-config-slot.tsx` 承担
+ * （该文件头部有新旧对照说明；唯一源在 workspace 的 dsh-plugin-config-slot 包里）。
  */
 
 import type { ClientContext, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
@@ -22,9 +27,9 @@ import type {} from '@deepseek-ai/dsh-client-ui-slots'
 import type {} from '@deepseek-ai/dsh-client-ui-chat/client'
 // `conversation.input.dock` 等会话座位由会话包声明，它的 SlotMap 增强在那里。
 import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
+// `ctx.settingsScope` 的服务契约（配置面板的读写通道）。
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
-// `settings.plugin.item` 这个槽位由 settings-plugins 声明，它的 SlotMap 增强在那里。
-import type {} from '@deepseek-ai/dsh-client-ui-settings-plugins/client'
+import { registerBundleConfigPage } from '../vendor/dsh-plugin-config-slot.js'
 import { SETTINGS_NS } from '../protocol.js'
 import { themeCss } from '../theme.js'
 import { DEFAULT_CONFIG } from '../config.js'
@@ -36,7 +41,7 @@ import { StickerPet } from './pet.js'
 import { CSS } from './styles.js'
 
 /** 客户端构建标记：每次改客户端就换一个，刷新后从 `/stats` 的 `client-apply` 回执里核对。 */
-export const CLIENT_BUILD = 'sticker-node-b'
+export const CLIENT_BUILD = 'bundle-config-slot-b'
 
 /** 需要的客户端服务（缺一个就等，不硬撑）。 */
 export const inject = ['slots', 'settingsScope']
@@ -80,16 +85,13 @@ export function apply(ctx: ClientContext): void {
     }
   }, 'dsh-memes-reply: panel styles')
 
-  // 4) 设置 → 插件 → 可配置 里的一张卡片，key = 命名空间。
-  ctx.slots.inject('settings.plugin.item', () =>
-    ctx.slots.register(
-      {
-        name: 'settings.plugin.item',
-        key: SETTINGS_NS,
-      },
-      () => <SettingsCard scope={scope} />,
-    ),
-  )
+  // 4) 配置面板：0.1.6a2 插件管理页的 `plugins.bundle.config`，键 = 本组合包名。
+  registerBundleConfigPage(ctx, {
+    bundle: 'dsh-memes-reply',
+    summary: '模型按语境在回复里贴一张会动的大肥鱼',
+    source: scope,
+    render: () => <SettingsCard scope={scope} defaultOpen />,
+  })
 
   // 5) 常驻挂件（"随时能看到大肥鱼"）：坐在 frame-wide 的 `shell.overlay` 里。
   //    官方对它的定义就是 additive；整层 click-through，条目自己 opt in 到 pointer events，

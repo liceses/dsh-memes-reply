@@ -46,7 +46,11 @@ const clientConfig: UserConfig = {
   clean: false,
   deps: {
     neverBundle: CLIENT_EXTERNALS,
-    alwaysBundle: true,
+    // tsdown 0.22 取消了布尔形式：`alwaysBundle: true` 会被归一化成模式表
+    // `[true]`，一旦出现不在 `neverBundle` 里的裸导入就抛
+    // "Expected pattern to be a non-empty string"。要用受支持的
+    // `NoExternalFn` 谓词把「除平台模块外一律内联」写清楚。
+    alwaysBundle: (id: string) => !CLIENT_EXTERNALS.includes(id),
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'production'),

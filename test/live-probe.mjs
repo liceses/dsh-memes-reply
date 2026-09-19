@@ -36,7 +36,9 @@ async function probe(path, init) {
 console.log('—— 客户端半边 ——')
 // 客户端 bundle 的真实地址是"带 rev 的组合 URL"（`/plugins/??<id>/client.js&rev=<hash>`），
 // dsh-client-modules 只按精确 URL 命中，所以裸路径必然 404 —— 这不是故障。
-// 半边是否活着，用 cordis Inspect 看 `settings.plugin.item` 的占用者里有没有 dsh-memes-reply。
+// 半边是否活着，看 `/stats` 的 `client-apply` 回执（build= 那一条），
+// 或在插件管理页打开「查看 memes-reply」看配置面板是否出现
+// （0.1.6a2 的配置面板挂在 `plugins.bundle.config`，旧 `settings.plugin.item` 已移除）。
 const client = await probe('/plugins/dsh-memes-reply/client.js')
 if (client !== undefined && client.res.status === 404) {
   console.log('     （裸路径 404 属正常：真实地址是带 rev 的组合 URL，见上）')

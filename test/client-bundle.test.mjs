@@ -20,7 +20,14 @@ test('client bundle 存在且是 __ModuleLoader__ 的 CJS closure', () => {
   const source = readFileSync(BUNDLE, 'utf8')
   assert.match(source, /__ModuleLoader__\.load\(/, '缺少 __ModuleLoader__.load 包装')
   assert.match(source, /id:\s*["']dsh-memes-reply["']/, 'closure 里没有本插件 id')
-  assert.match(source, /settings\.plugin\.item/, 'bundle 里没有注册 settings.plugin.item')
+  // 0.1.6a2 统一插件管理后配置面板挂在插件管理页的 `plugins.bundle.config`
+  //（键 = 组合包名）；rc7 时代的 `settings.plugin.item` 槽位已不存在。
+  // 适配层的注释里会引用旧槽位作为对照（故意的），所以断言前先剥掉注释，
+  // 只检查**代码**里还在不在注册旧槽位。
+  assert.match(source, /"plugins\.bundle\.config"/, 'bundle 里没有注册 plugins.bundle.config')
+  assert.match(source, /data-plugin-config-page/, 'bundle 里没有配置页外壳')
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '')
+  assert.doesNotMatch(code, /settings\.plugin\.item/, '代码里仍在注册已移除的 settings.plugin.item')
   assert.match(source, /\/api\/dsh-memes-reply/, 'bundle 里没有引用本插件的同源路由')
 })
 

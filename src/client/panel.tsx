@@ -1,7 +1,9 @@
 /**
  * dsh-memes-reply — 设置面板（官方折叠卡片风格）。
  *
- * 位置：设置 → 插件 → 可配置（`settings.plugin.item`，key = 本插件的 settings 命名空间）。
+ * 位置：0.1.6a2 插件管理页的 `plugins.bundle.config`
+ * （侧栏「插件」→「已安装」→「查看 dsh-memes-reply」，由内置适配层
+ * `src/vendor/dsh-plugin-config-slot.tsx` 注册）。
  * 形态对齐原版卡片：标题 + 描述 + 未保存徽章 + chevron → 展开体 → 底部 丢弃/保存。
  * 配置字段走官方 `settingsScope`（草稿→保存，逐字段可"恢复默认"）；状态行、预览墙、
  * 「下一轮用这张」走插件自己的同源路由。
@@ -81,8 +83,15 @@ function Field({
   )
 }
 
-/** 设置卡片。 */
-export function SettingsCard({ scope }: { scope: SettingsScope<MemesConfig> }): ReactElement {
+/** 设置卡片（`defaultOpen` = 插件管理页把配置画在独立页面上时直接展开）。 */
+export function SettingsCard({
+  scope,
+  defaultOpen = false,
+}: {
+  scope: SettingsScope<MemesConfig>
+  /** 初次挂载是否直接展开（默认收起，保持插件内嵌使用时的原观感）。 */
+  defaultOpen?: boolean
+}): ReactElement {
   const snapshot = useSyncExternalStore(
     useCallback((listener: () => void) => scope.subscribe(listener), [scope]),
     useCallback(() => scope.getSnapshot(), [scope]),
@@ -91,7 +100,7 @@ export function SettingsCard({ scope }: { scope: SettingsScope<MemesConfig> }): 
   const user = (snapshot.user ?? {}) as Record<string, unknown>
   const writable = snapshot.writable && snapshot.status === 'ready'
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const [draft, setDraft] = useState<MemesConfig | null>(null)
   const [saving, setSaving] = useState(false)
   const [saveFailed, setSaveFailed] = useState(false)
