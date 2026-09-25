@@ -18,7 +18,21 @@
 import type { Context } from '@deepseek-ai/cordis';
 /** cordis 插件名。 */
 export declare const name = "memes-reply";
-/** 硬依赖：没有 webServer 就没有出图通道，没有 settings 就没有开关。 */
+/**
+ * 硬依赖：没有 webServer 就没有出图通道。
+ *
+ * `settings` **刻意不写在这里** —— 它的形状跨版本变过，而且可能整个不存在：
+ *
+ * | dsh 版本 | 宿主设置服务 |
+ * | --- | --- |
+ * | 0.1.5-rc.1 / 0.1.6-alpha.2 | `settings.register(ns, schema, { applies })` → `get()` / `watch()` |
+ * | **0.1.7-rc.2** | **没有 `register()`**：`SettingsForms` 改成从插件自己的 cordis `Config` 投影表单（`describe` / `update` / `replace` / `mutate`），`ns` 是 profile 条目 id，持久化也从 `settings.yaml` 搬到了 profile patch |
+ *
+ * 硬引它的后果实测过两次：写进 `inject` 会让条目 pending（整个 profile 启动失败），
+ * 直接调 `ctx.settings.register()` 会让 `apply` 抛
+ * `TypeError: ctx.settings.register is not a function`、条目激活不了。
+ * 所以改成受限 fiber 里"能接就接"。
+ */
 export declare const inject: string[];
 /** 挂载。 */
 export declare function apply(ctx: Context): void;

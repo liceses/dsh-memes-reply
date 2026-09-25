@@ -92,6 +92,14 @@ function makeHarness() {
       listeners.push({ eventName, listener })
       return () => {}
     },
+    // cordis 的受限 fiber：等 deps 就绪后回调。这个桩里所有服务都已在位，
+    // 所以立刻回调一次 —— 与真实 cordis 在"服务已就绪"时的行为一致。
+    // 插件用它是为了**不把可选服务写进顶层 inject**（写进去会让拿不到该服务的部署
+    // 永久 pending，实测能把整个 profile 弄到起不来）。
+    inject: (deps, callback) => {
+      callback(ctx)
+      return () => {}
+    },
     effect: (callback) => {
       const value = callback()
       if (typeof value === 'function') disposers.push(value)
@@ -148,7 +156,9 @@ test('apply()：路由 / 工具 / 命令 / 设置 / 事件 全部挂上', () => 
   apply(h.ctx)
 
   assert.equal(name, 'memes-reply')
-  assert.deepEqual(inject, ['webServer', 'settings'])
+  // 顶层 inject 只放基线服务：`settings` 的形状跨版本变过（0.1.7 的 SettingsForms 没有
+  // register()），硬引它会让条目 pending / apply 抛错，所以改走受限 fiber。
+  assert.deepEqual(inject, ['webServer'])
 
   assert.equal(h.routes.length, 1)
   assert.equal(h.routes[0].kind, 'prefix')
@@ -431,5 +441,45 @@ test('/vocab 与 /session-state：客户端派生的两份输入都从真实索�
   assert.equal(stateBody.muted, true)
   assert.equal(stateBody.sessionLatch, 'bug')
   assert.ok(Array.isArray(stateBody.recent))
+})
+
+/**
+ * 宿主设置服务换了形状时，`apply()` **绝不能抛**。
+ *
+ * 这不是假想：2026-09-25 在 DSH Desktop 0.1.7-rc.2 上真实发生过 ——
+ * 那一版的 `SettingsForms` 里没有 `register()`（改成从插件自己的 cordis `Config`
+ * 投影表单），直接调用让 `apply` 抛 `TypeError: ctx.settings.register is not a function`，
+ * 条目激活不了（`warning: 1 entry did not activate`）。
+ *
+ * 所以契约是：**有官方通道就接上，没有就以默认配置继续工作** —— 路由、工具、命令
+ * 一个都不能少。
+ */
+test('宿主设置服务没有 register() 时（0.1.7 的形状）apply 不抛，其余照常挂上', () => {
+  const h = makeHarness()
+  // 0.1.7 的 SettingsForms：只有 describe / update / replace / mutate，没有 register。
+  h.ctx.settings = {
+    describe: () => [],
+    update: async () => {},
+    replace: async () => {},
+    mutate: async () => {},
+  }
+
+  assert.doesNotThrow(() => apply(h.ctx))
+
+  assert.equal(h.routes.length, 1, '路由仍要挂上')
+  assert.equal(h.tools.length, 1, '工具仍要挂上')
+  assert.equal(h.commands.length, 1, '命令仍要挂上')
+  assert.equal(h.settings.settings, undefined, '没有 register() 就不该记下任何注册')
+})
+
+test('宿主完全没有 settings 服务时 apply 也不抛', () => {
+  const h = makeHarness()
+  h.ctx.settings = undefined
+
+  assert.doesNotThrow(() => apply(h.ctx))
+
+  assert.equal(h.routes.length, 1)
+  assert.equal(h.tools.length, 1)
+  assert.equal(h.commands.length, 1)
 })
 

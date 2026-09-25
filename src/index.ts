@@ -35,15 +35,61 @@ import type { MemesConfig, PluginState } from './types.js'
 /** cordis 插件名。 */
 export const name = 'memes-reply'
 
-/** 硬依赖：没有 webServer 就没有出图通道，没有 settings 就没有开关。 */
-export const inject = ['webServer', 'settings']
+/**
+ * 硬依赖：没有 webServer 就没有出图通道。
+ *
+ * `settings` **刻意不写在这里** —— 它的形状跨版本变过，而且可能整个不存在：
+ *
+ * | dsh 版本 | 宿主设置服务 |
+ * | --- | --- |
+ * | 0.1.5-rc.1 / 0.1.6-alpha.2 | `settings.register(ns, schema, { applies })` → `get()` / `watch()` |
+ * | **0.1.7-rc.2** | **没有 `register()`**：`SettingsForms` 改成从插件自己的 cordis `Config` 投影表单（`describe` / `update` / `replace` / `mutate`），`ns` 是 profile 条目 id，持久化也从 `settings.yaml` 搬到了 profile patch |
+ *
+ * 硬引它的后果实测过两次：写进 `inject` 会让条目 pending（整个 profile 启动失败），
+ * 直接调 `ctx.settings.register()` 会让 `apply` 抛
+ * `TypeError: ctx.settings.register is not a function`、条目激活不了。
+ * 所以改成受限 fiber 里"能接就接"。
+ */
+export const inject = ['webServer']
+
+/** 官方宿主设置服务在 0.1.5 / 0.1.6 里的形状（0.1.7 已不满足）。 */
+interface SettingsRegisterLike {
+  register(
+    namespace: string,
+    schema: unknown,
+    options: { applies: 'live' },
+  ): {
+    get(): unknown
+    watch(callback: (next: unknown, prev: unknown) => void | Promise<void>): () => void
+  }
+}
 
 /** 挂载。 */
 export function apply(ctx: Context): void {
-  const scope = ctx.settings.register(SETTINGS_NS, MemesSettingsSchema, { applies: 'live' })
-  let config: MemesConfig = resolveConfig(scope.get())
-  scope.watch((next) => {
-    config = resolveConfig(next)
+  // 0) 配置来源：**默认值起步**，官方设置服务可用时再升级成持久化配置。
+  //    先有可用配置、后接官方通道 —— 顺序上就不会因为设置服务换了形状而整体起不来。
+  //    升级后 `config` 被就地替换，而下面所有 `() => config` 的闭包都是**调用时读**，
+  //    所以它们自动看到新值，不需要重新注册任何东西。
+  let config: MemesConfig = resolveConfig(undefined)
+  ctx.inject(['settings'], (settingsCtx) => {
+    const service = (settingsCtx as unknown as { settings?: Partial<SettingsRegisterLike> }).settings
+    if (service === undefined || typeof service.register !== 'function') {
+      ctx.logger?.warn?.(
+        'dsh-memes-reply: 本版 dsh 的 settings 服务没有 register()（0.1.7+ 改成从 cordis Config 投影表单）；' +
+          '配置面板与持久化暂不可用，插件以默认配置运行',
+      )
+      return
+    }
+    const scope = service.register(SETTINGS_NS, MemesSettingsSchema, { applies: 'live' })
+    config = resolveConfig(scope.get())
+    settingsCtx.effect(
+      () =>
+        scope.watch((next) => {
+          config = resolveConfig(next)
+        }),
+      'dsh-memes-reply: settings watch',
+    )
+    ctx.logger?.info?.('dsh-memes-reply: 设置已接入（官方 settings.register 通道）')
   })
 
   /** 浏览器实际使用的 origin（从请求 Host 头学到）；没学到就用本机默认值。 */
