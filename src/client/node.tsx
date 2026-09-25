@@ -31,7 +31,7 @@ import { DEFAULT_CONFIG } from '../config.js'
 import { finalStickerFor, reasonText, thinkingStickerFor, type ChoiceTerm, type StickerChoice } from '../derive.js'
 import { TOOL_NAME } from '../protocol.js'
 import type { MemesConfig } from '../types.js'
-import { fetchSessionState, postDebug, putLatch } from './api.js'
+import { fetchJevPick, fetchSessionState, postDebug, putLatch } from './api.js'
 import { resolveVocab } from './vocab.js'
 
 /** 我们的节点 kind（渲染分发按这个字符串）。 */
@@ -266,6 +266,11 @@ function StickerNodeView({
     sessionLatch: null,
     recent: [],
   })
+  /**
+   * JEV 结论：`undefined` = 还没问（此期间**不显示任何贴纸**，免得先闪一张随机的），
+   * `null` = 问过了但没结论（回落既有规则），字符串 = 这一轮就贴它。
+   */
+  const [jevPick, setJevPick] = useState<{ id: string | null } | undefined>(undefined)
   const ref = useRef<HTMLDivElement | null>(null)
   const near = useNearViewport(ref)
 
@@ -306,10 +311,46 @@ function StickerNodeView({
     }
   }, [sessionId, phase])
 
+  // JEV 模式：落定后问一次宿主（结论由宿主按 (会话,轮次) 缓存，刷新即重放）。
+  useEffect(() => {
+    if (!config.enabled || state.muted) return
+    if (config.autoMode !== 'jev' || phase !== 'settled') return
+    let alive = true
+    void (async () => {
+      const answer = await fetchJevPick({
+        sessionId,
+        turn,
+        text: data?.text ?? '',
+      })
+      if (!alive) return
+      const id = answer?.ok === true && typeof answer.id === 'string' ? answer.id : null
+      setJevPick({ id })
+      postDebug({
+        kind: 'sticker-jev',
+        ...(sessionId === '' ? {} : { sessionId }),
+        turn,
+        ...(id === null ? {} : { id }),
+        note:
+          answer === undefined
+            ? 'host 无响应 → 回落既有规则'
+            : answer.ok !== true
+              ? `JEV 失败(${answer.error ?? '?'}) → 回落既有规则`
+              : `${answer.cached === true ? '缓存重放' : `${answer.ms ?? '?'}ms`} family=${answer.family ?? '?'} ` +
+                `p=${typeof answer.probability === 'number' ? answer.probability.toFixed(2) : '?'} ` +
+                `${id === null ? '判定本轮不贴' : `选中=${id}`}${answer.note === undefined ? '' : ` (${answer.note})`}`,
+      })
+    })()
+    return () => {
+      alive = false
+    }
+  }, [config.enabled, config.autoMode, state.muted, phase, sessionId, turn, data?.text])
+
   // 派生：生成中 = 思考/打字占位；落定 = 这一轮的最终贴纸（纯函数，故刷新后一模一样）。
   const choice: StickerChoice | null = useMemo(() => {
     if (!config.enabled || state.muted || entries.length === 0) return null
     if (phase === 'streaming') return thinkingStickerFor(entries, sessionId, turn)
+    // JEV 模式还在等结论：宁可先不显示，也不要闪一张随机再换掉。
+    if (config.autoMode === 'jev' && jevPick === undefined) return null
     const latch = state.sessionLatch ?? state.latch
     return finalStickerFor({
       entries,
@@ -318,13 +359,14 @@ function StickerNodeView({
       text: data?.text ?? '',
       modelId: data?.modelId ?? null,
       modelMood: data?.modelMood ?? null,
+      jevId: jevPick?.id ?? null,
       mode: config.autoMode,
       everyTurns: config.autoEveryTurns,
       fallbackId: config.fallback,
       latchId: latch,
       avoid: new Set(state.recent),
     })
-  }, [config, state, entries, phase, sessionId, turn, data?.text, data?.modelId, data?.modelMood])
+  }, [config, state, entries, phase, sessionId, turn, data?.text, data?.modelId, data?.modelMood, jevPick])
 
   // 一次性指定用完即清：只让"最新的那个已落定回合"消费它。
   useEffect(() => {

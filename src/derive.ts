@@ -21,7 +21,7 @@ import type { AutoMode, StickerTerm } from './types.js'
 export const THINKING_IDS: readonly string[] = ['sikao', 'dazi', 'sikao-renzhen', 'dazi-shengqi', 'sikao-zixin']
 
 /** 贴纸出现的原因（诊断与提示文案都用它）。 */
-export type StickerReason = 'latch' | 'model' | 'keyword' | 'every' | 'fallback' | 'thinking'
+export type StickerReason = 'latch' | 'jev' | 'model' | 'keyword' | 'every' | 'fallback' | 'thinking'
 
 /** 一次派生结果。 */
 export interface StickerChoice {
@@ -85,6 +85,13 @@ export interface FinalChoiceInput {
   text: string
   /** 模型自己点名的 id（`use_sticker` 实参里的 `id`）。 */
   modelId?: string | null
+  /**
+   * 宿主问过 JEV 之后定下的 id（`/jev-pick` 的结论，按 (会话,轮次) 缓存过）。
+   *
+   * 优先级刻意排在 `latch` 之后、模型点名之前：人手动点的最大，其次才是"这轮语境算出的一张"，
+   * 再其次才是模型在正文里自己点的。
+   */
+  jevId?: string | null
   /** 模型给的关键词（`use_sticker` 实参里的 `mood`）—— 客户端用与宿主同一套检索解出 id。 */
   modelMood?: string | null
   /** 设置：自动模式与间隔。 */
@@ -98,11 +105,15 @@ export interface FinalChoiceInput {
   avoid?: ReadonlySet<string>
 }
 
-/** 一次落定派生：优先级 = 一次性指定 > 模型点名（id 或关键词）> 规则（keyword/every）> 兜底。 */
+/** 一次落定派生：优先级 = 一次性指定 > JEV 结论 > 模型点名（id 或关键词）> 规则（keyword/every）> 兜底。 */
 export function finalStickerFor(input: FinalChoiceInput): StickerChoice | null {
   const latched = termOf(input.entries, input.latchId)
   if (latched !== undefined) {
     return { id: latched.id, name: latched.name, url: latched.url, reason: 'latch', matched: '' }
+  }
+  const jeved = termOf(input.entries, input.jevId)
+  if (jeved !== undefined) {
+    return { id: jeved.id, name: jeved.name, url: jeved.url, reason: 'jev', matched: '' }
   }
   const modeled = termOf(input.entries, input.modelId)
   if (modeled !== undefined) {
@@ -143,6 +154,8 @@ export function reasonText(choice: StickerChoice): string {
   switch (choice.reason) {
     case 'latch':
       return '你点的那张'
+    case 'jev':
+      return 'JEV 按语境挑的'
     case 'model':
       return choice.matched === '' ? '模型挑的' : `模型点名「${choice.matched}」`
     case 'keyword':

@@ -134,6 +134,8 @@ export function apply(ctx: Context): void {
   const index = indexOf()
   ctx.logger?.info?.(
     `dsh-memes-reply: 路由 ${ROUTE_PREFIX} 已挂载 · 素材 ${index?.entries.length ?? 0} 张` +
-      (index === undefined ? '（索引缺失，请先运行 node scripts/import-assets.mjs）' : ` · ${index.path}`),
+      (index === undefined
+        ? '（索引缺失：先跑 node scripts/fetch-assets.mjs 取素材，或用 node scripts/import-assets.mjs 从原图生成）'
+        : ` · ${index.path}`),
   )
 }

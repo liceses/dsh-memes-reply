@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "url": "https://github.com/liceses/dsh-memes-reply/releases/latest/download/memes-assets-v1.zip",
+  "sha256": "345684d337dada6332f99627ce44ab91c244b918aba4c4236947e9cd6641f9d1",
+  "bytes": 91043470,
+  "files": 315,
+  "stickers": 157,
+  "note": "由 scripts/pack-assets.mjs 生成；上传 release 附件后把 sha256 保持与包一致，fetch-assets.mjs 会校验"
+}

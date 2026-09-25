@@ -55,7 +55,7 @@ export function createFishCommand(deps: CommandDeps): CommandDefinition {
       const cfg = deps.config()
       const index = deps.index()
       if (index === undefined) {
-        return failure('素材索引还没生成：请在插件目录运行 `node scripts/import-assets.mjs`')
+        return failure('素材索引还没生成：先跑 `node scripts/fetch-assets.mjs` 取素材（或 `node scripts/import-assets.mjs` 从原图生成）')
       }
 
       const sessionId = String(invocation.agent.id)

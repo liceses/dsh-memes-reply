@@ -8,7 +8,7 @@
 
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { dirname } from 'node:path'
-import type { PetState, PluginState, SessionState } from './types.js'
+import type { FloatPanelState, PetState, PluginState, SessionState } from './types.js'
 
 /** 读状态；任何异常都退化成空状态。 */
 export function loadState(file: string): PluginState {
@@ -91,4 +91,21 @@ export function setPetState(state: PluginState, patch: Partial<PetState>): PetSt
   global.pet = pet
   state.global = global
   return pet
+}
+
+/** 读 JEV 调试漂浮面板的 UI 状态（位置、是否收起）。 */
+export function jevDebugState(state: PluginState): FloatPanelState {
+  return state.global?.jevDebug ?? {}
+}
+
+/** 合并写入 JEV 调试漂浮面板状态；字段传 `undefined` 表示清掉。 */
+export function setJevDebugState(state: PluginState, patch: Partial<FloatPanelState>): FloatPanelState {
+  const global = state.global ?? {}
+  const panel: FloatPanelState = { ...(global.jevDebug ?? {}), ...patch }
+  for (const key of Object.keys(panel) as Array<keyof FloatPanelState>) {
+    if (panel[key] === undefined) delete panel[key]
+  }
+  global.jevDebug = panel
+  state.global = global
+  return panel
 }

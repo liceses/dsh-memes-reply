@@ -10,7 +10,8 @@
  *   3. 在 0.1.6a2 插件管理页的 `plugins.bundle.config` 里按本组合包名注册配置面板
  *      （侧栏「插件」→「已安装」→「查看 dsh-memes-reply」）；
  *   4. 在 `shell.overlay` 里注册常驻挂件（"随时能看到大肥鱼"，硬需求）；
- *   5. 挂上**贴纸层**：会话流里的派生节点（`node.tsx`）—— 一轮一张、
+ *   5. 在同一个座位注册 **JEV 调试漂浮面板**（可开关，默认关；看每次真实往返的请求与响应）；
+ *   6. 挂上**贴纸层**：会话流里的派生节点（`node.tsx`）—— 一轮一张、
  *      生成中是"思考/打字中"、落定后换成最终贴纸、跟着会话走、刷新即重放。
  *
  * v1.0 的"尾巴气泡 / 兜底浮层 / 轮询器 / 内存落地仓 / 待取位轮询"已整体退役：
@@ -35,13 +36,14 @@ import { themeCss } from '../theme.js'
 import { DEFAULT_CONFIG } from '../config.js'
 import type { MemesConfig } from '../types.js'
 import { postDebug } from './api.js'
+import { JevDebugPanel } from './jevpanel.js'
 import { installStickerNode } from './node.js'
 import { SettingsCard } from './panel.js'
 import { StickerPet } from './pet.js'
 import { CSS } from './styles.js'
 
 /** 客户端构建标记：每次改客户端就换一个，刷新后从 `/stats` 的 `client-apply` 回执里核对。 */
-export const CLIENT_BUILD = 'bundle-config-slot-b'
+export const CLIENT_BUILD = 'bundle-config-slot-c'
 
 /** 需要的客户端服务（缺一个就等，不硬撑）。 */
 export const inject = ['slots', 'settingsScope']
@@ -110,4 +112,17 @@ export function apply(ctx: ClientContext): void {
   // 6) **贴纸层（v2.0 主线）**：会话流里的派生节点 —— 一轮一个，
   //    生成中是"思考/打字中"，落定后换成这一轮的最终贴纸；跟着会话走、刷新即重放。
   installStickerNode(ctx, scope)
+
+  // 7) JEV 调试漂浮面板（可开关，默认关）：看每次真实往返发出去什么、收回来什么。
+  //    与挂件同一个座位，但**在它之后**（order 31）：默认落点在右上，两者不打架。
+  ctx.slots.inject('shell.overlay', () =>
+    ctx.slots.register(
+      {
+        name: 'shell.overlay',
+        id: 'dsh-memes-reply-jev-debug',
+        order: 31,
+      },
+      () => <JevDebugPanel scope={scope} />,
+    ),
+  )
 }

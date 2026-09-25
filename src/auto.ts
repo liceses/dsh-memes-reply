@@ -86,6 +86,10 @@ export function pickAutoSticker(input: {
   if (input.mode === 'off') return null
   if (input.entries.length === 0) return null
   if (input.mode === 'keyword') return pickByKeyword(input.entries, input.text, input.avoid)
+  // `jev` 模式下这里**必须**返回 null：那张由宿主问 JEV 后定（`client/node.tsx` 异步取回），
+  // 这个纯函数没有能力知道结论。若在这里退回 every 规则，就会先闪一张随机的再被换掉
+  // —— 既难看又让"刷新即重放"多一次无谓的状态跳变。
+  if (input.mode === 'jev') return null
   // 间隔与轮次号都做兜底：宁可按 every 规则贴一张，也不要因为一个坏数字静默不贴
   // （真事故：turn 缺失 → `NaN % 1 !== 0` → every 模式永远不发布，而且完全没有报错）。
   const rawEvery = Math.trunc(Number(input.everyTurns))

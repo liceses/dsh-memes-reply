@@ -7,6 +7,7 @@
  *   GET      /api/dsh-memes-reply/catalog              素材清单（预览墙数据）
  *   GET      /api/dsh-memes-reply/vocab                全量检索词表（v2.0 客户端派生）
  *   GET      /api/dsh-memes-reply/session-state        会话态（静音/指定/最近用过）
+ *   POST     /api/dsh-memes-reply/jev-pick             JEV 按语境选一张（autoMode=jev）
  *   GET/POST /api/dsh-memes-reply/latch                「下一轮用这张」读写
  *   GET      /api/dsh-memes-reply/stats                诊断 / 面板状态行
  *
@@ -16,13 +17,24 @@
  */
 
 import type { Context } from '@deepseek-ai/cordis'
+import { readFileSync } from 'node:fs'
 import type { IncomingMessage, ServerResponse } from 'node:http'
+import { homedir } from 'node:os'
+import { join } from 'node:path'
 import type { WebRoute } from '@deepseek-ai/dsh-host-webserver'
 import { effectiveAssetRoot, loadIndex, resolveStickerFile, resolveThumbFile, type LoadedIndex, type ResolvedSticker } from './assets.js'
 import { CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT } from './config.js'
 import {
+  createDecisionCache,
+  createJevLog,
+  decideJev,
+  pickInFamily,
+} from './jev.js'
+import {
   CATALOG_PATH,
   DEBUG_PATH,
+  JEV_LOG_PATH,
+  JEV_PATH,
   LATCH_PATH,
   MAX_STICKER_BYTES,
   MIME,
@@ -39,14 +51,38 @@ import {
   thumbUrl,
 } from './protocol.js'
 import { searchStickers } from './search.js'
-import { globalLatch, petState, setGlobalLatch, setPetState } from './state.js'
-import type { CatalogItem, MemesConfig, PetState, PluginState, TraceEntry } from './types.js'
+import { globalLatch, jevDebugState, petState, setGlobalLatch, setJevDebugState, setPetState } from './state.js'
+import type { CatalogItem, FloatPanelState, MemesConfig, PetState, PluginState, TraceEntry } from './types.js'
 
 /** 缩略图读取上限（真缩略图只有几十 KB，给足余量即可）。 */
 const MAX_THUMB_BYTES = 1024 * 1024
 
 /** POST /latch 的请求体上限。 */
 const MAX_LATCH_BODY = 4096
+
+/** POST /jev-pick 的请求体上限（回复正文可能很长，留足余量）。 */
+const MAX_JEV_BODY = 256 * 1024
+
+/** 送进 JEV 的回复正文截断长度（按字符；成本与延迟都由它兜住）。 */
+const MAX_JEV_REPLY_CHARS = 12000
+
+/** `/jev-log` 不传 limit 时给几条。 */
+const JEV_LOG_DEFAULT_LIMIT = 10
+
+/** JEV 计数（诊断用：花了多少、命中多少、回落多少）。 */
+export interface JevStats {
+  /** 真正打过 OpenRouter 的次数。 */
+  calls: number
+  /** 命中缓存的次数（刷新重放，没花钱）。 */
+  hits: number
+  /** 失败回落既有规则的次数。 */
+  fallbacks: number
+  /** 累计美元成本（OpenRouter 报的）。 */
+  costUsd: number
+  /** 最近一次耗时（ms）与结论摘要。 */
+  lastMs: number
+  lastNote: string
+}
 
 /** 运行计数（诊断端点用）。 */
 export interface StickerStats {
@@ -60,11 +96,20 @@ export interface StickerStats {
   lastId: string
   /** 最近一次成功服务的时间戳。 */
   lastAt: number
+  /** JEV 决策计数。 */
+  jev: JevStats
 }
 
 /** 建计数器。 */
 export function createStats(): StickerStats {
-  return { served: 0, miss: 0, denied: 0, lastId: '', lastAt: 0 }
+  return {
+    served: 0,
+    miss: 0,
+    denied: 0,
+    lastId: '',
+    lastAt: 0,
+    jev: { calls: 0, hits: 0, fallbacks: 0, costUsd: 0, lastMs: 0, lastNote: '' },
+  }
 }
 
 /** 路由依赖。 */
@@ -81,6 +126,19 @@ export interface RouteDeps {
   state: { read: () => PluginState; write: (next: PluginState) => void }
   /** 诊断环形缓冲（host 决策 + 客户端回执）。 */
   trace: { push: (entry: Omit<TraceEntry, 'at'> & { at?: number }) => void; list: () => TraceEntry[] }
+  /**
+   * JEV 决策的可注入点（只给测试用；生产一律走默认实现）。
+   *
+   * 没有这个口子，`/jev-pick` 这条链就只能靠"起一个真 DSH 再戳一下"来验 ——
+   * 而它恰恰是最该被单测钉死的部分（缓存/回落/去重都在这里）。
+   */
+  jev?: Partial<{
+    fetch: typeof globalThis.fetch
+    env: NodeJS.ProcessEnv | Record<string, string | undefined>
+    credentialsPath: string
+    readFile: (path: string) => string
+    now: () => number
+  }>
 }
 
 /** 只服务回环请求：远程主机打不到，DNS rebinding 也进不来。 */
@@ -119,11 +177,20 @@ function seededShuffle<T>(items: readonly T[], seed: number): T[] {
   return out
 }
 
-/** 夹取一个查询参数。 */
+/**
+ * 夹取一个查询参数。
+ *
+ * **缺席要用 fallback**：`Number(null)` 是 `0`，而 `0` 是个有限数 —— 老写法
+ * （只判 `Number.isFinite`）会让 fallback 在这一支上永远不生效，
+ * 于是 `clampInt(null, 10, 1, 20)` 返回 `1`：不传 `limit` 的端点会静默只回一条。
+ * `/jev-log` 就是这么撞上的（`/catalog` 一直显式传参，所以从没暴露）。
+ */
 function clampInt(raw: string | null, fallback: number, min: number, max: number): number {
+  const clamp = (value: number): number => Math.min(max, Math.max(min, Math.trunc(value)))
+  if (raw === null || raw.trim() === '') return clamp(fallback)
   const value = Number(raw)
-  if (!Number.isFinite(value)) return fallback
-  return Math.min(max, Math.max(min, Math.trunc(value)))
+  if (!Number.isFinite(value)) return clamp(fallback)
+  return clamp(value)
 }
 
 /** 读一个小请求体（超限直接掐掉）。 */
@@ -183,6 +250,33 @@ async function sendBytes(
 export function createStickerRoute(deps: RouteDeps): WebRoute {
   const { ctx, config, stats } = deps
 
+  /**
+   * JEV 结论缓存（按 `(会话, 轮次)`）。
+   *
+   * 位置很关键：它必须**活得比一次请求长**（刷新要重放），又必须挂在这个路由实例上
+   * （插件停用即随 ctx.effect 一起消失，不留跨生命的脏状态）。
+   */
+  const jevCache = createDecisionCache(256)
+
+  /**
+   * JEV 调试日志（只记**真实往返**，最新 20 条）。
+   *
+   * 命中缓存不产生新条目：一次刷新会重放好几个回合，记进去只会把真正发生过的事淹掉。
+   * 面板要看的正是"这一轮到底发了什么、收回了什么"。
+   */
+  const jevLog = createJevLog(20)
+
+  /**
+   * `<DSH_HOME>/.credentials.yaml` 的路径。
+   *
+   * 为什么需要这条兜底：本机实测 DSH 把 key 存在这个文件里，但**不注入插件进程的环境变量**
+   * （`process.env.OPENROUTER_API_KEY` 是空的）。环境变量仍然优先，文件只是兜底。
+   */
+  const credentialsPath = (): string => {
+    const home = process.env.DSH_HOME
+    return join(home !== undefined && home !== '' ? home : join(homedir(), '.dsh'), '.credentials.yaml')
+  }
+
   /** 索引 + 配置一次性取好（每个分支都要）。 */
   const context = (): { cfg: MemesConfig; index: LoadedIndex | undefined } => {
     const cfg = config()
@@ -209,6 +303,8 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
       lastId: stats.lastId,
       lastAt: stats.lastAt,
       latch: globalLatch(deps.state.read()),
+      /** JEV 决策计数（花了多少 / 命中缓存多少 / 回落多少 / 缓存里存了几条）。 */
+      jev: { ...stats.jev, cacheSize: jevCache.size() },
       /** 两端共用的诊断轨迹（最新 48 条）。 */
       trace: deps.trace.list(),
       ts: Date.now(),
@@ -330,6 +426,160 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
         return
       }
 
+      // ---- JEV 取结论（autoMode=jev：按这一轮语境选一张） -------------------
+      if (pathname === JEV_PATH || pathname === `${JEV_PATH}/`) {
+        if ((req.method ?? 'GET') !== 'POST') {
+          res.writeHead(405, { 'Cache-Control': 'no-store' })
+          res.end()
+          return
+        }
+        const raw = await readBody(req, MAX_JEV_BODY)
+        if (raw === undefined) {
+          sendJson(res, 413, { ok: false, error: 'body too large' })
+          return
+        }
+        let parsedBody: unknown
+        try {
+          parsedBody = raw === '' ? {} : JSON.parse(raw)
+        } catch {
+          sendJson(res, 400, { ok: false, error: 'bad json' })
+          return
+        }
+        const input = (parsedBody ?? {}) as { sessionId?: unknown; turn?: unknown; text?: unknown; userText?: unknown }
+        const sessionId = typeof input.sessionId === 'string' ? input.sessionId.slice(0, 200) : ''
+        // turn 必须是正整数：不用 `Math.trunc` 宽容，因为 1.0/1.5/1.9 会被截成同一个缓存键，
+        // 让两个不同轮次共用一张贴纸 —— 静默错配比直接 400 难查得多。
+        const turn = typeof input.turn === 'number' && Number.isInteger(input.turn) ? input.turn : 0
+        const text = typeof input.text === 'string' ? input.text.slice(0, MAX_JEV_REPLY_CHARS) : ''
+        const userText = typeof input.userText === 'string' ? input.userText.slice(0, 4000) : ''
+        if (sessionId === '' || turn < 1) {
+          sendJson(res, 400, { ok: false, error: 'sessionId and positive integer turn required' })
+          return
+        }
+
+        const { cfg, index } = context()
+        if (index === undefined) {
+          sendJson(res, 200, { ok: false, error: 'index missing' })
+          return
+        }
+
+        /** 缓存命中即返回（刷新重放走这条，不再花钱、也不会换一张）。 */
+        const cached = jevCache.get(sessionId, turn)
+        if (cached !== undefined) {
+          stats.jev.hits += 1
+          const entry = cached.ok && cached.stick ? pickInFamily(index.entries, cached.family, new Set(), sessionId, turn) : undefined
+          sendJson(res, 200, {
+            ok: cached.ok,
+            cached: true,
+            id: entry?.id ?? null,
+            family: cached.family,
+            stick: cached.stick,
+            probability: cached.probability,
+            note: cached.note,
+          })
+          return
+        }
+
+        const recent = deps.state.read().sessions[sessionId]?.recent ?? []
+        const decision = await decideJev(
+          {
+            fetch: deps.jev?.fetch ?? globalThis.fetch,
+            readFile: deps.jev?.readFile ?? ((path: string) => readFileSync(path, 'utf8')),
+            env: deps.jev?.env ?? process.env,
+            credentialsPath: deps.jev?.credentialsPath ?? credentialsPath(),
+            now: deps.jev?.now ?? (() => Date.now()),
+          },
+          { reply: text, userText, recent, persona: cfg.jevPersona },
+          { model: cfg.jevModel, timeoutMs: cfg.jevTimeoutMs },
+        )
+        jevCache.set(sessionId, turn, decision)
+
+        /** 把这次真实往返记进调试日志（成功与失败都记：失败才是最需要看原文的时候）。 */
+        jevLog.push({
+          sessionId,
+          turn,
+          model: cfg.jevModel,
+          ok: decision.ok,
+          family: decision.family,
+          stick: decision.stick,
+          probability: decision.probability,
+          yesProbability: decision.yesProbability,
+          costUsd: decision.costUsd,
+          ms: decision.ms,
+          note: decision.note,
+          status: decision.status,
+          error: decision.error,
+          request: decision.request,
+          response: decision.response,
+        })
+
+        if (!decision.ok) {
+          stats.jev.fallbacks += 1
+          stats.jev.lastMs = decision.ms
+          stats.jev.lastNote = decision.note
+          deps.trace.push({ kind: 'host:jev', sessionId, turn, note: `回落 ${decision.note}` })
+          sendJson(res, 200, { ok: false, cached: false, id: null, error: decision.note, ms: decision.ms })
+          return
+        }
+
+        stats.jev.calls += 1
+        if (decision.costUsd !== null) stats.jev.costUsd += decision.costUsd
+        stats.jev.lastMs = decision.ms
+        stats.jev.lastNote = decision.note
+
+        /** 族内挑一张：JEV 给了情绪族，"具体哪张"由代码定（去重 + 确定性）。 */
+        const picked =
+          decision.stick
+            ? pickInFamily(index.entries, decision.family, new Set(recent), sessionId, turn)
+            : undefined
+        deps.trace.push({
+          kind: 'host:jev',
+          sessionId,
+          turn,
+          ...(picked === undefined ? {} : { id: picked.id }),
+          note: `${decision.note} · ${decision.ms}ms${decision.costUsd === null ? '' : ` · $${decision.costUsd.toFixed(6)}`}`,
+        })
+        sendJson(res, 200, {
+          ok: true,
+          cached: false,
+          id: picked?.id ?? null,
+          family: decision.family,
+          stick: decision.stick,
+          probability: decision.probability,
+          ms: decision.ms,
+          costUsd: decision.costUsd,
+          note: decision.note,
+        })
+        return
+      }
+
+      // ---- JEV 调试日志（漂浮面板读：每次真实往返的请求与响应） ----------------
+      if (pathname === JEV_LOG_PATH || pathname === `${JEV_LOG_PATH}/`) {
+        if ((req.method ?? 'GET') !== 'GET') {
+          res.writeHead(405, { 'Cache-Control': 'no-store' })
+          res.end()
+          return
+        }
+        const limit = clampInt(url.searchParams.get('limit'), JEV_LOG_DEFAULT_LIMIT, 1, jevLog.capacity())
+        sendJson(res, 200, {
+          ok: true,
+          capacity: jevLog.capacity(),
+          total: jevLog.size(),
+          /** 本次真实调用累计（面板头部显示）。 */
+          stats: {
+            calls: stats.jev.calls,
+            hits: stats.jev.hits,
+            fallbacks: stats.jev.fallbacks,
+            costUsd: stats.jev.costUsd,
+            lastMs: stats.jev.lastMs,
+            lastNote: stats.jev.lastNote,
+          },
+          entries: jevLog.list(limit),
+          ts: Date.now(),
+        })
+        return
+      }
+
       // ---- 诊断回执（客户端把关键动作回传，进内存环形缓冲） -------------------
       if (pathname === DEBUG_PATH || pathname === `${DEBUG_PATH}/`) {
         if ((req.method ?? 'GET') !== 'POST') {
@@ -366,11 +616,15 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
         return
       }
 
-      // ---- 界面落点（常驻挂件的拖拽坐标；兜底浮层已随 v2.0 退役） -------------
+      // ---- 界面落点（常驻挂件 + JEV 调试浮层的拖拽坐标；兜底浮层已随 v2.0 退役） ----
       if (pathname === PET_PATH || pathname === `${PET_PATH}/`) {
         const method = req.method ?? 'GET'
         if (method === 'GET') {
-          sendJson(res, 200, { ok: true, pet: petState(deps.state.read()) })
+          sendJson(res, 200, {
+            ok: true,
+            pet: petState(deps.state.read()),
+            jevDebug: jevDebugState(deps.state.read()),
+          })
           return
         }
         if (method !== 'POST') {
@@ -395,6 +649,7 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
           return
         }
         const input = (parsedPet ?? {}) as {
+          slot?: unknown
           right?: unknown
           bottom?: unknown
           collapsed?: unknown
@@ -408,6 +663,19 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
           else if (typeof value === 'number' && Number.isFinite(value)) {
             coords[key] = clampInt(String(Math.round(value)), 0, 0, 20_000)
           }
+        }
+
+        // `slot` 缺省 = pet：老客户端（v2.1 之前）不带这个字段，不能因为新增座位把它弄坏。
+        if (input.slot === 'jevDebug') {
+          const panelPatch: FloatPanelState = {}
+          if (coords.right !== undefined) panelPatch.right = coords.right
+          if (coords.bottom !== undefined) panelPatch.bottom = coords.bottom
+          if (typeof input.collapsed === 'boolean') panelPatch.collapsed = input.collapsed
+          const panelStore = deps.state.read()
+          const jevDebug = setJevDebugState(panelStore, panelPatch)
+          deps.state.write(panelStore)
+          sendJson(res, 200, { ok: true, jevDebug })
+          return
         }
 
         const patch: PetState = {}
@@ -511,7 +779,7 @@ export function createStickerRoute(deps: RouteDeps): WebRoute {
       const { cfg, index } = context()
       if (index === undefined) {
         stats.miss += 1
-        sendJson(res, 503, { ok: false, error: 'index.json 未找到，请先跑 `node scripts/import-assets.mjs`' })
+        sendJson(res, 503, { ok: false, error: 'index.json 未找到，先跑 `node scripts/fetch-assets.mjs`（或用 `node scripts/import-assets.mjs` 从原图生成）' })
         return
       }
       const entry = index.byId.get(id)

@@ -44,3 +44,41 @@ test('package.json 声明了客户端半边', () => {
   assert.equal(manifest.exports?.['./client']?.default, './lib/client.js')
   assert.ok(manifest.files.includes('lib/client.js'), 'files 里要带上 lib/client.js')
 })
+
+test('调试浮层打进了 bundle（不是只改了源码）', () => {
+  const source = readFileSync(BUNDLE, 'utf8')
+  assert.match(source, /dsh-memes-reply-jev-debug/, 'bundle 里没有调试浮层的座位 id')
+  assert.match(source, /dsh-memes-reply-jev-chip/, 'bundle 里没有调试浮层的样式类')
+})
+
+/**
+ * 静态门禁：**hook 不能出现在条件返回之后**。
+ *
+ * 为什么值得为它写一条测试：这个仓库没接 eslint-plugin-react-hooks，而这类错
+ * 只在运行时炸（开关从关到开时 hook 数量变化 → "Rendered more hooks than during
+ * the previous render"）。写 `jevpanel.tsx` 时就真踩过一次（`useMemo` 落在了
+ * `if (!visible) return null` 之后），typecheck 与构建都不会拦。
+ *
+ * 做法刻意保守：只看"组件函数体里最后一个 hook 调用"与"第一个顶层 return null"的位置关系。
+ */
+test('客户端组件：没有 hook 落在条件返回之后（hooks 顺序门禁）', () => {
+  const files = ['jevpanel.tsx', 'node.tsx', 'panel.tsx', 'pet.tsx']
+  const HOOK = /^\s*(?:const|let|var)?[^\n]*\b(useState|useEffect|useMemo|useRef|useCallback|useSyncExternalStore|useLayoutEffect)\s*[(<]/gm
+  for (const file of files) {
+    const source = readFileSync(join(ROOT, 'src', 'client', file), 'utf8')
+    const lines = source.split('\n')
+    let lastHook = -1
+    lines.forEach((line, index) => {
+      // 注释里的 `useXxx(` 不算
+      const code = line.replace(/\/\/.*$/, '')
+      if (HOOK.test(code)) lastHook = index
+      HOOK.lastIndex = 0
+    })
+    const firstConditionalReturn = lines.findIndex((line) => /^\s{2}if \(.*\) return null\b/.test(line))
+    if (firstConditionalReturn < 0) continue
+    assert.ok(
+      lastHook < firstConditionalReturn,
+      `${file}: 第 ${lastHook + 1} 行有 hook，却排在第 ${firstConditionalReturn + 1} 行的条件返回之后 —— 开关一变就炸`,
+    )
+  }
+})

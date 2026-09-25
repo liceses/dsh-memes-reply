@@ -46,10 +46,20 @@ export const MemesSettingsSchema = Schema.object({
     Schema.const('off' as const),
     Schema.const('keyword' as const),
     Schema.const('every' as const),
+    Schema.const('jev' as const),
   ])
     .default(DEFAULT_CONFIG.autoMode)
-    .description('贴纸规则：off = 只在模型点名时贴；keyword = 回复命中情绪词就贴（默认）；every = 每 N 轮必贴一张'),
+    .description(
+      '贴纸规则：off = 只在模型点名时贴；keyword = 回复命中情绪词就贴（默认）；' +
+        'every = 每 N 轮必贴一张；jev = 把这轮回复交给 JEV 判情绪族（最贴语境，且能判"这轮不贴"；会把回复正文发到 OpenRouter）',
+    ),
   autoEveryTurns: Schema.number().default(DEFAULT_CONFIG.autoEveryTurns).description('autoMode=every 时的间隔轮数'),
+  jevModel: Schema.string().default(DEFAULT_CONFIG.jevModel).description('autoMode=jev 用的模型（默认 typesafe/jev-1.13）'),
+  jevTimeoutMs: Schema.number().default(DEFAULT_CONFIG.jevTimeoutMs).description('autoMode=jev 的单次超时（ms）；超时/报错回落既有规则'),
+  jevPersona: Schema.string().default(DEFAULT_CONFIG.jevPersona).description('给 JEV 的角色/语气说明（留空 = 不给；内容会被发到 OpenRouter）'),
+  jevDebugVisible: Schema.boolean()
+    .default(DEFAULT_CONFIG.jevDebugVisible)
+    .description('JEV 调试漂浮面板：开着会显示一枚可拖的小胶囊，点开能看到每次真实往返的请求与响应（只读诊断）'),
   petVisible: Schema.boolean().default(DEFAULT_CONFIG.petVisible).description('常驻挂件：页面上一直显示一只大肥鱼（随时能看到）'),
   petSize: Schema.number().default(DEFAULT_CONFIG.petSize).description('常驻挂件边长（px），建议 96–240'),
   petCorner: Schema.union([
@@ -89,6 +99,10 @@ export function resolveConfig(raw: unknown): MemesConfig {
     fallback: value.fallback ?? DEFAULT_CONFIG.fallback,
     autoMode: value.autoMode ?? DEFAULT_CONFIG.autoMode,
     autoEveryTurns: value.autoEveryTurns ?? DEFAULT_CONFIG.autoEveryTurns,
+    jevModel: value.jevModel ?? DEFAULT_CONFIG.jevModel,
+    jevTimeoutMs: value.jevTimeoutMs ?? DEFAULT_CONFIG.jevTimeoutMs,
+    jevPersona: value.jevPersona ?? DEFAULT_CONFIG.jevPersona,
+    jevDebugVisible: value.jevDebugVisible ?? DEFAULT_CONFIG.jevDebugVisible,
     petVisible: value.petVisible ?? DEFAULT_CONFIG.petVisible,
     petSize: value.petSize ?? DEFAULT_CONFIG.petSize,
     petCorner: value.petCorner ?? DEFAULT_CONFIG.petCorner,

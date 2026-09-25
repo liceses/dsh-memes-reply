@@ -212,4 +212,161 @@ export const CSS = `
 .${P}-pet-tool:hover:not(:disabled) { color: var(--dsw-alias-label-primary, inherit); }
 .${P}-pet-tool:disabled { opacity: 0.5; cursor: default; }
 
+/* ---- JEV 调试漂浮面板（可开关） ---- */
+.${P}-jev-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+.${P}-jev-chip {
+  position: fixed;
+  pointer-events: auto;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--dsw-alias-border-l2, rgba(128, 128, 128, 0.35));
+  background: var(--dsw-alias-bg-layer-3, rgba(255, 255, 255, 0.95));
+  color: var(--dsw-alias-label-secondary, inherit);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.${P}-jev-chip:hover { color: var(--dsw-alias-label-primary, inherit); }
+.${P}-jev-panel {
+  position: fixed;
+  pointer-events: auto;
+  width: 440px;
+  max-width: calc(100vw - 24px);
+  max-height: min(72vh, 640px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--dsw-alias-border-l2, rgba(128, 128, 128, 0.35));
+  border-radius: 12px;
+  background: var(--dsw-alias-bg-layer-2, rgba(255, 255, 255, 0.98));
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  font-size: 12px;
+}
+.${P}-jev-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  cursor: grab;
+  border-bottom: 1px solid var(--dsw-alias-border-l2, rgba(128, 128, 128, 0.25));
+  color: var(--dsw-alias-label-primary, inherit);
+  font-weight: 600;
+  user-select: none;
+}
+.${P}-jev-title:active { cursor: grabbing; }
+.${P}-jev-totals {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary, inherit);
+}
+.${P}-jev-actions { display: flex; gap: 4px; }
+.${P}-jev-tool {
+  width: 20px; height: 20px; padding: 0;
+  border-radius: 6px;
+  border: 1px solid var(--dsw-alias-border-l2, rgba(128, 128, 128, 0.35));
+  background: none;
+  color: var(--dsw-alias-label-secondary, inherit);
+  font-size: 11px; line-height: 1; cursor: pointer;
+}
+.${P}-jev-tool:hover { color: var(--dsw-alias-label-primary, inherit); }
+.${P}-jev-hint {
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary, inherit);
+}
+.${P}-jev-error {
+  margin: 0 10px 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--dsw-alias-label-primary, inherit);
+  background: color-mix(in srgb, #e5484d 16%, transparent);
+}
+.${P}-jev-empty {
+  padding: 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-tertiary, inherit);
+}
+.${P}-jev-empty code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--dsw-alias-bg-module-platform, rgba(128, 128, 128, 0.12));
+}
+.${P}-jev-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0 10px 6px;
+  list-style: none;
+}
+.${P}-jev-item { border-top: 1px solid var(--dsw-alias-border-l2, rgba(128, 128, 128, 0.2)); }
+.${P}-jev-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.${P}-jev-time { font-variant-numeric: tabular-nums; color: var(--dsw-alias-label-tertiary, inherit); }
+.${P}-jev-badge {
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+.${P}-jev-badge-good { background: color-mix(in srgb, #30a46c 20%, transparent); }
+.${P}-jev-badge-bad { background: color-mix(in srgb, #e5484d 22%, transparent); }
+.${P}-jev-badge-muted { background: var(--dsw-alias-bg-module-platform, rgba(128, 128, 128, 0.14)); }
+.${P}-jev-meta {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--dsw-alias-label-secondary, inherit);
+}
+.${P}-jev-caret { color: var(--dsw-alias-label-tertiary, inherit); }
+.${P}-jev-body { padding: 0 0 8px; }
+.${P}-jev-label {
+  margin: 6px 0 3px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-secondary, inherit);
+}
+.${P}-jev-pre {
+  margin: 0;
+  padding: 6px 8px;
+  max-height: 190px;
+  overflow: auto;
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-module-platform, rgba(128, 128, 128, 0.1));
+  color: var(--dsw-alias-label-secondary, inherit);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10.5px;
+  line-height: 15px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 `

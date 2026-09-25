@@ -245,7 +245,7 @@ export function SettingsCard({
                   </span>
                 ) : (
                   <span className="dsh-memes-reply-status-error">
-                    索引未就绪：先运行 <code>node scripts/import-assets.mjs --format webp --also-package</code>
+                    索引未就绪：先运行 <code>node scripts/fetch-assets.mjs</code>
                   </span>
                 )}
                 <button type="button" className="dsh-memes-reply-btn" onClick={() => void refreshStats()}>
@@ -363,7 +363,7 @@ export function SettingsCard({
 
             <Field
               label="自动贴纸"
-              hint="off = 只由模型决定；keyword = 回复命中情绪词就补一张（默认）；every = 每 N 轮必贴，不问模型"
+              hint="off = 只由模型决定；keyword = 回复命中情绪词就补一张（默认）；every = 每 N 轮必贴，不问模型；jev = 把回复交给 JEV 判情绪族（会把正文发到 OpenRouter，约 1.3s / 每轮 $0.00005）"
               overridden={isOverridden(user, 'autoMode')}
               disabled={!writable}
               onReset={() => void resetField('autoMode')}
@@ -375,6 +375,7 @@ export function SettingsCard({
               >
                 <option value="keyword">keyword（命中情绪词）</option>
                 <option value="every">every（每 N 轮必贴）</option>
+                <option value="jev">jev（按语境判情绪族）</option>
                 <option value="off">off（只由模型决定）</option>
               </select>
             </Field>
@@ -396,6 +397,74 @@ export function SettingsCard({
                   edit('autoEveryTurns', Math.max(1, Math.min(20, Number(event.target.value) || 1)))
                 }
               />
+            </Field>
+
+            <Field
+              label="JEV 模型"
+              hint="autoMode=jev 时用的模型；改它等于改决策质量（默认 typesafe/jev-1.13）"
+              overridden={isOverridden(user, 'jevModel')}
+              disabled={!writable}
+              onReset={() => void resetField('jevModel')}
+            >
+              <input
+                value={current.jevModel}
+                placeholder="typesafe/jev-1.13"
+                disabled={!writable}
+                onChange={(event) => edit('jevModel', event.target.value.trim())}
+              />
+            </Field>
+
+            <Field
+              label="JEV 超时（ms）"
+              hint="超时或报错一律回落既有规则，贴纸层绝不拖住会话"
+              overridden={isOverridden(user, 'jevTimeoutMs')}
+              disabled={!writable}
+              onReset={() => void resetField('jevTimeoutMs')}
+            >
+              <input
+                type="number"
+                min={500}
+                max={20000}
+                step={500}
+                value={current.jevTimeoutMs}
+                disabled={!writable}
+                onChange={(event) =>
+                  edit('jevTimeoutMs', Math.max(500, Math.min(20000, Number(event.target.value) || 4000)))
+                }
+              />
+            </Field>
+
+            <Field
+              label="JEV 语气说明"
+              hint="可选：告诉 JEV 这个助手的角色/语气（内容也会被发到 OpenRouter）；留空 = 不给"
+              overridden={isOverridden(user, 'jevPersona')}
+              disabled={!writable}
+              onReset={() => void resetField('jevPersona')}
+            >
+              <input
+                value={current.jevPersona}
+                placeholder="例如：中文技术助手，语气干脆、偶尔自嘲"
+                disabled={!writable}
+                onChange={(event) => edit('jevPersona', event.target.value)}
+              />
+            </Field>
+
+            <Field
+              label="JEV 调试浮层"
+              hint="开着会在页面右上出现一枚可拖的小胶囊，点开成面板：能看到每次真实往返发给 JEV 的请求与 JEV 回的响应（只读诊断，收起就不轮询）"
+              overridden={isOverridden(user, 'jevDebugVisible')}
+              disabled={!writable}
+              onReset={() => void resetField('jevDebugVisible')}
+            >
+              <label className="dsh-memes-reply-check">
+                <input
+                  type="checkbox"
+                  checked={current.jevDebugVisible}
+                  disabled={!writable}
+                  onChange={(event) => edit('jevDebugVisible', event.target.checked)}
+                />
+                <span>{current.jevDebugVisible ? '显示' : '隐藏'}</span>
+              </label>
             </Field>
 
             <Field

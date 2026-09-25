@@ -183,8 +183,8 @@ test('/layout：GET 初始为空、POST 记位置/收起/当前那张、非法�
 
   const initial = fakeRes()
   await h.route.handler(fakeReq({ url: '/api/dsh-memes-reply/layout' }), initial)
-  // v2.0：兜底浮层退役，这里只剩常驻挂件。
-  assert.deepEqual(JSON.parse(String(initial.captured.body)), { ok: true, pet: {} })
+  // v2.0：兜底浮层退役，这里只剩常驻挂件；v2.1 起同一个端点也带 JEV 调试浮层的落点。
+  assert.deepEqual(JSON.parse(String(initial.captured.body)), { ok: true, pet: {}, jevDebug: {} })
 
   const saved = fakeRes()
   await h.route.handler(
@@ -487,6 +487,18 @@ test('素材清单：limit 夹取、关键词过滤、非 GET 405', async () => 
   const post = fakeRes()
   await route.handler(fakeReq({ url: '/api/dsh-memes-reply/catalog', method: 'POST' }), post)
   assert.equal(post.captured.status, 405)
+})
+
+test('素材清单：不传 limit 时用默认值，而不是静默只回 1 条（clampInt 参数缺席的回归）', async () => {
+  // 盯着一个真实的潜伏 bug：`Number(null)` 是 0，而 0 是**有限数**，
+  // 所以只判 `Number.isFinite` 的旧写法会让 fallback 在这一支上永远不生效。
+  // 夹具里正好 2 条素材：修好 = 2 条，没修 = 1 条。
+  const { root } = harness0()
+  const { route } = harness(root)
+  const res = fakeRes()
+  await route.handler(fakeReq({ url: '/api/dsh-memes-reply/catalog' }), res)
+  const body = JSON.parse(String(res.captured.body))
+  assert.equal(body.items.length, 2, '默认 limit 应该拿到全部素材，而不是 1 条')
 })
 
 test('/vocab：全量检索词表（id/name/tags/aliases + 全尺寸 URL），非 GET 405', async () => {

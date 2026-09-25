@@ -36,6 +36,22 @@ export const SESSION_STATE_PATH = `${ROUTE_PREFIX}/session-state`
 /** 「下一轮用这张」端点（设置面板写入）。 */
 export const LATCH_PATH = `${ROUTE_PREFIX}/latch`
 
+/**
+ * JEV 取结论端点（`autoMode='jev'` 时客户端来取这一轮该贴哪张）。
+ *
+ * 为什么结论要绕宿主一圈：JEV 调用需要 API key，而客户端 bundle **绝不能**带 key。
+ * 宿主按 `(sessionId, turn)` 缓存结论，客户端刷新只是重放，不会换一张。
+ */
+export const JEV_PATH = `${ROUTE_PREFIX}/jev-pick`
+
+/**
+ * JEV 调试日志端点（漂浮面板读它）。
+ *
+ * 为什么与 `/stats` 分开：一份往返带请求原文与响应原文（裁剪后各约 1–4 KB），
+ * 而 `/stats` 是 12 秒轮询的常客 —— 挂进去等于每次轮询都搬一堆没人看的 JSON。
+ */
+export const JEV_LOG_PATH = `${ROUTE_PREFIX}/jev-log`
+
 /** 界面落点（常驻挂件的拖拽坐标，客户端读写，落在 state.json）。 */
 export const LAYOUT_PATH = `${ROUTE_PREFIX}/layout`
 

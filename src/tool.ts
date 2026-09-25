@@ -122,7 +122,7 @@ export function createStickerTool(deps: ToolDeps): ToolDefinition {
       const cfg = deps.config()
       const index = deps.index()
       if (index === undefined) {
-        return fail('素材索引还没生成，请先在插件目录运行 `node scripts/import-assets.mjs`')
+        return fail('素材索引还没生成：先跑 `node scripts/fetch-assets.mjs` 取素材（或 `node scripts/import-assets.mjs` 从原图生成）')
       }
       if (!cfg.enabled) return fail('贴纸功能已被设置里的总开关关闭')
 

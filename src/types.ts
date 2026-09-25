@@ -116,9 +116,13 @@ export type StickerQuality = 'compressed' | 'original'
  * 自动贴纸（B-auto）的触发规则：
  *  - `off`：只在模型调用工具时贴；
  *  - `keyword`：助手这一轮的话里命中情绪词就贴（不问模型）；
- *  - `every`：每 N 轮贴一张（最确定，和语境无关）。
+ *  - `every`：每 N 轮贴一张（最确定，和语境无关）；
+ *  - `jev`：把这轮回复交给 JEV 判断情绪族，族内由代码选一张（最贴语境，且能判"这轮不贴"）。
+ *
+ * `jev` 的代价：回复正文会被发到 OpenRouter，且每轮多 1 次外部调用（实测 ~1.3 s /
+ * $0.00005）。任何失败都静默回落成 `every` 的规则，不影响会话。
  */
-export type AutoMode = 'off' | 'keyword' | 'every'
+export type AutoMode = 'off' | 'keyword' | 'every' | 'jev'
 
 /** 常驻挂件贴在哪一角（拖过之后以拖拽坐标为准）。 */
 export type PetCorner = 'br' | 'bl' | 'tr' | 'tl'
@@ -150,6 +154,19 @@ export interface MemesConfig {
   autoMode: AutoMode
   /** `autoMode=every` 时的间隔轮数。 */
   autoEveryTurns: number
+  /** `autoMode=jev` 用的模型（改它等于改决策质量）。 */
+  jevModel: string
+  /** `autoMode=jev` 的单次超时（ms）；超时/报错一律回落既有规则，不拖住会话。 */
+  jevTimeoutMs: number
+  /** 给 JEV 的角色/语气说明（留空 = 不给；写在这里等于把这段话也发出去）。 */
+  jevPersona: string
+  /**
+   * JEV 调试漂浮面板总开关（默认关）。
+   *
+   * 开了之后页面上出现一枚小胶囊，点它展开成面板：能看到**每次真实往返**发出去什么、
+   * 收回来什么。纯只读诊断，关了就不渲染、也不轮询。
+   */
+  jevDebugVisible: boolean
   /** 常驻挂件：页面上一直显示一只大肥鱼。 */
   petVisible: boolean
   /** 常驻挂件边长（px）。 */
@@ -184,6 +201,21 @@ export interface PetState {
   id?: string
 }
 
+/**
+ * 漂浮面板的 UI 状态（位置 + 是否收起）。
+ *
+ * 与 `PetState` 分开而不是复用它：`PetState.id` 对调试面板没有意义，
+ * 复用会让"这个字段到底写给谁"变成需要推理的事。
+ */
+export interface FloatPanelState {
+  /** 距右边距（px）。 */
+  right?: number
+  /** 距底边距（px）。 */
+  bottom?: number
+  /** 是否收起成小胶囊（点它再展开）。 */
+  collapsed?: boolean
+}
+
 /** 一条诊断轨迹（host 的决策点 + 客户端回执，共用一个环形缓冲）。 */
 export interface TraceEntry {
   /** 毫秒时间戳。 */
@@ -213,6 +245,8 @@ export interface GlobalState {
   latch?: string
   /** 常驻挂件的位置与形态。 */
   pet?: PetState
+  /** JEV 调试漂浮面板的位置与收起态。 */
+  jevDebug?: FloatPanelState
 }
 
 /** 插件自有状态文件（`<DSH_HOME>/memes-reply/state.json`）。 */

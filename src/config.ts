@@ -20,6 +20,12 @@ export const DEFAULT_CONFIG: MemesConfig = {
   // 要"每 N 轮必有"就把 autoMode 改成 every。
   autoMode: 'keyword',
   autoEveryTurns: 3,
+  // JEV 模式（autoMode='jev'）的三项：模型、超时、可选语气说明。
+  jevModel: 'typesafe/jev-1.13',
+  jevTimeoutMs: 4000,
+  jevPersona: '',
+  // 调试漂浮面板默认**关**：它是排障工具，不是常驻装饰。
+  jevDebugVisible: false,
   // 常驻挂件默认开着 —— "随时能看到大肥鱼"是硬需求，不是彩蛋。
   petVisible: true,
   petSize: 128,
@@ -44,6 +50,10 @@ export const CONFIG_FIELDS: Array<keyof MemesConfig> = [
   'fallback',
   'autoMode',
   'autoEveryTurns',
+  'jevModel',
+  'jevTimeoutMs',
+  'jevPersona',
+  'jevDebugVisible',
   'petVisible',
   'petSize',
   'petCorner',

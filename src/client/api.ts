@@ -13,13 +13,15 @@
 import {
   CATALOG_PATH,
   DEBUG_PATH,
+  JEV_LOG_PATH,
+  JEV_PATH,
   LATCH_PATH,
   LAYOUT_PATH,
   SESSION_STATE_PATH,
   STATS_PATH,
   VOCAB_PATH,
 } from '../protocol.js'
-import type { CatalogItem, PanelStats, PetState } from '../types.js'
+import type { CatalogItem, FloatPanelState, PanelStats, PetState } from '../types.js'
 import type { ChoiceTerm } from '../derive.js'
 
 /** /catalog 的响应。 */
@@ -119,16 +121,17 @@ export async function putLatch(id: string | null): Promise<string | null | undef
   }
 }
 
-/** 界面落点：挂件 + 兜底贴纸。 */
+/** 界面落点：挂件 + 调试浮层（+ v1.0 遗留的兜底贴纸位置）。 */
 export interface LayoutResponse {
   ok: boolean
   pet?: PetState
+  jevDebug?: FloatPanelState
   fallback?: { right?: number; bottom?: number }
 }
 
-/** 落点写入：`slot` 决定改哪一个；坐标传 `null` 表示复位。 */
+/** 落点写入：`slot` 决定改哪一个（缺省 = pet）；坐标传 `null` 表示复位。 */
 export interface LayoutPatch {
-  slot?: 'pet' | 'fallback'
+  slot?: 'pet' | 'jevDebug' | 'fallback'
   right?: number | null
   bottom?: number | null
   collapsed?: boolean
@@ -160,8 +163,7 @@ export async function putLayout(patch: LayoutPatch): Promise<LayoutResponse | un
  * 诊断回执：把客户端的关键动作回传 host（进内存环形缓冲，`/stats` 可读）。
  * 浏览器控制台开发者看不到，所以这条通道是"气泡为什么没出来"唯一可观测的办法。
  * 一律 fire-and-forget，失败静默 —— 诊断绝不能影响功能。
- */
-export function postDebug(entry: {
+ */export function postDebug(entry: {
   kind: string
   sessionId?: string
   turn?: number
@@ -182,6 +184,116 @@ export function postDebug(entry: {
 
 /** 同一个 (turn, 结果) 只上报一次，别把环形缓冲冲掉。 */
 const selectLogged = new Map<number, string>()
+
+/** `/jev-pick` 的响应（`autoMode='jev'` 时取这一轮该贴哪张）。 */
+export interface JevPickResponse {
+  /** host 是否拿到了可用结论（false = 调用方按既有规则兜底）。 */
+  ok: boolean
+  /** 是否是宿主缓存里的结论（刷新重放，没再花钱）。 */
+  cached?: boolean
+  /** 定下的贴纸 id；null = 这轮不贴（JEV 判 blank）。 */
+  id: string | null
+  family?: string
+  stick?: boolean
+  probability?: number
+  ms?: number
+  costUsd?: number | null
+  note?: string
+  error?: string
+}
+
+/**
+ * 每个 `(会话, 轮次)` 只问宿主一次。
+ *
+ * 两层去重，理由不同：`done` 挡住"同一轮反复渲染"，`inflight` 挡住
+ * "同一轮并发渲染各发一个请求"（React 严格模式下 effect 会跑两遍，这里必须扛住）。
+ * **失败也记**：一个轮次最多一次尝试，别让一次网络抖动变成每帧重试的循环。
+ */
+const jevDone = new Map<string, JevPickResponse>()
+const jevInflight = new Map<string, Promise<JevPickResponse | undefined>>()
+
+/** 取这一轮的 JEV 结论（宿主侧按 `(会话, 轮次)` 缓存，刷新即重放）。 */
+export function fetchJevPick(input: {
+  sessionId: string
+  turn: number
+  text: string
+  userText?: string
+}): Promise<JevPickResponse | undefined> {
+  if (input.sessionId === '' || input.turn < 1) return Promise.resolve(undefined)
+  const key = `${input.sessionId}:${input.turn}`
+  const settled = jevDone.get(key)
+  if (settled !== undefined) return Promise.resolve(settled)
+  const running = jevInflight.get(key)
+  if (running !== undefined) return running
+
+  const promise = (async (): Promise<JevPickResponse | undefined> => {
+    try {
+      const response = await fetch(JEV_PATH, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: input.sessionId,
+          turn: input.turn,
+          text: input.text,
+          ...(input.userText === undefined || input.userText === '' ? {} : { userText: input.userText }),
+        }),
+      })
+      if (!response.ok) return undefined
+      const body = (await response.json()) as JevPickResponse | null
+      if (body === null || typeof body !== 'object') return undefined
+      const answer: JevPickResponse = { ...body, id: typeof body.id === 'string' ? body.id : null }
+      jevDone.set(key, answer)
+      if (jevDone.size > 128) jevDone.clear()
+      return answer
+    } catch {
+      return undefined
+    } finally {
+      jevInflight.delete(key)
+    }
+  })()
+  jevInflight.set(key, promise)
+  return promise
+}
+
+/** `/jev-log` 的一条（= 一次真实往返，与 host 的 `JevExchange` 对应）。 */
+export interface JevExchangeItem {
+  at: number
+  sessionId: string
+  turn: number
+  model: string
+  ok: boolean
+  family: string
+  stick: boolean
+  probability: number
+  yesProbability: number
+  costUsd: number | null
+  ms: number
+  note: string
+  status: number | null
+  error: string
+  /** 实际发出去的请求体（host 侧已裁剪）。 */
+  request: unknown
+  /** 实际收到的响应体（host 侧已裁剪）。 */
+  response: unknown
+}
+
+/** `/jev-log` 的响应。 */
+export interface JevLogResponse {
+  ok: boolean
+  /** 环形缓冲容量（面板显示"最近 N 次"）。 */
+  capacity: number
+  /** 当前存了几条。 */
+  total: number
+  stats: { calls: number; hits: number; fallbacks: number; costUsd: number; lastMs: number; lastNote: string }
+  /** 最新的在前。 */
+  entries: JevExchangeItem[]
+  ts: number
+}
+
+/** 读 JEV 调试日志（漂浮面板用）。 */
+export function fetchJevLog(limit = 10): Promise<JevLogResponse | undefined> {
+  return getJson<JevLogResponse>(`${JEV_LOG_PATH}?limit=${limit}`)
+}
 
 /** 上报一次链式选择器的判定（去重；带 seq 便于核对水线）。 */
 export function traceSelect(turn: number, seq: number, hit: boolean, id?: string): void {
