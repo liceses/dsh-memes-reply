@@ -45,7 +45,7 @@ import { CSS } from './styles.js'
 import { installStickerTurnTail } from './turn-tail.js'
 
 /** 客户端构建标记：每次改客户端就换一个，刷新后从 `/stats` 的 `client-apply` 回执里核对。 */
-export const CLIENT_BUILD = 'turn-tail-a'
+export const CLIENT_BUILD = 'turn-tail-b'
 
 /**
  * 顶层硬依赖。
@@ -145,8 +145,9 @@ export function apply(ctx: ClientContext): void {
   //      生成中 → 会话流里的自定义节点（那时过程块强制展开，看得见）；
   //      落定   → 官方 `conversation.chat.turnTail`（`turn-tail` 在折叠豁免名单里，
   //               不会被「工作步骤展示」折进工具细节块）。
-  installStickerNode(ctx, scope)
-  installStickerTurnTail(ctx, scope)
+  //    两个座位都是 `scope: 'session'`，所以**都得在会话 fiber 里注册** ——
+  //    第三个参数就是干这个的（从根上下文注册会无声失败，踩过一次）。
+  installStickerNode(ctx, scope, (inner) => installStickerTurnTail(inner, scope))
 
   // 7) JEV 调试漂浮面板（可开关，默认关）：看每次真实往返发出去什么、收回来什么。
   //    与挂件同一个座位，但**在它之后**（order 31）：默认落点在右上，两者不打架。

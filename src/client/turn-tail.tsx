@@ -23,7 +23,7 @@
  * **不复制任何逻辑**。
  */
 
-import { useCallback, useSyncExternalStore, type ReactElement } from 'react'
+import { useCallback, useEffect, useSyncExternalStore, type ReactElement } from 'react'
 import type { ClientContext, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import { closingPickOf, closingTextOf, type ClosingAssistantLike } from '../closing.js'
 import type { MemesConfig } from '../types.js'
@@ -88,6 +88,21 @@ function StickerTurnTail({
 
   const closing = tail?.closing ?? null
   const pick = closingPickOf(closing)
+  const text = closingTextOf(closing)
+
+  // 诊断：这个座位到底挂上了没、官方数据到了没。折叠问题的排查全靠这条（只在变化时报）。
+  useEffect(() => {
+    postDebug({
+      kind: 'sticker-turn-tail-render',
+      ...(typeof props.sessionId === 'string' && props.sessionId !== '' ? { sessionId: props.sessionId } : {}),
+      turn: tail?.turn ?? fallbackTurn,
+      ...(pick.id === null ? {} : { id: pick.id }),
+      note:
+        `seat=turn-tail turn=${tail?.turn ?? fallbackTurn} seq=${tail?.seq ?? props.seq ?? '?'}` +
+        ` tail=${tail === undefined ? 'undefined' : 'ok'} closing=${closing === null ? 'null' : 'ok'}` +
+        ` text=${text.length}字 pick=${pick.id ?? pick.mood ?? '无'}`,
+    })
+  }, [tail?.turn, tail?.seq, closing === null, text.length, pick.id, pick.mood, props.sessionId, props.seq, fallbackTurn])
 
   return (
     <StickerNodeView
@@ -102,7 +117,7 @@ function StickerTurnTail({
         data: {
           turn: tail?.turn ?? fallbackTurn,
           phase: 'settled',
-          text: closingTextOf(closing),
+          text,
           modelId: pick.id,
           modelMood: pick.mood,
         },
@@ -129,13 +144,18 @@ export function installStickerTurnTail(ctx: ClientContext, scope: SettingsScope<
       register(options: { name: string; id: string; order: number }, component: unknown): () => void
     }
   }
-  anyCtx.slots.inject(TURN_TAIL_SLOT, () =>
-    anyCtx.slots.register({ name: TURN_TAIL_SLOT, id: ENTRY_ID, order: ENTRY_ORDER }, (props: TurnTailSeatProps) => (
+  anyCtx.slots.inject(TURN_TAIL_SLOT, () => {
+    // 这条能出现，就说明**槽位真的被声明了**（`slots.inject` 的回调只在那一刻触发）——
+    // 排查"注册了但永远不渲染"时，先看有没有它。
+    postDebug({ kind: 'sticker-turn-tail-slot', note: `槽位已声明 → 注册 ${ENTRY_ID}` })
+    return anyCtx.slots.register({ name: TURN_TAIL_SLOT, id: ENTRY_ID, order: ENTRY_ORDER }, (props: TurnTailSeatProps) => (
       <StickerTurnTail scope={scope} {...props} />
-    )),
-  )
+    ))
+  })
   postDebug({
     kind: 'sticker-turn-tail-installed',
-    note: `slot=${TURN_TAIL_SLOT} id=${ENTRY_ID}（落定贴纸的新座位；旧的自定义节点只留生成中占位）`,
+    note:
+      `slot=${TURN_TAIL_SLOT} id=${ENTRY_ID}（落定贴纸的新座位；旧的自定义节点只留生成中占位）` +
+      ` — 若迟迟没有 sticker-turn-tail-slot 回执，说明槽位没被声明（或注册不在会话 fiber 里）`,
   })
 }

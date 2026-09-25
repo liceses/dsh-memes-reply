@@ -496,8 +496,19 @@ export function StickerNodeView({
  *
  * `ctx.inject(['uiConversation'])` 而**不是**顶层 `inject`：万一某个部署里这个服务不存在，
  * 也不能把本插件整个浏览器半边（含设置面板）带下线。
+ *
+ * @param ctx - 插件浏览器半边的上下文。
+ * @param scope - 设置来源（延迟绑定句柄）。
+ * @param insideSession - 额外在**同一个会话 fiber 里**跑的回调。
+ *   给同样声明成 `scope: 'session'` 的座位用 —— 那些座位**必须**从会话 fiber 注册，
+ *   从根上下文注册会**无声失败**（连一条回执都不会发，因为 `slots.inject` 的回调压根不触发）。
+ *   踩过一次：落定贴纸就是这样"注册了但永远不渲染"的。
  */
-export function installStickerNode(ctx: ClientContext, scope: SettingsScope<MemesConfig>): void {
+export function installStickerNode(
+  ctx: ClientContext,
+  scope: SettingsScope<MemesConfig>,
+  insideSession?: (inner: ClientContext) => void,
+): void {
   const anyCtx = ctx as unknown as {
     inject(deps: string[], callback: (inner: ClientContext) => void): unknown
   }
@@ -527,5 +538,6 @@ export function installStickerNode(ctx: ClientContext, scope: SettingsScope<Meme
       ),
     )
     postDebug({ kind: 'sticker-node-installed', note: `build=${NODE_BUILD} kind=${STICKER_NODE_KIND}` })
+    insideSession?.(inner)
   })
 }
