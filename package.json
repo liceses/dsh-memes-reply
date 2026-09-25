@@ -34,8 +34,10 @@
     "pretest": "npm run build && npm run check:client",
     "test": "node --test \"test/*.test.mjs\"",
     "import-assets": "node scripts/import-assets.mjs",
+    "assets:pack": "node scripts/pack-assets.mjs",
+    "assets:fetch": "node scripts/fetch-assets.mjs",
     "pack": "npm pack",
-    "prepare": "npm run build"
+    "prepack": "npm run build"
   },
   "files": [
     "lib/**/*.js",
@@ -43,18 +45,17 @@
     "lib/client.js",
     "src",
     "scripts",
-    "assets",
     "cordis.patch.yml",
     "README.md"
   ],
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.2",
-    "@deepseek-ai/dsh-commands": "0.1.5-rc.1",
-    "@deepseek-ai/dsh-fs": "0.1.5-rc.1",
-    "@deepseek-ai/dsh-host-webserver": "0.1.5-rc.1",
-    "@deepseek-ai/dsh-llm": "0.1.5-rc.1",
-    "@deepseek-ai/dsh-settings": "0.1.5-rc.1",
-    "@deepseek-ai/dsh-tools": "0.1.5-rc.1",
+    "@deepseek-ai/dsh-commands": "0.1.5-rc.1 || 0.1.6-alpha.2 || 0.1.7-rc.2",
+    "@deepseek-ai/dsh-fs": "0.1.5-rc.1 || 0.1.6-alpha.2 || 0.1.7-rc.2",
+    "@deepseek-ai/dsh-host-webserver": "0.1.5-rc.1 || 0.1.6-alpha.2 || 0.1.7-rc.2",
+    "@deepseek-ai/dsh-llm": "0.1.5-rc.1 || 0.1.6-alpha.2 || 0.1.7-rc.2",
+    "@deepseek-ai/dsh-settings": "0.1.5-rc.1 || 0.1.6-alpha.2 || 0.1.7-rc.2",
+    "@deepseek-ai/dsh-tools": "0.1.5-rc.1 || 0.1.6-alpha.2 || 0.1.7-rc.2",
     "@deepseek-ai/schemastery": "^3.18.2"
   },
   "devDependencies": {

@@ -1,7 +1,19 @@
 node_modules/
-lib/
 *.tgz
 .DS_Store
 
+# lib/ **必须入库**：它是构建产物，也是 git 依赖能否免编译安装的关键。
+# pnpm 的判定（exec/prepare-package）：有 prepare 就必编译；否则看 main 指向的文件在不在。
+# 我们把 prepare 换成了 prepack，于是 lib/index.js 存在 → 直接跳过编译，
+# 用户既不需要 allowBuilds 也不需要装 90 个 devDeps。
+# 代价：改完源码要 npm run build 再提交 lib/，否则 GitHub 用户拿到旧产物。
+# 别把这一行加回来。详见 README「安装」一节。
+
 # DSH 会话产物（showme 报告、临时素材），不入库
 .dsh/
+
+# 素材（87 MB）走 release 附件，不进仓库：
+# git 依赖（github:owner/repo#sha）在解析阶段就要下整仓 tarball，pnpm 默认 60 秒超时下不完 → 装不上。
+# 取素材：node scripts/fetch-assets.mjs；打包上传：node scripts/pack-assets.mjs
+assets/
+dist/
