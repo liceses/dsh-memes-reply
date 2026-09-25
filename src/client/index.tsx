@@ -42,9 +42,10 @@ import { installStickerNode } from './node.js'
 import { SettingsCard } from './panel.js'
 import { StickerPet } from './pet.js'
 import { CSS } from './styles.js'
+import { installStickerTurnTail } from './turn-tail.js'
 
 /** 客户端构建标记：每次改客户端就换一个，刷新后从 `/stats` 的 `client-apply` 回执里核对。 */
-export const CLIENT_BUILD = 'lazy-settings-a'
+export const CLIENT_BUILD = 'turn-tail-a'
 
 /**
  * 顶层硬依赖。
@@ -139,9 +140,13 @@ export function apply(ctx: ClientContext): void {
     ),
   )
 
-  // 6) **贴纸层（v2.0 主线）**：会话流里的派生节点 —— 一轮一个，
-  //    生成中是"思考/打字中"，落定后换成这一轮的最终贴纸；跟着会话走、刷新即重放。
+  // 6) **贴纸层（v2.0 主线）**：一轮一个，跟着会话走、刷新即重放。
+  //    两个座位分工（理由见 node.tsx 里 `seat` 的注释）：
+  //      生成中 → 会话流里的自定义节点（那时过程块强制展开，看得见）；
+  //      落定   → 官方 `conversation.chat.turnTail`（`turn-tail` 在折叠豁免名单里，
+  //               不会被「工作步骤展示」折进工具细节块）。
   installStickerNode(ctx, scope)
+  installStickerTurnTail(ctx, scope)
 
   // 7) JEV 调试漂浮面板（可开关，默认关）：看每次真实往返发出去什么、收回来什么。
   //    与挂件同一个座位，但**在它之后**（order 31）：默认落点在右上，两者不打架。

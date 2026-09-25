@@ -17,11 +17,12 @@
 - **常驻挂件**：页面上**一直**有一只大肥鱼（点一下换一张、可拖、可收成小圆点）——随时能看到
 - 一键关掉：面板总开关 + `/fish off` 本会话静音
 
-### 它长在哪（三个座位）
+### 它长在哪（四个座位）
 
 | 面 | 座位 | 说明 |
 | --- | --- | --- |
-| 贴纸层（主线） | keyed `conversation.chat.node` + 自定义 `ConversationNodeDefinition` | 一轮一个节点；`anchorSeq` = 收尾回复的 seq + 0.1，正好落在回复下面、操作行上面 |
+| 贴纸层 · 生成中 | keyed `conversation.chat.node` + 自定义 `ConversationNodeDefinition` | 只负责生成中的占位（思考 / 打字中）。那时官方过程块**强制展开**，所以放在流里是安全的 |
+| 贴纸层 · 落定 | list `conversation.chat.turnTail`（官方"回合收尾"槽位） | 最终贴纸挂这里。官方的 `turn-tail` 节点 kind 在**过程折叠豁免名单**内，不会被「工作步骤展示」折进工具细节块（理由见下节） |
 | 常驻挂件 | `shell.overlay`（加法型，frame-wide） | "随时能看到"是硬需求，与"这条回复的贴纸"是两个职责 |
 | 配置面板 | `plugins.bundle.config`（key = 组合包名 `dsh-memes-reply`） | 0.1.6a2 插件管理页里本插件自己的页面；旧的 `settings.plugin.item` 已被统一插件管理移除 |
 
@@ -236,12 +237,12 @@ JEV 对**窄候选集**明显更可靠，而"族里到底选哪张"（三张几�
 
 | 环节 | 说明 |
 | --- | --- |
-| 一轮一个节点 | 定义匹配 `turn/start`（建）、`step/start` / `assistant/message` / `tool/call` / `turn/end`（更新） |
-| 生成中 | `phase=streaming` → 从「思考 / 打字」那一组里确定性挑一张（同回合永远同一张） |
-| 落定 | `turn/end` 后 `phase=settled` → 按优先级派生：会话/面板指定 > **JEV 语境结论** > 模型点名 > 规则（keyword/every）> 兜底。`autoMode=jev` 时结论是异步取回的，**没到之前不显示任何贴纸**（先闪一张随机的再换掉更难看） |
-| 锚点 | 落定后 = 收尾回复的 seq + 0.1（官方给"助手之后的补充节点"留的偏移）；生成中 = 最后一个持久事件的 seq |
-| 不被折叠 | 锚点落在**收尾回复之后**，因此不进入官方"过程展示"的折叠窗口（探针实测 `过程成员=no`） |
-| 与交付卡片共存 | 我们不在 `turnTail` 那条竞争链上，所以**回复里提文件路径时贴纸照样在**（v1.0 的老事故点） |
+| 一轮一个 | 定义匹配 `turn/start`（建）、`step/start` / `assistant/message` / `tool/call` / `turn/end`（更新） |
+| 生成中 | `phase=streaming` → 从「思考 / 打字」那一组里确定性挑一张（同回合永远同一张）。渲染在**自定义会话流节点**里 |
+| 落定 | `turn/end` 后 `phase=settled` → 按优先级派生：会话/面板指定 > **JEV 语境结论** > 模型点名 > 规则（keyword/every）> 兜底。`autoMode=jev` 时结论是异步取回的，**没到之前不显示任何贴纸**（先闪一张随机的再换掉更难看）。渲染在官方 **`conversation.chat.turnTail`** 槽位里 |
+| 落定的输入从哪来 | 不再自己从会话事件累积，而是读官方算好的 `TurnTailChatData.closing`（**本轮最后一个有内容的收尾助手**）：正文拼 `kind:'text'` 的块，模型点名解 `use_sticker` 那个 `tool-call` 块的 `argsRaw`。纯函数在 `src/closing.ts`，有单测 |
+| 为什么落定要换座位 | 官方「工作步骤展示」（选择希望看到多少工具调用细节）会把会话流节点算进**过程折叠窗口**：<br>`processMember = !豁免名单.has(kind) && anchorSeq >= processStartSeq && (liveProcess \|\| answerAnchorSeq === null \|\| anchorSeq < answerAnchorSeq)`<br>我们的自定义 kind 不在豁免名单里（名单：`system-prompt / user / steering / turn-trigger / turn-process / turn-error / turn-max-tokens / turn-tail`），而且本轮没有"干净收尾回复"时 `answerAnchorSeq` 是 `null` —— 那时**所有** `anchorSeq >= processStartSeq` 的节点都算过程成员，**往后挪锚点也没用**：折叠一收，贴纸就跟着工具细节被藏起来（2026-09-25 实测）。官方 `turn-tail` 的 kind 在豁免名单内，而这个槽位本来就是给"回合收尾的功能贡献"准备的 **list** |
+| 与交付卡片共存 | 同槽位，但它是 **list**（加法型）—— 各占一个条目，互不抢占（v1.0 的事故点是 keyed 座位被抢） |
 
 ## 素材与体积
 
@@ -314,7 +315,7 @@ node -e "fetch('http://127.0.0.1:3080/api/dsh-memes-reply/jev-log?limit=5').then
 npm run typecheck          # tsc --noEmit（host + client 全量）
 npm run build              # 生成打包词表 → tsc 出 host（lib/*.js + d.ts）→ tsdown 出客户端 bundle
 npm run check:client       # 客户端 bundle 纯净化检查（宿主依赖不得进浏览器）
-npm test                   # 先 build + 纯洁检查，再跑 123 个测试
+npm test                   # 先 build + 纯洁检查，再跑 144 个测试
 node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字节/304/缩略图/词表/会话态/latch/状态行）
 ```
 
@@ -374,8 +375,11 @@ node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字
 | `src/assets.ts` | 索引加载与三根解析（原图 → assetRoot → 包内 assets；缩略图同理） |
 | `src/prompt.ts` | 系统提示里的一行"贴纸可用"提示（按开关/静音/工具是否注册动态输出） |
 | `src/state.ts` / `src/schema.ts` / `src/config.ts` / `src/protocol.ts` / `src/types.ts` / `src/theme.ts` | 状态、设置 schema、纯常量、共享协议、类型、外观变量 |
-| `src/client/index.tsx` | 浏览器半边入口：最外层回执 + 样式 + 面板 + 挂件 + 贴纸层 |
-| `src/client/node.tsx` | **贴纸层**：`ConversationNodeDefinition` + keyed 渲染器（两阶段、锚点、动画、可观测回执；`jev` 模式下异步取一次宿主的结论） |
+| `src/settings-source.ts` | **设置来源的延迟绑定句柄**（纯模块）：它自己就是合法的 `SettingsScope`，没挂上真服务时读默认值；服务到了 `attach()` 上去自动通知订阅者。为的是不让「某个版本没有设置服务」把整个插件带下线 |
+| `src/closing.ts` | **落定贴纸的输入提取**（纯模块）：从官方 `TurnTailChatData.closing` 里取正文与 `use_sticker` 的实参；`modelPickOf` 也从这里共用 |
+| `src/client/index.tsx` | 浏览器半边入口：最外层回执 + 样式 + 面板 + 挂件 + 两个贴纸座位 |
+| `src/client/node.tsx` | **贴纸的渲染单元**（两个座位共用）：派生 / 词表 / 会话态 / JEV / 动画 / 可观测回执。`seat='flow'` 只渲染生成中的占位，`seat='turn-tail'` 渲染落定贴纸（为什么分两个座位见文件头） |
+| `src/client/turn-tail.tsx` | **落定座位**：注册进官方 `conversation.chat.turnTail`，把官方数据翻译成渲染单元要的字段 |
 | `src/client/vocab.ts` | 词表来源：优先 `/vocab`，兜底打包词表 |
 | `src/client/pet.tsx` | 常驻挂件（点击换图 / 拖拽 / 悬停工具 / 收起成小圆点） |
 | `src/client/jevpanel.tsx` | **JEV 调试浮层**（可开关）：小胶囊 ↔ 面板；每次真实往返的请求与响应；只在展开时轮询 |

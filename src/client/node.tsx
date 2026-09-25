@@ -28,6 +28,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
 import type { ClientContext, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import { DEFAULT_CONFIG } from '../config.js'
+import { modelPickOf } from '../closing.js'
 import { finalStickerFor, reasonText, thinkingStickerFor, type ChoiceTerm, type StickerChoice } from '../derive.js'
 import { TOOL_NAME } from '../protocol.js'
 import type { MemesConfig } from '../types.js'
@@ -111,26 +112,6 @@ function textOfMessage(message: { content?: unknown } | undefined): string {
     if (typed !== null && typed.type === 'text' && typeof typed.text === 'string') text += typed.text
   }
   return text
-}
-
-/** 从 `use_sticker` 的实参里取 `id` 与 `mood`。 */
-function modelPickOf(argumentsRaw: unknown): { id: string | null; mood: string | null } {
-  const empty = { id: null, mood: null }
-  if (argumentsRaw === null || argumentsRaw === undefined) return empty
-  let parsed: unknown = argumentsRaw
-  if (typeof argumentsRaw === 'string') {
-    try {
-      parsed = JSON.parse(argumentsRaw)
-    } catch {
-      return empty
-    }
-  }
-  if (parsed === null || typeof parsed !== 'object') return empty
-  const raw = parsed as { id?: unknown; mood?: unknown }
-  return {
-    id: typeof raw.id === 'string' && raw.id !== '' ? raw.id : null,
-    mood: typeof raw.mood === 'string' && raw.mood.trim() !== '' ? raw.mood.trim() : null,
-  }
 }
 
 /** 造定义：一轮一个节点。 */
@@ -244,12 +225,45 @@ function useNearViewport(ref: { current: HTMLElement | null }): boolean {
   return near
 }
 
-/** 贴纸层的渲染单元（一轮一个）。 */
-function StickerNodeView({
+/**
+ * 贴纸的渲染单元（一轮一个）。
+ *
+ * ## 两个座位（`seat`）
+ *
+ * | 座位 | 槽位 | 负责 |
+ * | --- | --- | --- |
+ * | `flow` | 自定义节点 `conversation.chat.node`（kind = `memes-sticker`） | **生成中**的占位（思考 / 打字中） |
+ * | `turn-tail` | 官方 `conversation.chat.turnTail` | **落定**的最终贴纸 |
+ *
+ * ## 为什么落定要换座位
+ *
+ * 官方「工作步骤展示」会把会话流节点算进**过程折叠窗口**（ui-chat 的判定）：
+ *
+ * ```js
+ * processMember = !TURN_PROCESS_INDEPENDENT_KINDS.has(kind)
+ *   && anchorSeq >= processStartSeq
+ *   && (liveProcess || answerAnchorSeq === null || anchorSeq < answerAnchorSeq)
+ * ```
+ *
+ * 我们的 kind 不在豁免名单里（名单是 `system-prompt / user / steering / turn-trigger /
+ * turn-process / turn-error / turn-max-tokens / **turn-tail**`），而且本轮没有"干净收尾回复"时
+ * `answerAnchorSeq` 是 `null` —— 那时**所有** `anchorSeq >= processStartSeq` 的节点都算过程成员。
+ * 所以往后挪锚点治不好：折叠一收，落定贴纸就跟着工具细节一起被藏起来（用户实测）。
+ *
+ * 官方的 `turn-tail` 节点 kind **在豁免名单内**，而 `conversation.chat.turnTail` 这个
+ * **list** 槽位正是给"回合收尾的功能贡献"准备的（加法型，不会像 keyed 座位那样被抢）。
+ * 落定贴纸放那里：既不被折叠，也不和交付卡片打架。
+ *
+ * 生成中的占位留在 `flow` 里是安全的 —— 那时 `liveProcess` 为真，过程块强制展开，看得见。
+ */
+export function StickerNodeView({
   scope,
+  seat = 'flow',
   ...props
 }: {
   scope: SettingsScope<MemesConfig>
+  /** 渲染座位；落定的贴纸走 `turn-tail`（见上方说明）。 */
+  seat?: 'flow' | 'turn-tail'
   sessionId?: unknown
   node?: { key?: string; anchorSeq?: number; data?: StickerNodeData }
 }): ReactElement | null {
@@ -406,6 +420,9 @@ function StickerNodeView({
     })
   }, [phase, choice?.id, sessionId, turn, props.node?.anchorSeq, props.node?.key])
 
+  // 会话流那个座位只负责生成中的占位；落定的最终贴纸交给 turn-tail 座位（见 `seat` 的说明）。
+  // 这一行必须在**所有 hook 之后** —— 条件返回排在 hook 前面，会让开关一变换 hook 数量并当场炸。
+  if (seat === 'flow' && phase === 'settled') return null
   if (choice === null) return null
 
   const size = Math.max(40, Math.min(220, config.bubbleSize))
