@@ -37,41 +37,43 @@
 
 ## 安装
 
-三种装法，按推荐顺序。**共同前提：装完要重启**（bundle 层与客户端脚本清单都在启动时读取）。
+三种装法。**共同前提：装完要重启**（bundle 层与客户端脚本清单都在启动时读取）。
 
-### 方式一：从 npm 装（推荐）
-
-```bash
-dsh plugin --profile web add dsh-memes-reply
-```
-
-npm 包（约 210 KB）里**只有编译好的成品**（`lib/` + `src/` + `scripts/`），所以安装时
-**不编译、不装构建依赖、不需要任何构建白名单**。
-
-> **DSH Desktop 用户注意**：`desktop` profile 由 Electron 独占管理，命令行会被直接拒绝
-> （`profile "desktop" is managed exclusively by the Electron application`）。
-> 请改用**设置 → 插件**界面填入包名 `dsh-memes-reply`。
-
-### 方式二：从 GitHub 装（同样免编译）
+### 方式一：从 GitHub 装（推荐）
 
 ```bash
 dsh plugin --profile web add github:liceses/dsh-memes-reply
 ```
 
-`lib/` **已随仓库提交**，pnpm 的判定是「`main` 指向的文件已存在 → 跳过构建」，
-所以这条路也不需要 `allowBuilds`、不需要那 90 个 devDeps。
+实测 **1.26 MB / 4 秒**：不编译、不装构建依赖、不需要任何构建白名单。
 
-> 为什么能跳过：pnpm 的 `packageShouldBeBuilt()` 只有两种情况会构建 ——
+> **DSH Desktop 用户注意**：`desktop` profile 由 Electron 独占管理，命令行会被直接拒绝
+> （`profile "desktop" is managed exclusively by the Electron application`）。
+> 请在**设置 → 插件**界面填入仓库地址。
+
+> 为什么能免编译：`lib/` 已随仓库提交，而 pnpm 的 `packageShouldBeBuilt()` 只有两种情况会构建 ——
 > ① `scripts.prepare` 存在；② 有 `prepublish`/`prepack`/`publish` 且 `main` 文件**不存在**。
-> 本包用 `prepack`（发布时才编译），而 `lib/index.js` 已入库 → 两条都不成立。
+> 本包用 `prepack`（发布时才编译），而 `lib/index.js` 已入库 → 两条都不成立，直接跳过。
 >
 > 早期提交（≤ `2865aca`）没提交 `lib/` 且用的是 `prepare`，所以 git 安装会现场编译，
 > 并撞上 pnpm 的构建白名单（`ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED`）。现在不需要了。
 
+### 方式二：从 npm 装（**尚未发布**）
+
+包已经按发布形态准备好 —— `npm pack` 约 210 KB、内含编译好的 `lib/`、`prepack` 会在打包前自动构建 ——
+但**还没有发布到 npm**，所以下面这条命令目前会 404：
+
+```bash
+# 尚未可用；等发布后再用
+dsh plugin --profile web add dsh-memes-reply
+```
+
+发布流程就两步：`npm login` → `npm publish`（`prepack` 自动编译，不用手工 build）。
+
 ### 方式三：本地链接（开发用）
 
 ```bash
-pnpm install && npm run build    # link: 安装不会替你跑 prepare，得先自己编译
+pnpm install && npm run build    # link: 安装不会替你跑 prepack，得先自己编译
 dsh plugin --profile web add "link:D:\developing\DSH-plugin\dsh-memes-reply"
 ```
 
@@ -117,8 +119,12 @@ git add lib && git commit -m "build: 同步 lib/"
 `build-client-vocab.mjs`（从 `assets/index.json` 生成打包词表）→ `tsc`（出 host `lib/*.js` + `d.ts`）
 → `tsdown`（出客户端 `lib/client.js`）。
 
-> 顺带：`assets/index.json` 不在仓库里，所以 `npm run build` **需要先有素材**。
-> 只想改客户端且手上没素材时用 `npm run build:client`（它只生成词表 + bundle，仍需索引）。
+> 三点顺带：
+> - `assets/index.json` 不在仓库里，所以 `npm run build` **需要先有素材**（先跑一次 `fetch-assets.mjs`）。
+> - 只改了客户端时用 `npm run build:client`（跳过 `tsc`，快一些），但它同样需要索引。
+> - `build-client-vocab.mjs` 每次都会刷新 `src/client/vocab-fallback.json` 里的 `generatedAt`
+>   时间戳（既有行为，测试比对前会抹掉它）。想让 diff 干净就
+>   `git checkout -- src/client/vocab-fallback.json`；`lib/` 产物不受影响，连续两次构建字节一致。
 
 ## 用法
 
