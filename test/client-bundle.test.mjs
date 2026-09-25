@@ -45,6 +45,29 @@ test('package.json 声明了客户端半边', () => {
   assert.ok(manifest.files.includes('lib/client.js'), 'files 里要带上 lib/client.js')
 })
 
+/**
+ * 静态门禁：**顶层 `inject` 只许放基线服务**。
+ *
+ * 为什么这条最要紧：2026-09-25 这里写着 `['slots', 'settingsScope']`，结果 DSH Desktop
+ * 0.1.7-rc.2 **整个应用打不开** —— 0.1.7 已把客户端设置服务改名（`settingsScope` 在它的
+ * app.asar 里 0 命中），拿不到该服务的条目永远 pending，浏览器报
+ * `web boot: 1 entry did not activate`。
+ *
+ * cordis 的语义是"inject 里写了就一定要等到"，所以可选服务**只能**走
+ * `ctx.inject([...], cb)` 受限 fiber，配 `src/settings-source.ts` 的降级句柄。
+ */
+test('客户端顶层 inject 只引基线服务（硬引可选服务会让整个应用起不来）', () => {
+  const source = readFileSync(join(ROOT, 'src', 'client', 'index.tsx'), 'utf8')
+  const match = source.match(/export const inject = (\[[^\]]*\])/)
+  assert.ok(match !== null, 'src/client/index.tsx 里找不到 `export const inject = [...]`')
+  const declared = JSON.parse(match[1].replace(/'/g, '"'))
+  assert.deepEqual(
+    declared,
+    ['slots'],
+    '顶层 inject 只应有 slots；可选服务（settingsScope / configForms / uiConversation …）改用受限 fiber',
+  )
+})
+
 test('调试浮层打进了 bundle（不是只改了源码）', () => {
   const source = readFileSync(BUNDLE, 'utf8')
   assert.match(source, /dsh-memes-reply-jev-debug/, 'bundle 里没有调试浮层的座位 id')
