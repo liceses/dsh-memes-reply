@@ -53,7 +53,22 @@ export declare const STATS_PATH = "/api/dsh-memes-reply/stats";
  * 存在的理由：浏览器控制台我看不到，而"贴纸到底走到哪一步断的"必须可观测。
  */
 export declare const DEBUG_PATH = "/api/dsh-memes-reply/debug";
-/** 设置命名空间。 */
+/**
+ * profile 条目 id —— **0.1.7 起它就是设置命名空间**。
+ *
+ * DSH 0.1.7 的 `SettingsForms` 按 profile 条目 id 组织表单：
+ * 宿主侧 `describe()` 列出的是条目 id，`update(ns, …)` 的 `ns` 是它，
+ * 客户端 `ctx.configForms.get(entryId)` 的键也是它。
+ * 所以这个常量必须与 `cordis.patch.yml` 里那一行的 `id:` 逐字一致。
+ */
+export declare const ENTRY_ID = "memes-reply";
+/**
+ * 0.1.5 / 0.1.6 时代的设置命名空间（`~/.dsh/settings.yaml` 的段名）。
+ *
+ * 0.1.7 不再用它做键（键改成上面的 `ENTRY_ID`）；保留它给迁移对照、
+ * 诊断文案与客户端 `<style data-plugin>` 标记（`src/client/index.tsx`），
+ * **不再参与任何设置注册**。
+ */
 export declare const SETTINGS_NS = "dsh-memes-reply";
 /** 模型工具名。 */
 export declare const TOOL_NAME = "use_sticker";

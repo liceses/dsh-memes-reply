@@ -16,6 +16,7 @@
  * 全部由 `ctx.effect` 持有，停用即净。
  */
 import type { Context } from '@deepseek-ai/cordis';
+import { Config, type LiveConfig } from './schema.js';
 /** cordis 插件名。 */
 export declare const name = "memes-reply";
 /**
@@ -34,5 +35,14 @@ export declare const name = "memes-reply";
  * 所以改成受限 fiber 里"能接就接"。
  */
 export declare const inject: string[];
-/** 挂载。 */
-export declare function apply(ctx: Context): void;
+/** 导出给 loader 的插件 Config（0.1.7 的设置表单就是从这里投影出来的）。 */
+export { Config };
+export type { LiveConfig };
+/**
+ * 挂载。
+ *
+ * @param ctx - 宿主插件上下文（webServer）。
+ * @param live - 解析后的活配置：**每个字段都是 `Volatile` 引用，读值要 `.get()`**。
+ *   由 loader 从导出的 {@link Config} + profile 条目里的 `config:` 解析而来。
+ */
+export declare function apply(ctx: Context, live: LiveConfig): void;

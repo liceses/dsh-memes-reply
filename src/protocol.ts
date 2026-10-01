@@ -67,7 +67,23 @@ export const STATS_PATH = `${ROUTE_PREFIX}/stats`
  */
 export const DEBUG_PATH = `${ROUTE_PREFIX}/debug`
 
-/** 设置命名空间。 */
+/**
+ * profile 条目 id —— **0.1.7 起它就是设置命名空间**。
+ *
+ * DSH 0.1.7 的 `SettingsForms` 按 profile 条目 id 组织表单：
+ * 宿主侧 `describe()` 列出的是条目 id，`update(ns, …)` 的 `ns` 是它，
+ * 客户端 `ctx.configForms.get(entryId)` 的键也是它。
+ * 所以这个常量必须与 `cordis.patch.yml` 里那一行的 `id:` 逐字一致。
+ */
+export const ENTRY_ID = 'memes-reply'
+
+/**
+ * 0.1.5 / 0.1.6 时代的设置命名空间（`~/.dsh/settings.yaml` 的段名）。
+ *
+ * 0.1.7 不再用它做键（键改成上面的 `ENTRY_ID`）；保留它给迁移对照、
+ * 诊断文案与客户端 `<style data-plugin>` 标记（`src/client/index.tsx`），
+ * **不再参与任何设置注册**。
+ */
 export const SETTINGS_NS = 'dsh-memes-reply'
 
 /** 模型工具名。 */

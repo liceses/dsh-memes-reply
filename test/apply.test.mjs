@@ -14,6 +14,7 @@ import { join } from 'node:path'
 process.env.DSH_HOME = mkdtempSync(join(tmpdir(), 'memes-home-'))
 
 import { apply, inject, name } from '../lib/index.js'
+import { DEFAULT_CONFIG } from '../lib/config.js'
 import { HINT_SECTION, HINT_TEXT } from '../lib/prompt.js'
 
 /** 找到实际生效的索引（DSH_HOME 已被指到临时目录，所以这里基本只会命中包内 assets）。 */
@@ -52,18 +53,21 @@ function makeHarness() {
   const listeners = []
   const disposers = []
   const promptSections = []
+  // 活配置的当前值。0.1.7 里 loader 把 volatile 字段解析成 `Volatile<T>` 引用，
+  // 改设置是**提交进同一个引用**（不重挂插件）—— 这里用"每个字段都读同一个可变对象"
+  // 如实模拟那个语义。
+  const current = { ...DEFAULT_CONFIG }
+  const live = Object.fromEntries(Object.keys(DEFAULT_CONFIG).map((key) => [key, { get: () => current[key] }]))
   // 用盒子装，闭包里赋值才能被外面看到。
-  const box = { settings: undefined, watch: undefined }
+  const box = { configure: undefined, presentations: [] }
   const ctx = {
+    fiber: { uid: 1 },
     settings: {
-      register: (ns, schema, options) => {
-        box.settings = { ns, options, hasSchema: schema !== undefined }
-        return {
-          get: () => ({}),
-          watch: (listener) => {
-            box.watch = listener
-          },
-        }
+      // 0.1.7 的 SettingsForms：没有 register()，只有 configure / describe / update / replace / mutate。
+      configure: (presentation, owner) => {
+        box.configure = { presentation, owner }
+        box.presentations.push(presentation)
+        return () => {}
       },
     },
     webServer: {
@@ -109,14 +113,17 @@ function makeHarness() {
   }
   return {
     ctx,
+    live,
     routes,
     tools,
     commands,
     listeners,
     promptSections,
     settings: box,
-    /** 模拟设置面板改配置（触发 host 侧 scope.watch）。 */
-    setConfig: (next) => box.watch?.(next),
+    /** 模拟设置面板改配置：volatile 引用立刻可见，不需要重挂插件。 */
+    setConfig: (next) => {
+      Object.assign(current, next)
+    },
   }
 }
 
@@ -153,7 +160,7 @@ function call(route, url, method = 'GET', headers = {}, body = null) {
 
 test('apply()：路由 / 工具 / 命令 / 设置 / 事件 全部挂上', () => {
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
 
   assert.equal(name, 'memes-reply')
   // 顶层 inject 只放基线服务：`settings` 的形状跨版本变过（0.1.7 的 SettingsForms 没有
@@ -173,9 +180,7 @@ test('apply()：路由 / 工具 / 命令 / 设置 / 事件 全部挂上', () => 
   assert.equal(h.commands[0].name, 'fish')
   assert.equal(typeof h.commands[0].handler, 'function')
 
-  assert.equal(h.settings.settings.ns, 'dsh-memes-reply')
-  assert.equal(h.settings.settings.options.applies, 'live')
-  assert.equal(h.settings.settings.hasSchema, true)
+  assert.deepEqual(h.settings.configure.presentation, { auto: false })
 
   // v2.0：宿主不再观察任何 host 事件 —— 贴纸的决策搬到了浏览器半边（会话事件的纯函数），
   // 所以"agent/pre-step / agent/turn-stopping / llm/stream"这一整套都已经退役。
@@ -184,7 +189,7 @@ test('apply()：路由 / 工具 / 命令 / 设置 / 事件 全部挂上', () => 
 
 test('系统提示提示：只在工具可用且未静音时输出一行', async () => {
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
 
   // 注册了一个段，顺序锚在所有内置工具说明之后（TOOLS_SDK 之前）。
   assert.equal(h.promptSections.length, 1)
@@ -216,7 +221,7 @@ test('工具 → 字节：点名选图、路由真的出字节、304 命中、�
     return
   }
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
   const tool = h.tools[0]
   const route = h.routes[0]
   const session = { id: 'session-test' }
@@ -288,7 +293,7 @@ test('设置面板的「下一轮用这张」：全局 latch 被下一次工具�
     return
   }
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
   const tool = h.tools[0]
   const route = h.routes[0]
   const session = { id: 'session-panel' }
@@ -337,7 +342,7 @@ test('长短语能命中；命中不了时给出可执行的重试建议', async
     return
   }
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
   const tool = h.tools[0]
   const session = { id: 'session-phrase' }
   const exec = { agent: session, name: 'use_sticker', callId: 'call-p', arguments: {}, signal: new AbortController().signal }
@@ -361,7 +366,7 @@ test('设置里的兜底贴纸：匹配不上时保证还有鱼，并如实说�
     return
   }
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
   const tool = h.tools[0]
   const session = { id: 'session-fallback' }
   const exec = { agent: session, name: 'use_sticker', callId: 'call-f', arguments: {}, signal: new AbortController().signal }
@@ -382,7 +387,7 @@ test('预览墙数据：catalog 返回缩略图/全尺寸 URL 与总数', async 
     return
   }
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
   const route = h.routes[0]
 
   const res = await call(route, '/api/dsh-memes-reply/catalog?limit=6&seed=1')
@@ -413,7 +418,7 @@ test('/vocab 与 /session-state：客户端派生的两份输入都从真实索�
     return
   }
   const h = makeHarness()
-  apply(h.ctx)
+  apply(h.ctx, h.live)
   const route = h.routes[0]
 
   // 词表：全量 + 每条都带派生需要的检索字段与全尺寸 URL（**不带 thumb**）。
@@ -454,29 +459,45 @@ test('/vocab 与 /session-state：客户端派生的两份输入都从真实索�
  * 所以契约是：**有官方通道就接上，没有就以默认配置继续工作** —— 路由、工具、命令
  * 一个都不能少。
  */
-test('宿主设置服务没有 register() 时（0.1.7 的形状）apply 不抛，其余照常挂上', () => {
+test('宿主设置服务只有 0.1.7 的 configure()（没有 register()）时 apply 不抛，策略照登记', () => {
   const h = makeHarness()
-  // 0.1.7 的 SettingsForms：只有 describe / update / replace / mutate，没有 register。
+  // 0.1.7 的 SettingsForms：只有 configure / describe / update / replace / mutate，没有 register。
   h.ctx.settings = {
+    configure: (presentation) => {
+      h.settings.configure = { presentation }
+      return () => {}
+    },
     describe: () => [],
     update: async () => {},
     replace: async () => {},
     mutate: async () => {},
   }
 
-  assert.doesNotThrow(() => apply(h.ctx))
+  assert.doesNotThrow(() => apply(h.ctx, h.live))
 
   assert.equal(h.routes.length, 1, '路由仍要挂上')
   assert.equal(h.tools.length, 1, '工具仍要挂上')
   assert.equal(h.commands.length, 1, '命令仍要挂上')
-  assert.equal(h.settings.settings, undefined, '没有 register() 就不该记下任何注册')
+  assert.deepEqual(h.settings.configure.presentation, { auto: false }, '自带设置页要声明不要自动生成')
+})
+
+test('settings 服务形状完全不对（连 configure 都没有）时 apply 也不抛', () => {
+  const h = makeHarness()
+  h.ctx.settings = { somethingElse: true }
+
+  assert.doesNotThrow(() => apply(h.ctx, h.live))
+
+  assert.equal(h.routes.length, 1)
+  assert.equal(h.tools.length, 1)
+  assert.equal(h.commands.length, 1)
+  assert.equal(h.settings.configure, undefined, '形状不对就不该登记任何策略')
 })
 
 test('宿主完全没有 settings 服务时 apply 也不抛', () => {
   const h = makeHarness()
   h.ctx.settings = undefined
 
-  assert.doesNotThrow(() => apply(h.ctx))
+  assert.doesNotThrow(() => apply(h.ctx, h.live))
 
   assert.equal(h.routes.length, 1)
   assert.equal(h.tools.length, 1)

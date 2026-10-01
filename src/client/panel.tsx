@@ -5,12 +5,15 @@
  * （侧栏「插件」→「已安装」→「查看 dsh-memes-reply」，由内置适配层
  * `src/vendor/dsh-plugin-config-slot.tsx` 注册）。
  * 形态对齐原版卡片：标题 + 描述 + 未保存徽章 + chevron → 展开体 → 底部 丢弃/保存。
- * 配置字段走官方 `settingsScope`（草稿→保存，逐字段可"恢复默认"）；状态行、预览墙、
+ * 配置字段走官方设置通道（0.1.7 起是 `ctx.configForms` / `ConfigForm`；草稿→保存，
+ * 逐字段可"恢复默认"）；状态行、预览墙、
  * 「下一轮用这张」走插件自己的同源路由。
  */
 
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore, type ReactElement, type ReactNode } from 'react'
-import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
+// 0.1.7：配置读写通道的服务名从 `settingsScope` 改成 `configForms`；类型来源换成
+// `settings-source.ts` 的兼容别名（它把 `ConfigForm` 原地别名成 `SettingsScope`）。
+import type { SettingsScope } from '../settings-source.js'
 import { CATALOG_DEFAULT_LIMIT, CONFIG_FIELDS, DEFAULT_CONFIG } from '../config.js'
 import type {
   AutoMode,

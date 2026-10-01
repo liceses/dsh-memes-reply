@@ -25,12 +25,14 @@ const ALLOWED_REQUIRES = [
   'react-dom',
   'react-dom/client',
   '@deepseek-ai/cordis',
-  '@deepseek-ai/dsh-client-runtime/client',
+  // 0.1.7：`dsh-client-runtime` / `dsh-client-web-react` / `dsh-client-schema-form`
+  // 都从 SDK 里消失了，继任者是下面这三个（另加平台表单原子的 ui-primitives）。
+  '@deepseek-ai/dsh-client-store',
   '@deepseek-ai/dsh-client-ui-settings/client',
   '@deepseek-ai/dsh-client-ui-slots',
-  '@deepseek-ai/dsh-client-web-react',
   '@deepseek-ai/dsh-client-ui-primitives',
-  '@deepseek-ai/dsh-client-schema-form',
+  '@deepseek-ai/dsh-client-ui-renderer',
+  '@deepseek-ai/dsh-client-ui-renderer/client',
 ]
 
 /** 绝不能出现在浏览器 bundle 里的痕迹。 */
@@ -38,7 +40,7 @@ const FORBIDDEN = [
   { pattern: /schemastery/i, why: 'schemastery 是宿主侧依赖（设置 schema），不能进浏览器' },
   { pattern: /node:(fs|path|os|child_process|url)/, why: 'Node 内置模块不能进浏览器' },
   { pattern: /require\((["'])fs\1\)/, why: 'Node fs 不能进浏览器' },
-  { pattern: /@deepseek-ai\/dsh-settings/, why: '宿主设置包不能进浏览器（client 走 settingsScope 服务）' },
+  { pattern: /@deepseek-ai\/dsh-settings/, why: '宿主设置包不能进浏览器（client 走 configForms 服务）' },
   { pattern: /@deepseek-ai\/dsh-host-webserver/, why: '宿主 webServer 不能进浏览器' },
   { pattern: /__dirname|process\.cwd\(\)/, why: 'Node 专有全局' },
 ]

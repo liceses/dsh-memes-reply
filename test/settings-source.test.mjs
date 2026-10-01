@@ -30,19 +30,28 @@ function fakeLiveScope(initial) {
   const listeners = new Set()
   const setCalls = []
   const unsetCalls = []
+  const mutateCalls = []
   return {
     setCalls,
     unsetCalls,
+    mutateCalls,
     getSnapshot: () => snapshot,
     subscribe(listener) {
       listeners.add(listener)
       return () => listeners.delete(listener)
     },
+    // 0.1.7 的三个写入口都返回 `Promise<boolean>`（host 是否接受；传输失败才 reject）。
     async set(field, value) {
       setCalls.push([field, value])
+      return true
     },
     async unset(field) {
       unsetCalls.push(field)
+      return true
+    },
+    async mutate(ops, expectedRevision) {
+      mutateCalls.push([ops, expectedRevision])
+      return true
     },
     /** 测试驱动：换快照并通知。 */
     push(next) {
@@ -68,10 +77,13 @@ test('未挂载时快照引用稳定（useSyncExternalStore 的硬要求）', ()
   assert.equal(scope.getSnapshot(), scope.getSnapshot())
 })
 
-test('未挂载时 set / unset 是安全空操作，不抛错', async () => {
+test('未挂载时 set / unset / mutate 是安全空操作：一律返回 false，不抛错', async () => {
   const scope = createLazyScope()
-  await scope.set('autoMode', 'jev')
-  await scope.unset('autoMode')
+  // 0.1.7 的写入口返回 `Promise<boolean>`："host 接受了没有"。
+  // 未挂上真服务就是"没人接受" → false（调用方本来就会回落默认值）。
+  assert.equal(await scope.set('autoMode', 'jev'), false)
+  assert.equal(await scope.unset('autoMode'), false)
+  assert.equal(await scope.mutate([{ op: 'set', path: ['autoMode'], value: 'jev' }]), false)
   // 仍然是降级态，没有被写入带偏
   assert.equal(scope.getSnapshot().status, 'unavailable')
 })
@@ -108,16 +120,20 @@ test('真服务的快照变化会透传出来', () => {
   assert.equal(scope.getSnapshot().revision, 2)
 })
 
-test('attach 后 set / unset 转发给真服务', async () => {
+test('attach 后 set / unset / mutate 转发给真服务，并回传它的 boolean', async () => {
   const scope = createLazyScope()
   const live = fakeLiveScope({ autoMode: 'keyword' })
   scope.attach(live)
 
-  await scope.set('autoMode', 'jev')
-  await scope.unset('autoMode')
+  assert.equal(await scope.set('autoMode', 'jev'), true)
+  assert.equal(await scope.unset('autoMode'), true)
+  const ops = [{ op: 'set', path: ['petSize'], value: 160 }]
+  assert.equal(await scope.mutate(ops, 7), true)
 
   assert.deepEqual(live.setCalls, [['autoMode', 'jev']])
   assert.deepEqual(live.unsetCalls, ['autoMode'])
+  // mutate 必须把 ops 与 expectedRevision 原样透传（面板的 revision 冲突恢复靠它）。
+  assert.deepEqual(live.mutateCalls, [[ops, 7]])
 })
 
 test('detach 后回到 unavailable，且不再跟随真服务', () => {

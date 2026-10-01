@@ -22,20 +22,25 @@
  * （该文件头部有新旧对照说明；唯一源在 workspace 的 dsh-plugin-config-slot 包里）。
  */
 
-import type { ClientContext, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
+import type { Context } from '@deepseek-ai/cordis'
+// 带来 `ctx.slots` / `ctx.uiRenderer`（0.1.7 里由 ui-renderer 的 client 面声明）。
+//
+// 0.1.7 之前这里是 `import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'`。
+// 那个包在 0.1.7 里**整个不存在**；而 `ClientContext` 这个名字在 0.1.7 只剩 ACP 语义。
+import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type {} from '@deepseek-ai/dsh-client-ui-slots'
 // `shell.overlay`（常驻挂件的座位）由框架 shell 声明，SlotMap 增强在这里。
 import type {} from '@deepseek-ai/dsh-client-ui-chat/client'
 // `conversation.input.dock` 等会话座位由会话包声明，它的 SlotMap 增强在那里。
 import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
-// `ctx.settingsScope` 的服务契约（配置面板的读写通道）。
-import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
+// `ctx.configForms` 的服务契约（配置面板的读写通道）在 0.1.7 里是这个包。
+import type { ConfigForms } from '@deepseek-ai/dsh-client-ui-settings/client'
 import { registerBundleConfigPage } from '../vendor/dsh-plugin-config-slot.js'
-import { SETTINGS_NS } from '../protocol.js'
+import { ENTRY_ID, SETTINGS_NS } from '../protocol.js'
 import { themeCss } from '../theme.js'
 import { DEFAULT_CONFIG } from '../config.js'
 import type { MemesConfig } from '../types.js'
-import { createLazyScope } from '../settings-source.js'
+import { createLazyScope, type SettingsScope } from '../settings-source.js'
 import { postDebug } from './api.js'
 import { JevDebugPanel } from './jevpanel.js'
 import { installStickerNode } from './node.js'
@@ -45,7 +50,7 @@ import { CSS } from './styles.js'
 import { installStickerTurnTail } from './turn-tail.js'
 
 /** 客户端构建标记：每次改客户端就换一个，刷新后从 `/stats` 的 `client-apply` 回执里核对。 */
-export const CLIENT_BUILD = 'turn-tail-b'
+export const CLIENT_BUILD = 'turn-tail-c'
 
 /**
  * 顶层硬依赖。
@@ -60,10 +65,16 @@ export const CLIENT_BUILD = 'turn-tail-b'
  */
 export const inject = ['slots']
 
-/** 官方客户端设置服务（0.1.5 / 0.1.6 的 `settingsScope`）的形状。 */
-interface SettingsScopeService {
-  /** 绑定本插件自己的设置命名空间。 */
-  bind<T>(spec: { namespace: string }): SettingsScope<T>
+/**
+ * 官方客户端设置服务在 0.1.7 里的形状（`ctx.configForms`）。
+ *
+ * 0.1.5 / 0.1.6 是 `ctx.settingsScope.bind({ namespace })`；
+ * 0.1.7 没有 `settingsScope`（app.asar 里 0 命中），改成按 **profile 条目 id** 取：
+ * `ctx.configForms.get(entryId)`。两者返回的形状逐字段同构，见 `settings-source.ts`。
+ */
+interface ConfigFormsService {
+  /** 取本插件那一行条目的设置表单。 */
+  get<T>(entryId: string): SettingsScope<T>
 }
 
 /**
@@ -80,7 +91,7 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 }
 
 /** 挂载浏览器半边。 */
-export function apply(ctx: ClientContext): void {
+export function apply(ctx: Context): void {
   // 1) 最外层回执：**先建可观测性**（v1.0 §15 的教训）。
   //    浏览器控制台宿主看不到，所以"这一版 bundle 到底加载了没、apply 有没有跑"
   //    必须由客户端自己回传；`GET /stats` 就能看到。
@@ -89,15 +100,19 @@ export function apply(ctx: ClientContext): void {
   // 2) 设置来源：**延迟绑定句柄**（读默认值 → 服务到了自动接上）。
   //    为什么不在顶层 inject 里等它：见 `inject` 上方与 `src/settings-source.ts`。
   //    为什么用受限 fiber 而不是 `ctx.get()`：服务可能比本插件晚注册，
-  //    `get()` 只在当下取一次，会把它判成"不存在"而在老版本上误降级。
+  //    `get()` 只在当下取一次，会把它判成"不存在"而误降级。
+  //
+  //    0.1.7 改名：`ctx.settingsScope.bind({ namespace })` → `ctx.configForms.get(entryId)`。
+  //    注意键是 **profile 条目 id**（本包 = `memes-reply`，与 `cordis.patch.yml` 那一行一致），
+  //    不再是旧的设置命名空间 `dsh-memes-reply`。
   const scope = createLazyScope<MemesConfig>()
   const anyCtx = ctx as unknown as {
-    inject(deps: string[], callback: (inner: ClientContext & { settingsScope?: SettingsScopeService }) => void): unknown
+    inject(deps: string[], callback: (inner: Context & { configForms?: ConfigFormsService }) => void): unknown
   }
-  anyCtx.inject(['settingsScope'], (inner) => {
-    const service = inner.settingsScope
-    if (service === undefined || typeof service.bind !== 'function') return
-    const live = service.bind<MemesConfig>({ namespace: SETTINGS_NS })
+  anyCtx.inject(['configForms'], (inner) => {
+    const service = inner.configForms
+    if (service === undefined || typeof service.get !== 'function') return
+    const live = service.get<MemesConfig>(ENTRY_ID)
     inner.effect(() => scope.attach(live), 'dsh-memes-reply: settings attach')
     postDebug({ kind: 'client-settings', note: `build=${CLIENT_BUILD} settings=attached` })
   })

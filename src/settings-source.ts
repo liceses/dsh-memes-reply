@@ -5,14 +5,19 @@
  * （`src/client/**` 由 tsdown 单独打包），放这里才能被 node 直接 require 到、进单元测试。
  * 同类的共享纯模块还有 `theme.ts` / `config.ts` / `derive.ts`。
  *
- * ## 为什么不能直接硬引设置服务
+ * ## 0.1.7：这个文件同时是**类型兼容垫片**
  *
- * 客户端的设置服务**跨版本改过名**，而且**可能整个不存在**：
+ * 客户端设置服务跨版本改过名，而且**可能整个不存在**：
  *
- * | dsh 版本 | 客户端服务 | 取值方式 |
- * | --- | --- | --- |
- * | 0.1.5-rc.1 / 0.1.6-alpha.2 | `ctx.settingsScope` | `bind({ namespace })` |
- * | 0.1.7-rc.2 | **没有这个名字**（`settingsScope` 在它的 app.asar 里 0 命中） | 改名成 `ctx.configForms`，值由插件管理页当 owner props 传给配置页 |
+ * | dsh 版本 | 客户端服务 | 取值方式 | 类型 |
+ * | --- | --- | --- | --- |
+ * | 0.1.5-rc.1 / 0.1.6-alpha.2 | `ctx.settingsScope` | `bind({ namespace })` | `SettingsScope*` |
+ * | **0.1.7-rc.2** | **`ctx.configForms`**（`settingsScope` 在 0.1.7 的 app.asar 里 0 命中） | `get(entryId)` | `ConfigForm*` |
+ *
+ * 两个形状**逐字段同构**（`status` / `value` / `base` / `user` / `revision` / `writable` /
+ * `mode`），所以这里把 0.1.7 的 `ConfigForm` / `ConfigFormSnapshot` 原地别名成
+ * `SettingsScope` / `SettingsScopeSnapshot`，**六个 client 文件一行都不用改**——
+ * 只把 import 来源从已消失的 `@deepseek-ai/dsh-client-runtime/client` 换成本模块。
  *
  * 更要命的是失败形态：顶层 `inject` 里写一个拿不到的服务，cordis 的 loader 会**永久停在
  * `pending (waiting for service: …)`**，浏览器侧报 `web boot: 1 entry did not activate`，
@@ -20,7 +25,7 @@
  *
  * ## 这个句柄怎么解
  *
- * 它**自己就是一个合法的 `SettingsScope`**：
+ * 它**自己就是一个合法的设置来源**：
  *   - 没挂上真服务时，快照恒为 `unavailable`，读到的 `value` 是 `undefined`。
  *     各处本来就会回落到 `DEFAULT_CONFIG`（`node.tsx` / `pet.tsx` / `panel.tsx` 都是
  *     `{ ...DEFAULT_CONFIG, ...(value ?? {}) }`），所以**贴纸层与挂件照常工作**，
@@ -31,7 +36,16 @@
  * 这样装配顺序不再是正确性问题：无论服务早到、晚到还是永远不来，插件都能起来。
  */
 
-import type { SettingsScope, SettingsScopeSnapshot } from '@deepseek-ai/dsh-client-runtime/client'
+import type {
+  ConfigForm,
+  ConfigFormSnapshot,
+} from '@deepseek-ai/dsh-client-ui-settings/client'
+
+/** 0.1.7 的设置来源类型；名字沿用以避免六个 client 文件跟着改。 */
+export type SettingsScope<T> = ConfigForm<T>
+
+/** 0.1.7 的设置快照类型（与 0.1.5 的 `SettingsScopeSnapshot` 逐字段同构）。 */
+export type SettingsScopeSnapshot<T> = ConfigFormSnapshot<T>
 
 /**
  * 未挂载时的固定快照。
@@ -39,7 +53,7 @@ import type { SettingsScope, SettingsScopeSnapshot } from '@deepseek-ai/dsh-clie
  * 必须是**冻结的同一个引用** —— `useSyncExternalStore` 会在每次渲染读快照，
  * 每次都返回新对象会让 React 认定 store 一直在变，从而死循环。
  */
-const UNAVAILABLE_SNAPSHOT: SettingsScopeSnapshot<never> = Object.freeze({
+const UNAVAILABLE_SNAPSHOT: ConfigFormSnapshot<never> = Object.freeze({
   status: 'unavailable',
   value: undefined,
   base: undefined,
@@ -49,15 +63,15 @@ const UNAVAILABLE_SNAPSHOT: SettingsScopeSnapshot<never> = Object.freeze({
   mode: 'memory',
 })
 
-/** 延迟绑定句柄：既是 `SettingsScope`，又能事后挂上真服务。 */
-export interface LazySettingsScope<T> extends SettingsScope<T> {
+/** 延迟绑定句柄：既是设置来源，又能事后挂上真服务。 */
+export interface LazySettingsScope<T> extends ConfigForm<T> {
   /**
    * 挂上真正的设置服务。
    *
-   * @param live - 官方服务 `bind({ namespace })` 的返回值。
+   * @param live - 官方服务 `configForms.get(entryId)` 的返回值。
    * @returns 解绑函数（连订阅一起撤掉）；跟随插件 fiber 用 `ctx.effect` 持有。
    */
-  attach(live: SettingsScope<T>): () => void
+  attach(live: ConfigForm<T>): () => void
   /** 是否已挂上真服务（诊断用）。 */
   readonly attached: boolean
 }
@@ -65,12 +79,12 @@ export interface LazySettingsScope<T> extends SettingsScope<T> {
 /**
  * 建一个延迟绑定句柄。
  *
- * @returns 一个立刻可用、形如 `SettingsScope` 的句柄。
+ * @returns 一个立刻可用、形如设置来源的句柄。
  */
 export function createLazyScope<T>(): LazySettingsScope<T> {
-  let live: SettingsScope<T> | null = null
+  let live: ConfigForm<T> | null = null
   let detachLive: (() => void) | null = null
-  let current: SettingsScopeSnapshot<T> = UNAVAILABLE_SNAPSHOT as SettingsScopeSnapshot<T>
+  let current: ConfigFormSnapshot<T> = UNAVAILABLE_SNAPSHOT as ConfigFormSnapshot<T>
   const listeners = new Set<() => void>()
 
   const emit = (): void => {
@@ -82,9 +96,9 @@ export function createLazyScope<T>(): LazySettingsScope<T> {
       return live !== null
     },
 
-    getSnapshot(): SettingsScopeSnapshot<T> {
+    getSnapshot(): ConfigFormSnapshot<T> {
       // 未挂载时返回固定引用；挂载后返回真服务快照的**缓存**（引用随它替换）。
-      return live === null ? (UNAVAILABLE_SNAPSHOT as SettingsScopeSnapshot<T>) : current
+      return live === null ? (UNAVAILABLE_SNAPSHOT as ConfigFormSnapshot<T>) : current
     },
 
     subscribe(listener: () => void): () => void {
@@ -94,15 +108,21 @@ export function createLazyScope<T>(): LazySettingsScope<T> {
       }
     },
 
-    async set(field: string, value: unknown): Promise<void> {
-      if (live !== null) await live.set(field, value)
+    // 0.1.7 的三个写入口都返回 `boolean`（Host 是否接受；传输失败才 reject）。
+    // 未挂载时一律 `false` —— 调用方本来就会回落默认值。
+    async set(field: string, value: unknown): Promise<boolean> {
+      return live === null ? false : await live.set(field, value)
     },
 
-    async unset(field: string): Promise<void> {
-      if (live !== null) await live.unset(field)
+    async unset(field: string): Promise<boolean> {
+      return live === null ? false : await live.unset(field)
     },
 
-    attach(next: SettingsScope<T>): () => void {
+    async mutate(ops: Parameters<ConfigForm<T>['mutate']>[0], expectedRevision?: number): Promise<boolean> {
+      return live === null ? false : await live.mutate(ops, expectedRevision)
+    },
+
+    attach(next: ConfigForm<T>): () => void {
       // 重复挂载：先把上一次撤干净，避免订阅泄漏。
       detachLive?.()
       live = next
@@ -117,7 +137,7 @@ export function createLazyScope<T>(): LazySettingsScope<T> {
         detachLive?.()
         detachLive = null
         live = null
-        current = UNAVAILABLE_SNAPSHOT as SettingsScopeSnapshot<T>
+        current = UNAVAILABLE_SNAPSHOT as ConfigFormSnapshot<T>
         emit()
       }
     },

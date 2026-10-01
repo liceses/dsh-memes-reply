@@ -13,23 +13,28 @@ import type { UserConfig } from 'tsdown'
 
 const ID = 'dsh-memes-reply'
 
-/** 由 loader 模块表提供的平台模块（与 dsh-hmm-wait 的清单保持一致）。 */
+/**
+ * 由 loader 模块表提供的平台模块（与 dsh-hmm-wait 的清单保持一致）。
+ *
+ * 0.1.7 清理：`dsh-client-web-react` / `dsh-client-schema-form` / `dsh-client-runtime`
+ * 在 0.1.7 的 SDK 里**都不存在**；继任者是 `dsh-client-ui-renderer`（React↔ctx 与
+ * slot 渲染）与 `dsh-client-store`（快照 store）。
+ */
 const PLATFORM_MODULES = [
   'react',
   'react/jsx-runtime',
   'react-dom',
   'react-dom/client',
   '@deepseek-ai/cordis',
+  '@deepseek-ai/dsh-client-store',
   '@deepseek-ai/dsh-client-ui-slots',
-  '@deepseek-ai/dsh-client-web-react',
   '@deepseek-ai/dsh-client-ui-primitives',
-  '@deepseek-ai/dsh-client-schema-form',
+  '@deepseek-ai/dsh-client-ui-renderer',
 ] as const
 
-/** 外部依赖 = 平台模块 + client-runtime 的运行时豁免入口。 */
+/** 外部依赖 = 平台模块 + 设置传输的运行时入口。 */
 const CLIENT_EXTERNALS: readonly string[] = [
   ...PLATFORM_MODULES,
-  '@deepseek-ai/dsh-client-runtime/client',
   '@deepseek-ai/dsh-client-ui-settings/client',
 ]
 

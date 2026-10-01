@@ -17,3 +17,8 @@ node_modules/
 # 取素材：node scripts/fetch-assets.mjs；打包上传：node scripts/pack-assets.mjs
 assets/
 dist/
+
+# 本机专用的类型基准配置：用 compilerOptions.paths 把 @deepseek-ai/* 指到工作区里的
+# SDK 镜像（upgrade/_sdk-020）。里面是本机绝对路径，对仓库外的人无意义 → 不入库。
+# 复跑：tsc -p tsconfig.sdk020.json（0.2.0 镜像）与 npm run typecheck（本地 0.1.7）。
+tsconfig.sdk020.json

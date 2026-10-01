@@ -40,7 +40,7 @@ test('纯净化检查脚本通过（宿主依赖不得进浏览器）', () => {
 test('package.json 声明了客户端半边', () => {
   const manifest = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
   assert.equal(manifest.dsh?.client?.platform, 'web')
-  assert.deepEqual(manifest.dsh?.client?.inject, ['@deepseek-ai/dsh-client-runtime'])
+  assert.deepEqual(manifest.dsh?.client?.inject, ['@deepseek-ai/dsh-client-ui-settings'])
   assert.equal(manifest.exports?.['./client']?.default, './lib/client.js')
   assert.ok(manifest.files.includes('lib/client.js'), 'files 里要带上 lib/client.js')
 })

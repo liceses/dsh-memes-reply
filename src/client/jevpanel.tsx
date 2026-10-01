@@ -15,7 +15,9 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactElement } from 'react'
-import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
+// 0.1.7：类型来源从已消失的 `@deepseek-ai/dsh-client-runtime/client` 换成
+// `settings-source.ts` 的兼容别名（它把 `ConfigForm` 原地别名成 `SettingsScope`）。
+import type { SettingsScope } from '../settings-source.js'
 import { DEFAULT_CONFIG } from '../config.js'
 import type { FloatPanelState, MemesConfig } from '../types.js'
 import { fetchJevLog, fetchLayout, putLayout, type JevExchangeItem, type JevLogResponse } from './api.js'

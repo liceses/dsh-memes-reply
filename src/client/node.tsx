@@ -26,7 +26,11 @@
  */
 
 import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
-import type { ClientContext, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
+import type { Context } from '@deepseek-ai/cordis'
+// 0.1.7：客户端插件上下文改用 cordis 的 `Context`（`ClientContext` 已随
+// `@deepseek-ai/dsh-client-runtime` 一起消失）；类型别名见 `settings-source.ts`。
+import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
+import type { SettingsScope } from '../settings-source.js'
 import { DEFAULT_CONFIG } from '../config.js'
 import { modelPickOf } from '../closing.js'
 import { finalStickerFor, reasonText, thinkingStickerFor, type ChoiceTerm, type StickerChoice } from '../derive.js'
@@ -505,14 +509,14 @@ export function StickerNodeView({
  *   踩过一次：落定贴纸就是这样"注册了但永远不渲染"的。
  */
 export function installStickerNode(
-  ctx: ClientContext,
+  ctx: Context,
   scope: SettingsScope<MemesConfig>,
-  insideSession?: (inner: ClientContext) => void,
+  insideSession?: (inner: Context) => void,
 ): void {
   const anyCtx = ctx as unknown as {
-    inject(deps: string[], callback: (inner: ClientContext) => void): unknown
+    inject(deps: string[], callback: (inner: Context) => void): unknown
   }
-  anyCtx.inject(['uiConversation'], (inner: ClientContext) => {
+  anyCtx.inject(['uiConversation'], (inner: Context) => {
     const ui = (inner as unknown as { uiConversation?: UiConversationLike }).uiConversation
     if (ui === undefined || ui.events === undefined) {
       postDebug({ kind: 'sticker-node-no-service', note: 'uiConversation 不在，贴纸层未装上' })

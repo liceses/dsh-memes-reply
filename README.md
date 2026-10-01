@@ -24,7 +24,7 @@
 | 贴纸层 · 生成中 | keyed `conversation.chat.node` + 自定义 `ConversationNodeDefinition` | 只负责生成中的占位（思考 / 打字中）。那时官方过程块**强制展开**，所以放在流里是安全的 |
 | 贴纸层 · 落定 | list `conversation.chat.turnTail`（官方"回合收尾"槽位） | 最终贴纸挂这里。官方的 `turn-tail` 节点 kind 在**过程折叠豁免名单**内，不会被「工作步骤展示」折进工具细节块（理由见下节） |
 | 常驻挂件 | `shell.overlay`（加法型，frame-wide） | "随时能看到"是硬需求，与"这条回复的贴纸"是两个职责 |
-| 配置面板 | `plugins.bundle.config`（key = 组合包名 `dsh-memes-reply`） | 0.1.6a2 插件管理页里本插件自己的页面；旧的 `settings.plugin.item` 已被统一插件管理移除 |
+| 配置面板 | `plugins.bundle.config`（key = 组合包名 `dsh-memes-reply`） | 插件管理页里本插件自己的页面；旧的 `settings.plugin.item` 已被统一插件管理移除 |
 
 ### 为什么不用自定义会话事件
 
@@ -141,7 +141,7 @@ git add lib && git commit -m "build: 同步 lib/"
 
 ## 配置面板
 
-位置：**侧栏 插件 → 已安装 → 查看 memes-reply**（0.1.6a2 统一插件管理页；配置面板画在本插件自己的页面上，默认展开）。形态对齐原版折叠卡片
+位置：**侧栏 插件 → 已安装 → 查看 memes-reply**（统一插件管理页；配置面板画在本插件自己的页面上，默认展开）。形态对齐原版折叠卡片
 （标题 + 描述 + 未保存徽章 + chevron → 展开体 → 底部 丢弃/保存），全部用 `--dsw-alias-*` 主题变量。
 
 | 区域 | 内容 |
@@ -151,8 +151,10 @@ git add lib && git commit -m "build: 同步 lib/"
 | 预览墙 | 12 格缩略图（静态首帧，均值 7 KB）＋「换一批」；点一张即 `POST /latch` 设为下一轮指定，并加载全尺寸动画确认 |
 | 底部 | 换一批 · 取消指定 · 丢弃 · 保存 |
 
-配置字段走官方 `ctx.settingsScope`（草稿→保存，revision 冲突自带恢复），落盘到
-`~/.dsh/settings.yaml` 的 `dsh-memes-reply:` 段；状态行/预览墙/指定走插件自己的同源路由。
+配置字段走官方客户端设置服务 `ctx.configForms`（草稿→保存，revision 冲突自带恢复），由宿主设置服务
+写进 **profile 的 patch**（`~/.dsh/profiles/<profile>/cordis.patch.yml` 里该条目的 `config:`；
+0.1.5/0.1.6 时代的 `~/.dsh/settings.yaml` 已被改名 `settings.yaml.imported`，只作迁移对照）。
+状态行/预览墙/指定走插件自己的同源路由。
 面板里改的规则（`autoMode` / 间隔 / 兜底 / 冷却）由**浏览器半边直接读设置**生效，不需要重启。
 
 ## JEV 模式：让 JEV 决定贴哪张
@@ -315,7 +317,7 @@ node -e "fetch('http://127.0.0.1:3080/api/dsh-memes-reply/jev-log?limit=5').then
 npm run typecheck          # tsc --noEmit（host + client 全量）
 npm run build              # 生成打包词表 → tsc 出 host（lib/*.js + d.ts）→ tsdown 出客户端 bundle
 npm run check:client       # 客户端 bundle 纯净化检查（宿主依赖不得进浏览器）
-npm test                   # 先 build + 纯洁检查，再跑 144 个测试
+npm test                   # 先 build + 纯洁检查，再跑全部单测
 node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字节/304/缩略图/词表/会话态/latch/状态行）
 ```
 
@@ -323,10 +325,11 @@ node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字
 `search.test.mjs`（检索，含"工具描述里的示例词必须命中"的回归）、`derive.test.mjs`（v2.0 派生优先级与确定性）、
 `auto.test.mjs`（规则）、`apply.test.mjs`（桩服务跑 `apply()`：工具→字节→/fish→面板指定→两个新端点）、
 `index.test.mjs` + `thumbs.test.mjs`（真实产物体检）、`vocab-fallback.test.mjs`（打包词表不许漂移）、
+`manifest-compat.test.mjs`（`@deepseek-ai/dsh-*` peer 必须容纳受支持的每个 dsh 运行时版本）、
 `client-bundle.test.mjs`（产物契约）。
 
 浏览器半边的纪律：`src/client/**` 只能 import `react`、`@deepseek-ai/dsh-client-*` 和本包的
-纯模块（`types.ts` / `protocol.ts` / `config.ts` / `derive.ts` / `search.ts`）。
+纯模块（`types.ts` / `protocol.ts` / `config.ts` / `derive.ts` / `search.ts` / `closing.ts` / `settings-source.ts`）。
 **绝不能** import `schema.ts`（会把 schemastery 打进浏览器），这条由 `npm run check:client` 强制。
 
 改客户端后要在 `/stats` 里核对 `client-apply` 回执里的 `build=`（`src/client/index.tsx` 顶部的
@@ -334,10 +337,10 @@ node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字
 
 ## 已知局限
 
-- 贴纸层依赖浏览器半边的**节点定义 API**（部署版 `@deepseek-ai/dsh-client-ui-conversation` 1.5-rc.1
-  的 `ctx.uiConversation.events.register`）：CLI/headless 没有这个 surface，那里只有工具与路由
-- 构建期依赖（rc.8）里注册表还叫 `ctx.conversationEvents`，所以客户端是**按运行时的名字**做的兼容
-  （`src/client/node.tsx` 顶部有说明），不 import 那个包的类型
+- 贴纸层依赖浏览器半边的**节点定义 API**（部署版 `@deepseek-ai/dsh-client-ui-conversation` 的
+  `ctx.uiConversation.events.register`）：CLI/headless 没有这个 surface，那里只有工具与路由
+- 构建期依赖里注册表曾叫 `ctx.conversationEvents`（0.1.7 之前），所以客户端是**按运行时的名字**
+  做的兼容（`src/client/node.tsx` 顶部有说明），不 import 那个包的类型
 - 历史回合不补贴纸：派生只对"装了之后产生的回合"生效（刻意不改写已有历史）
 - 预览墙依赖缩略图：没跑过 `--thumbs` 时该格降级成名字 chip（不会破图）
 - 动画 WebP 需要现代浏览器（Chrome/Edge/Firefox，Safari 14+）；老浏览器只会显示第一帧
@@ -375,7 +378,7 @@ node test/live-probe.mjs   # 对正在运行的 GUI 打活体探针（bundle/字
 | `src/assets.ts` | 索引加载与三根解析（原图 → assetRoot → 包内 assets；缩略图同理） |
 | `src/prompt.ts` | 系统提示里的一行"贴纸可用"提示（按开关/静音/工具是否注册动态输出） |
 | `src/state.ts` / `src/schema.ts` / `src/config.ts` / `src/protocol.ts` / `src/types.ts` / `src/theme.ts` | 状态、设置 schema、纯常量、共享协议、类型、外观变量 |
-| `src/settings-source.ts` | **设置来源的延迟绑定句柄**（纯模块）：它自己就是合法的 `SettingsScope`，没挂上真服务时读默认值；服务到了 `attach()` 上去自动通知订阅者。为的是不让「某个版本没有设置服务」把整个插件带下线 |
+| `src/settings-source.ts` | **设置来源的延迟绑定句柄 + 0.1.7 类型垫片**（纯模块）：对外仍是 `SettingsScope` 这个名字，内部把 0.1.7 的 `ConfigForm` / `ConfigFormSnapshot` 原地别名过来；没挂上真服务时读默认值，服务到了 `attach()` 上去自动通知订阅者。为的是不让「某个版本没有设置服务」把整个插件带下线 |
 | `src/closing.ts` | **落定贴纸的输入提取**（纯模块）：从官方 `TurnTailChatData.closing` 里取正文与 `use_sticker` 的实参；`modelPickOf` 也从这里共用 |
 | `src/client/index.tsx` | 浏览器半边入口：最外层回执 + 样式 + 面板 + 挂件 + 两个贴纸座位 |
 | `src/client/node.tsx` | **贴纸的渲染单元**（两个座位共用）：派生 / 词表 / 会话态 / JEV / 动画 / 可观测回执。`seat='flow'` 只渲染生成中的占位，`seat='turn-tail'` 渲染落定贴纸（为什么分两个座位见文件头） |

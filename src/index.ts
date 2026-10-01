@@ -23,10 +23,10 @@ import type {} from '@deepseek-ai/dsh-settings'
 import type {} from '@deepseek-ai/dsh-tools'
 import { loadIndex, resolveStickerFile, type LoadedIndex } from './assets.js'
 import { createFishCommand } from './command.js'
-import { ROUTE_PREFIX, SETTINGS_NS } from './protocol.js'
+import { ROUTE_PREFIX } from './protocol.js'
 import { registerPromptHint } from './prompt.js'
 import { createStats, createStickerRoute } from './route.js'
-import { MemesSettingsSchema, resolveConfig, stateFilePath } from './schema.js'
+import { Config, resolveLive, stateFilePath, type LiveConfig } from './schema.js'
 import { loadState, saveState } from './state.js'
 import { createTrace } from './trace.js'
 import { createStickerTool } from './tool.js'
@@ -52,44 +52,36 @@ export const name = 'memes-reply'
  */
 export const inject = ['webServer']
 
-/** 官方宿主设置服务在 0.1.5 / 0.1.6 里的形状（0.1.7 已不满足）。 */
-interface SettingsRegisterLike {
-  register(
-    namespace: string,
-    schema: unknown,
-    options: { applies: 'live' },
-  ): {
-    get(): unknown
-    watch(callback: (next: unknown, prev: unknown) => void | Promise<void>): () => void
-  }
-}
+/** 导出给 loader 的插件 Config（0.1.7 的设置表单就是从这里投影出来的）。 */
+export { Config }
+export type { LiveConfig }
 
-/** 挂载。 */
-export function apply(ctx: Context): void {
-  // 0) 配置来源：**默认值起步**，官方设置服务可用时再升级成持久化配置。
-  //    先有可用配置、后接官方通道 —— 顺序上就不会因为设置服务换了形状而整体起不来。
-  //    升级后 `config` 被就地替换，而下面所有 `() => config` 的闭包都是**调用时读**，
-  //    所以它们自动看到新值，不需要重新注册任何东西。
-  let config: MemesConfig = resolveConfig(undefined)
+/**
+ * 挂载。
+ *
+ * @param ctx - 宿主插件上下文（webServer）。
+ * @param live - 解析后的活配置：**每个字段都是 `Volatile` 引用，读值要 `.get()`**。
+ *   由 loader 从导出的 {@link Config} + profile 条目里的 `config:` 解析而来。
+ */
+export function apply(ctx: Context, live: LiveConfig): void {
+  // 0) 配置读取：**每次现读**（volatile 引用是活的，改设置不重挂插件）。
+  //    `resolveLive` 顺手合并默认值，所以下游拿到的永远是一份完整的普通配置。
+  const readConfig = (): MemesConfig => resolveLive(live)
+
+  // 0b) 本插件自带设置页 → 声明「不要自动生成页面」。
+  //     放在受限 fiber 里：Settings 服务晚到、被替换、或整个不存在时插件照样能起。
   ctx.inject(['settings'], (settingsCtx) => {
-    const service = (settingsCtx as unknown as { settings?: Partial<SettingsRegisterLike> }).settings
-    if (service === undefined || typeof service.register !== 'function') {
-      ctx.logger?.warn?.(
-        'dsh-memes-reply: 本版 dsh 的 settings 服务没有 register()（0.1.7+ 改成从 cordis Config 投影表单）；' +
-          '配置面板与持久化暂不可用，插件以默认配置运行',
-      )
+    const service = (settingsCtx as unknown as { settings?: { configure?: unknown } }).settings
+    if (service === undefined || typeof service.configure !== 'function') {
+      // 形状对不上就照常跑默认配置 —— 路由 / 工具 / 命令一个都不能少。
+      ctx.logger?.warn?.('dsh-memes-reply: settings 服务没有 configure()，配置页策略未登记（插件照常运行）')
       return
     }
-    const scope = service.register(SETTINGS_NS, MemesSettingsSchema, { applies: 'live' })
-    config = resolveConfig(scope.get())
     settingsCtx.effect(
-      () =>
-        scope.watch((next) => {
-          config = resolveConfig(next)
-        }),
-      'dsh-memes-reply: settings watch',
+      () => settingsCtx.settings.configure({ auto: false }, ctx.fiber),
+      'dsh-memes-reply: settings presentation',
     )
-    ctx.logger?.info?.('dsh-memes-reply: 设置已接入（官方 settings.register 通道）')
+    ctx.logger?.info?.('dsh-memes-reply: 设置已接入（0.1.7 SettingsForms + 插件 Config 投影）')
   })
 
   /** 浏览器实际使用的 origin（从请求 Host 头学到）；没学到就用本机默认值。 */
@@ -108,7 +100,7 @@ export function apply(ctx: Context): void {
   }
 
   const stats = createStats()
-  const indexOf = (): LoadedIndex | undefined => loadIndex(config)
+  const indexOf = (): LoadedIndex | undefined => loadIndex(readConfig())
   /** 两端共用的诊断轨迹（`/stats` 一次读全）。 */
   const trace = createTrace(48)
 
@@ -118,7 +110,7 @@ export function apply(ctx: Context): void {
       ctx.webServer.register(
         createStickerRoute({
           ctx,
-          config: () => config,
+          config: readConfig,
           stats,
           observeOrigin: (value) => {
             origin = value
@@ -139,10 +131,10 @@ export function apply(ctx: Context): void {
       toolRegistered = true
       const dispose = tools.register(
         createStickerTool({
-          config: () => config,
+          config: readConfig,
           index: indexOf,
           state: { read: readState, write: writeState },
-          exists: async (entry) => (await resolveStickerFile(ctx, entry, config)) !== undefined,
+          exists: async (entry) => (await resolveStickerFile(ctx, entry, readConfig())) !== undefined,
         }),
       )
       return () => {
@@ -159,7 +151,7 @@ export function apply(ctx: Context): void {
   ctx.effect(
     () =>
       registerPromptHint(ctx, {
-        config: () => config,
+        config: readConfig,
         hasTool: () => toolRegistered,
         isMuted: (sessionId) => readState().sessions[sessionId]?.muted === true,
       }) ?? (() => {}),
@@ -170,7 +162,7 @@ export function apply(ctx: Context): void {
   const commands = ctx.get('commands')
   if (commands !== undefined) {
     ctx.effect(
-      () => commands.register(createFishCommand({ config: () => config, index: indexOf, state: { read: readState, write: writeState } })),
+      () => commands.register(createFishCommand({ config: readConfig, index: indexOf, state: { read: readState, write: writeState } })),
       'dsh-memes-reply: /fish command',
     )
   } else {
