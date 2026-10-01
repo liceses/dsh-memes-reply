@@ -77,7 +77,10 @@ interface TurnTailDataLike {
 
 /** `turn.data.source(key)` 的返回形状（官方 `ConversationLocationDataSource`）。 */
 interface DataSourceLike<T> {
-  get(): T
+  /** 官方契约（0.1.7 起）：读当前值。 */
+  getSnapshot?: () => T
+  /** 早期运行时叫这个名字；留着兼容。 */
+  get?: () => T
   subscribe(listener: () => void): () => void
 }
 
@@ -102,8 +105,13 @@ function StickerTurnTail({
   ...props
 }: { scope: SettingsScope<MemesConfig> } & TurnTailSeatProps): ReactElement | null {
   const fallbackTurn = typeof props.turn?.turn === 'number' ? props.turn.turn : 0
-  const source = props.turn?.data?.source
-  const tailSource = typeof source === 'function' ? source(TURN_TAIL_KEY) : undefined
+  // 官方 `ConversationLocationDataStore.source(key)` 是**依赖 this 的方法**：
+  // 把它取出来再调用（`const s = data.source; s(key)`）会丢掉 this —— 0.2.0 的实现里会直接抛
+  //   TypeError: Cannot read properties of undefined (reading 'sources')
+  // 而槽位运行时把条目抛出的错误吞进 error boundary（只画崩溃面、连一条回执都没有），
+  // 表现就是"落定贴纸永远不出现、且查不到原因"。**必须就地调用**，别再写回分离式。
+  const data = props.turn?.data
+  const tailSource = typeof data?.source === 'function' ? data.source(TURN_TAIL_KEY) : undefined
 
   // 诊断（同步，故意不是 effect）：组件只要被 React 渲染就会留下这一条。
   const mountMark = `${typeof props.turn}:${String((props.turn as { turn?: unknown } | undefined)?.turn ?? props.seq ?? '?')}`
@@ -121,7 +129,13 @@ function StickerTurnTail({
     (listener: () => void): (() => void) => (tailSource === undefined ? () => {} : tailSource.subscribe(listener)),
     [tailSource],
   )
-  const read = useCallback((): TurnTailDataLike | undefined => (tailSource === undefined ? undefined : tailSource.get()), [tailSource])
+  const read = useCallback((): TurnTailDataLike | undefined => {
+    if (tailSource === undefined) return undefined
+    // 官方契约是 `getSnapshot`；早期运行时提供的是 `get`。两个都认，且都**带着 this 调用**
+    // （同 `source` 的坑：分离式调用会丢 this）。
+    const take = typeof tailSource.getSnapshot === 'function' ? tailSource.getSnapshot : tailSource.get
+    return typeof take === 'function' ? take.call(tailSource) : undefined
+  }, [tailSource])
   const tail = useSyncExternalStore(subscribe, read, read)
 
   const closing = tail?.closing ?? null
