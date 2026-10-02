@@ -37,7 +37,9 @@ export const DEFAULT_CONFIG: MemesConfig = {
   borderStyle: 'solid',
   borderColor: '',
   bubbleSize: 96,
-  bubbleRise: 40,
+  // 0 = 紧贴正文下方（默认）。>0 会把贴纸往上收去压正文最后一行 —— 靠左布局下那是**盖住字**，
+  // 只有确实想要"压在气泡角上"的观感时才调它。
+  bubbleRise: 0,
 }
 
 /** 设置面板里字段的顺序（也决定保存 diff 的顺序）。 */

@@ -617,8 +617,8 @@ export function SettingsCard({
             </Field>
 
             <Field
-              label="气泡角贴纸大小"
-              hint="贴在回复右下角那枚的边长（px）"
+              label="贴纸大小"
+              hint="贴在回复正文下方那枚的边长（px）"
               overridden={isOverridden(user, 'bubbleSize')}
               disabled={!writable}
               onReset={() => void resetField('bubbleSize')}
@@ -634,8 +634,8 @@ export function SettingsCard({
             </Field>
 
             <Field
-              label="气泡角上移量"
-              hint="px，越大越往气泡上压；0 = 贴在气泡下方"
+              label="贴纸上移量"
+              hint="px，正数往上收（会压住正文最后一行）；0 = 紧贴正文下方"
               overridden={isOverridden(user, 'bubbleRise')}
               disabled={!writable}
               onReset={() => void resetField('bubbleRise')}

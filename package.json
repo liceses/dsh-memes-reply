@@ -1,6 +1,6 @@
 {
   "name": "dsh-memes-reply",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "蓝色大肥鱼表情包回复插件：模型按语境在回复里贴一张会动的大肥鱼，配置面板画在插件管理页里本插件自己的页面上（预览墙 + 下一轮指定）。素材经插件自有 HTTP 路由直出，不经过附件流水线（那会把动画压成静图）。",
   "type": "module",
   "main": "lib/index.js",

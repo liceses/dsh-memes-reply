@@ -9,7 +9,7 @@
  *
  * - 一轮 = 一个节点（`turn/start` 建，`turn/end` 落定）；
  * - 节点状态只由会话事件推出来 → 刷新、滚动、切会话都会**原样重放**；
- * - 渲染完全由我们控（圆贴纸压在气泡右下角、全尺寸动画 WebP、悬停放大、点击看大图）；
+ * - 渲染完全由我们控（圆贴纸贴在**回复正文下方的左侧**、与正文左对齐，全尺寸动画 WebP、悬停放大、点击看大图）；
  * - 两阶段：生成中是「思考/打字中」，落定后**同一个节点**换成这一轮的最终贴纸
  *   （前一张是结构性地消失，不是被遮住）。
  *
@@ -438,7 +438,7 @@ export function StickerNodeView({
     <div
       ref={ref}
       className="dsh-memes-reply-node-row"
-      style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -Math.max(0, config.bubbleRise), paddingRight: 6 }}
+      style={{ display: 'flex', justifyContent: 'flex-start', marginTop: -Math.max(0, config.bubbleRise) }}
     >
       <button
         type="button"

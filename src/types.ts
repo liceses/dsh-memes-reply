@@ -183,9 +183,9 @@ export interface MemesConfig {
   borderStyle: StickerBorderStyle
   /** 边框颜色（空 = 跟随主题强调色）。 */
   borderColor: string
-  /** 气泡角贴纸边长（px）。 */
+  /** 贴纸边长（px，贴在回复正文下方的那枚）。 */
   bubbleSize: number
-  /** 气泡角贴纸上移量（px，用来压住气泡右下角）。 */
+  /** 贴纸上移量（px）：0 = 紧贴正文下方；正数往上收（会压到正文最后一行）。 */
   bubbleRise: number
 }
 

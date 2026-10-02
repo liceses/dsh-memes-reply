@@ -9,6 +9,7 @@ import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { DEFAULT_CONFIG } from '../lib/config.js'
 
 const ROOT = process.cwd()
 const BUNDLE = join(ROOT, 'lib', 'client.js')
@@ -104,4 +105,18 @@ test('客户端组件：没有 hook 落在条件返回之后（hooks 顺序门�
       `${file}: 第 ${lastHook + 1} 行有 hook，却排在第 ${firstConditionalReturn + 1} 行的条件返回之后 —— 开关一变就炸`,
     )
   }
+})
+
+/**
+ * 静态门禁：**贴纸靠左、且不压字**（v2.2 的放置约定）。
+ *
+ * 为什么值得写死：位置只有一行 inline style 在管，手滑把 `flex-start` 改回 `flex-end`
+ * 就会静默回到"右下角"——这类改动在评审里极容易漏看（它只是 style 里的一个词）。
+ * 默认上移量同理：`bubbleRise > 0` 会让贴纸往上收、盖住正文最后一行，靠左布局下尤其难看。
+ */
+test('贴纸行的放置约定：靠左对齐（flex-start），且默认不上收（bubbleRise=0）', () => {
+  const source = readFileSync(join(ROOT, 'src', 'client', 'node.tsx'), 'utf8')
+  assert.match(source, /justifyContent:\s*'flex-start'/, '贴纸行不再是左对齐（flex-start）')
+  assert.doesNotMatch(source, /justifyContent:\s*'flex-end'/, '贴纸行又回到靠右（flex-end）了')
+  assert.equal(DEFAULT_CONFIG.bubbleRise, 0, '默认上移量不是 0：贴纸会往上收、压住正文最后一行')
 })
