@@ -7,7 +7,7 @@
  */
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { closingPickOf, closingTextOf, modelPickOf } from '../lib/closing.js'
+import { closingPickOf, closingTextOf, flowPickOf, modelPickOf } from '../lib/closing.js'
 
 test('modelPickOf：对象实参', () => {
   assert.deepEqual(modelPickOf({ id: 'bug', mood: '翻车' }), { id: 'bug', mood: '翻车' })
@@ -83,4 +83,39 @@ test('closingPickOf：实参坏了不影响其它块，回落成空', () => {
 test('closingPickOf：没有收尾 / 没有点名 → 空', () => {
   assert.deepEqual(closingPickOf(null), { id: null, mood: null })
   assert.deepEqual(closingPickOf({ blocks: [{ kind: 'text', text: '只有正文' }] }), { id: null, mood: null })
+})
+
+// ── flowPickOf：0.2.0 把「调工具」与「写正文」拆在两步时的兜底来源 ──────────────
+//
+// 回归背景：模型先调 use_sticker、下一步才写收尾正文，于是 closing.blocks 里没有那次
+// tool-call，落定座位只看到"没点名"，贴的是规则/兜底那张（实测 pick=无，而生成中座位
+// 报「模型点名「收工」」）。这里锁住"从本轮贴纸节点取回点名"这条兜底路径。
+
+test('flowPickOf：从会话快照里取本轮那个贴纸节点已经算好的点名', () => {
+  const snapshot = {
+    locations: { getTurn: (turn) => (turn === 6 ? ['13:memes-sticker6'] : []) },
+    nodes: {
+      get: (key) =>
+        key === '13:memes-sticker6' ? { kind: 'memes-sticker', data: { modelId: 'qingzhu', modelMood: null } } : undefined,
+    },
+  }
+  assert.deepEqual(flowPickOf(snapshot, 6, 'memes-sticker'), { id: 'qingzhu', mood: null })
+})
+
+test('flowPickOf：只看本轮的贴纸节点（别的 kind 跳过，多个取最后一个）', () => {
+  const nodes = {
+    a: { kind: 'assistant-step', data: { modelId: 'bug', modelMood: '翻车' } },
+    b: { kind: 'memes-sticker', data: { modelId: null, modelMood: null } },
+    c: { kind: 'memes-sticker', data: { modelId: 'dianzan', modelMood: '点赞' } },
+  }
+  const snapshot = { locations: { getTurn: () => ['a', 'b', 'c'] }, nodes: { get: (key) => nodes[key] } }
+  assert.deepEqual(flowPickOf(snapshot, 3, 'memes-sticker'), { id: 'dianzan', mood: '点赞' })
+})
+
+test('flowPickOf：快照形状不对 / 没有节点 / 没有点名 → 一律回落空，且不抛', () => {
+  const empty = { id: null, mood: null }
+  assert.deepEqual(flowPickOf(undefined, 1, 'memes-sticker'), empty)
+  assert.deepEqual(flowPickOf({}, 1, 'memes-sticker'), empty)
+  assert.deepEqual(flowPickOf({ locations: { getTurn: () => ['x'] }, nodes: { get: () => undefined } }, 1, 'memes-sticker'), empty)
+  assert.deepEqual(flowPickOf({ locations: { getTurn: () => ['x'] }, nodes: { get: () => ({ kind: 'memes-sticker', data: {} }) } }, 1, 'memes-sticker'), empty)
 })

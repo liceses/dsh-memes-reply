@@ -55,3 +55,26 @@ export declare function closingPickOf(closing: ClosingAssistantLike | null | und
     id: string | null;
     mood: string | null;
 };
+/**
+ * 从会话快照里取**本轮**那个贴纸节点已经算好的模型点名。
+ *
+ * ## 为什么不能只看 `closing`
+ *
+ * 0.2.0 的 agent loop 是「一步 = 一条 `assistant/message` + 它的 `tool/call`」。
+ * 模型常见做法是**先调 `use_sticker`、再在下一步写收尾正文** —— 那时 `closing.blocks`
+ * 里根本没有那次 `tool/call`，落定座位只看到"没点名"，于是贴的是规则/兜底那张，
+ * 而不是模型要的那张（实测：生成中座位报「模型点名「收工」」，落定座位报 `pick=无`）。
+ *
+ * 我们自己那个"生成中"节点（`client/node.tsx` 的定义）是按**整轮事件**扫的
+ * （`assistant/message` / `tool/call` 都看），所以这里把它的结论从会话快照里取回来复用 ——
+ * 不再依赖"点名与正文在同一条消息里"这个 0.2.0 已经不成立的假设。
+ *
+ * @param snapshot - 官方 chat store 的快照（`useChat((s) => …)` 给的那个）。
+ * @param turn - 轮次号。
+ * @param kind - 本插件那个贴纸节点的 `kind`（`client/node.tsx` 的 `STICKER_NODE_KIND`）。
+ * @returns 该轮的点名；没有就是 `{ id: null, mood: null }`。
+ */
+export declare function flowPickOf(snapshot: unknown, turn: number, kind: string): {
+    id: string | null;
+    mood: string | null;
+};

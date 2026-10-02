@@ -29,10 +29,10 @@ import type { Context } from '@deepseek-ai/cordis'
 // `@deepseek-ai/dsh-client-runtime` 一起消失）；类型别名见 `settings-source.ts`。
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type { SettingsScope } from '../settings-source.js'
-import { closingPickOf, closingTextOf, type ClosingAssistantLike } from '../closing.js'
+import { closingPickOf, closingTextOf, flowPickOf, type ClosingAssistantLike } from '../closing.js'
 import type { MemesConfig } from '../types.js'
 import { postDebug } from './api.js'
-import { StickerNodeView } from './node.js'
+import { STICKER_NODE_KIND, StickerNodeView } from './node.js'
 
 /** 槽位名（官方 chat 包声明；0.1.5 与 0.1.7 一致）。 */
 export const TURN_TAIL_SLOT = 'conversation.chat.turnTail'
@@ -139,8 +139,28 @@ function StickerTurnTail({
   const tail = useSyncExternalStore(subscribe, read, read)
 
   const closing = tail?.closing ?? null
-  const pick = closingPickOf(closing)
   const text = closingTextOf(closing)
+  // 点名有两个来源：
+  //   ① 收尾正文里那次 `use_sticker`（**只有点名与正文在同一条消息里**才在）；
+  //   ② 本轮那个贴纸节点按**整轮事件**算出来的结论（`flowPickOf`）。
+  // 0.2.0 常把「先调工具、再写正文」拆成两步，所以 ① 经常为空 —— 这时必须靠 ②，
+  // 否则模型点的那张永远不会被采纳（实测：生成中座位报「模型点名「收工」」，落定报 pick=无）。
+  const turnNo = tail?.turn ?? fallbackTurn
+  const useChat =
+    (props as unknown as { useChat?: (selector: (snapshot: unknown) => unknown) => unknown }).useChat ??
+    ((): string => '')
+  const flowPickKey = String(
+    useChat((snapshot) => {
+      const flow = flowPickOf(snapshot, turnNo, STICKER_NODE_KIND)
+      return flow.id === null && flow.mood === null ? '' : `${flow.id ?? ''}|${flow.mood ?? ''}`
+    }),
+  )
+  const [flowId = '', flowMood = ''] = flowPickKey === '' ? [] : flowPickKey.split('|')
+  const fromClosing = closingPickOf(closing)
+  const pick =
+    fromClosing.id !== null || fromClosing.mood !== null
+      ? fromClosing
+      : { id: flowId === '' ? null : flowId, mood: flowMood === '' ? null : flowMood }
 
   // 诊断：这个座位到底挂上了没、官方数据到了没。折叠问题的排查全靠这条（只在变化时报）。
   useEffect(() => {
