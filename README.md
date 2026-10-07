@@ -13,6 +13,9 @@
 
 素材（157 张 / 86 MB）走插件自己的 HTTP 路由直出，**不经过 DSH 附件流水线** —— 那条流水线会把动画压成静图。
 
+![贴纸贴在回复正文下方](docs/screenshots/effect-sticker.png)
+*效果实拍：一轮真实对话 —— 贴纸贴在回复正文下方、靠左与正文对齐（右下角那个是「常驻挂件」，另一条路径）。这一轮是 `keyword` 模式命中情绪词后自动补的，不是手动点出来的。*
+
 ---
 
 <a id="looks"></a>
@@ -634,7 +637,7 @@ node -e "fetch('http://127.0.0.1:3080/api/dsh-memes-reply/jev-log?limit=5').then
 | 会话日志体检 | `node scripts/scan-sticker-usage.mjs --limit 10` | 扫 82 个会话；最近 10 个里提示命中 8 个、真的调用过 2 个（6 次 / 3 次） |
 | 配置 dump | `dsh --profile web --dump-config` | exit 0；该条目**没有 `config:` 块**（22 个字段全默认） |
 | 测试套件 | `node --test "test/*.test.mjs"` | 107 tests / 100 pass / **7 fail** —— 全部是环境缺件（工作树里没有 `node_modules`、没有 `assets/`），见下 |
-| 端到端肉眼确认 | —— | **没有做**：本次作业没有驱动 GUI、没有截图，所以"贴纸上屏的样子"只有客户端回执（`trace`）与派生逻辑作证，不是目视确认 |
+| 端到端肉眼确认 | —— | **部分做了**：插件配置面板已实拍（见文首那张 `docs/screenshots/plugin-config.png`）；但"贴纸上屏的样子"仍**没有目视确认** —— 只有客户端回执（`trace`）与派生逻辑作证 |
 
 那 7 条失败的成因（逐条核对过）：
 
